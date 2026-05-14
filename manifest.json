@@ -4,11 +4,13 @@
   "description": "Checklist profissional de instalação da CH Móveis Sob Medida.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#111111",
-  "theme_color": "#111111",
+  "background_color": "#ffffff",
+  "theme_color": "#0f0f0f",
   "orientation": "portrait",
   "scope": "./",
   "lang": "pt-BR",
+  "id": "/",
+
   "icons": [
     {
       "src": "icone-ch-obras.png",
