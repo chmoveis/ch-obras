@@ -7,12 +7,14 @@
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
+
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: #f4f4f4;
       color: #222;
+      overflow-x: hidden;
     }
 
     .app {
@@ -43,19 +45,19 @@
       text-shadow: 0 2px 5px rgba(0, 0, 0, 0.55);
     }
 
+    .logo {
+      display: block;
+      width: 85px;
+      max-width: 65%;
+      height: auto;
+      margin: 0 auto 14px auto;
+      background: #ffffff;
+      padding: 4px;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.45);
+      object-fit: contain;
+    }
 
-.logo 
-  display: block;
-  width: 85px;
-  max-width: 65%;
-  height: auto;
-  margin: 0 auto 14px auto;
-  background: #ffffff;
-  padding: 8px;
-  border-radius: 10px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.45);
-  object-fit: contain;
-}
     .cabecalho p {
       margin: 8px 0 0;
       font-size: 14px;
@@ -67,6 +69,7 @@
       border-bottom: 2px solid #d4a017;
       padding-bottom: 8px;
       margin-top: 30px;
+      font-size: 19px;
     }
 
     label {
@@ -77,7 +80,7 @@
 
     input, textarea, select {
       width: 100%;
-      padding: 4px;
+      padding: 12px;
       margin-top: 6px;
       border: 1px solid #ccc;
       border-radius: 8px;
@@ -103,59 +106,32 @@
       margin-top: 0;
     }
 
- button {
-  display: block;
-  width: 100%;
-  margin: 18px auto 0 auto;
-  padding: 14px;
-  background: linear-gradient(135deg, #000000, #4d4d4d);
-  color: white;
-  border: 1px solid #8a8a8a;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
-}
+    button {
+      display: block;
+      width: 100%;
+      margin: 18px auto 0 auto;
+      padding: 14px;
+      background: linear-gradient(135deg, #000000, #4d4d4d);
+      color: white;
+      border: 1px solid #8a8a8a;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    }
 
     button:hover {
-      background: #a57c00;
+      background: linear-gradient(135deg, #1a1a1a, #707070);
     }
 
     .botao-secundario {
-      background: #333333;
+      background: linear-gradient(135deg, #111111, #333333);
     }
 
     .botao-secundario:hover {
-      background: #111111;
-    }
-
-    @media print {
-      body {
-        background: white;
-      }
-
-      .app {
-        max-width: 100%;
-        padding: 10px;
-      }
-
-      button, input[type="file"] {
-        display: none;
-      }
-
-      .cabecalho {
-        background: #8B0000 !important;
-        color: white !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-
-      .resultado {
-        display: block !important;
-        border: 1px solid #999;
-      }
+      background: linear-gradient(135deg, #222222, #555555);
     }
 
     .resultado {
@@ -201,12 +177,45 @@
       border-radius: 8px;
       margin-top: 8px;
     }
+
+    .area-visualizar {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .app {
+        max-width: 100%;
+        padding: 10px;
+      }
+
+      button, input[type="file"], .area-visualizar {
+        display: none;
+      }
+
+      .cabecalho {
+        background: linear-gradient(135deg, #050505 0%, #161616 38%, #4a4a4a 72%, #d8d8d8 100%) !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .resultado {
+        display: block !important;
+        border: 1px solid #999;
+      }
+    }
   </style>
 </head>
+
 <body>
   <div class="app">
     <div class="cabecalho">
-      <img src="logotipo novo atual.jpeg" alt="CH Móveis" class="logo" />
+      <img src="logotipo novo atual.jpg" alt="CH Móveis" class="logo" />
       <h1>CH Obras</h1>
       <p>Checklist de Instalação - CH Móveis Sob Medida</p>
     </div>
@@ -343,6 +352,12 @@
     <button onclick="salvarChecklist()">Salvar Checklist</button>
     <button onclick="gerarPDF()" class="botao-secundario">Gerar Relatório / PDF</button>
     <button onclick="mostrarHistorico()" class="botao-secundario">Ver Histórico de Obras</button>
+
+    <div class="area-visualizar">
+      <button onclick="window.open('https://chmoveis.github.io/ch-obras/', '_blank')">
+        Visualizar App
+      </button>
+    </div>
 
     <div class="resultado" id="resultado">
       <h2>Checklist salvo com sucesso!</h2>
@@ -525,6 +540,7 @@
       document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
     }
   </script>
+
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
