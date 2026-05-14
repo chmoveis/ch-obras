@@ -1,0 +1,15 @@
+{
+  "name": "CH Obras",
+  "short_name": "CH Obras",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f0f0f",
+  "icons": [
+    {
+      "src": "icone-ch-obras.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
