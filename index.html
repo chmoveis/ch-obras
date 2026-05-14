@@ -43,15 +43,19 @@
       text-shadow: 0 2px 5px rgba(0, 0, 0, 0.55);
     }
 
-    .logo {
-      width: 120px;
-      margin-bottom: 15px;
-      background: white;
-      padding: 10px;
-      border-radius: 10px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-    }
 
+.logo 
+  display: block;
+  width: 125px;
+  max-width: 65%;
+  height: auto;
+  margin: 0 auto 14px auto;
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.45);
+  object-fit: contain;
+}
     .cabecalho p {
       margin: 8px 0 0;
       font-size: 14px;
@@ -100,18 +104,23 @@
     }
 
  button {
-    background: linear-gradient(135deg, #000000, #4d4d4d);
-    color: white;
-    border: 1px solid #8a8a8a;
-    border-radius: 12px;
-    padding: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  display: block;
+  width: 100%;
+  margin: 18px auto 0 auto;
+  padding: 14px;
+  background: linear-gradient(135deg, #000000, #4d4d4d);
+  color: white;
+  border: 1px solid #8a8a8a;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
 }
 
     button:hover {
-      background: linear-gradient(135deg, #1a1a1a, #707070);
+      background: #a57c00;
     }
 
     .botao-secundario {
@@ -527,10 +536,5 @@
         });
     }
   </script>
-<div style="text-align:center; margin-top:20px;">
-    <button onclick="window.open(window.location.href, '_blank')">
-        VISUALIZAR APP
-    </button>
-</div>
 </body>
 </html>
