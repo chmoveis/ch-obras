@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CH Obras - Checklist de Instalação</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f0f0f" />
+  <link rel="apple-touch-icon" href="icone-ch-obras.png" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #222;
+    }
+
+    .app {
+      max-width: 520px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: #ffffff;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .cabecalho {
+      text-align: center;
+      margin-bottom: 25px;
+      padding: 24px 20px;
+      background: linear-gradient(135deg, #050505 0%, #161616 38%, #4a4a4a 72%, #d8d8d8 100%);
+      color: white;
+      border-radius: 14px;
+      border: 1px solid #7a7a7a;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
+
+    .cabecalho h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.55);
+    }
+
+    .logo {
+      width: 120px;
+      margin-bottom: 15px;
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
+
+    .cabecalho p {
+      margin: 8px 0 0;
+      font-size: 14px;
+      color: #f5f5f5;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    }
+
+    h2 {
+      border-bottom: 2px solid #d4a017;
+      padding-bottom: 8px;
+      margin-top: 30px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+      background: white;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .pergunta {
+      margin-top: 15px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #fafafa;
+    }
+
+    .pergunta label {
+      margin-top: 0;
+    }
+
+ button {
+    background: linear-gradient(135deg, #000000, #4d4d4d);
+    color: white;
+    border: 1px solid #8a8a8a;
+    border-radius: 12px;
+    padding: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+}
+
+    button:hover {
+      background: linear-gradient(135deg, #1a1a1a, #707070);
+    }
+
+    .botao-secundario {
+      background: #333333;
+    }
+
+    .botao-secundario:hover {
+      background: #111111;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .app {
+        max-width: 100%;
+        padding: 10px;
+      }
+
+      button, input[type="file"] {
+        display: none;
+      }
+
+      .cabecalho {
+        background: #8B0000 !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .resultado {
+        display: block !important;
+        border: 1px solid #999;
+      }
+    }
+
+    .resultado {
+      display: none;
+      margin-top: 25px;
+      padding: 15px;
+      background: #eef7ee;
+      border: 1px solid #9ccc9c;
+      border-radius: 10px;
+    }
+
+    .resultado h2 {
+      margin-top: 0;
+      border-bottom: none;
+      padding-bottom: 0;
+      font-size: 20px;
+    }
+
+    .item-relatorio {
+      padding: 8px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    canvas {
+      width: 100%;
+      height: 180px;
+      border: 2px dashed #d4a017;
+      border-radius: 10px;
+      background: white;
+      margin-top: 10px;
+      touch-action: none;
+    }
+
+    .aviso-assinatura {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 0;
+    }
+
+    .assinatura-relatorio {
+      max-width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="cabecalho">
+      <img src="logotipo novo atual.jpeg" alt="CH Móveis" class="logo" />
+      <h1>CH Obras</h1>
+      <p>Checklist de Instalação - CH Móveis Sob Medida</p>
+    </div>
+
+    <h2>1. Dados da Obra</h2>
+
+    <label for="cliente">Nome do cliente</label>
+    <input type="text" id="cliente" placeholder="Digite o nome do cliente" />
+
+    <label for="endereco">Endereço da obra</label>
+    <input type="text" id="endereco" placeholder="Digite o endereço" />
+
+    <label for="ambiente">Ambiente</label>
+    <input type="text" id="ambiente" placeholder="Exemplo: Cozinha, dormitório, escritório" />
+
+    <label for="marceneiro">Marceneiro responsável</label>
+    <input type="text" id="marceneiro" placeholder="Digite o nome do marceneiro" />
+
+    <label for="statusObra">Status da obra</label>
+    <select id="statusObra">
+      <option value="">Selecione o status</option>
+      <option>A iniciar</option>
+      <option>Em andamento</option>
+      <option>Concluída</option>
+      <option>Com pendência</option>
+      <option>Aguardando cliente</option>
+    </select>
+
+    <label for="data">Data da instalação</label>
+    <input type="date" id="data" />
+
+    <h2>2. Checklist Antes de Iniciar</h2>
+
+    <div class="pergunta">
+      <label for="pisoMadeira">O piso é de madeira?</label>
+      <select id="pisoMadeira">
+        <option value="">Selecione</option>
+        <option>Sim</option>
+        <option>Não</option>
+        <option>Não se aplica</option>
+      </select>
+    </div>
+
+    <div class="pergunta">
+      <label for="riscoPiso">Existe risco ou avaria no piso antes da instalação?</label>
+      <select id="riscoPiso">
+        <option value="">Selecione</option>
+        <option>Sim</option>
+        <option>Não</option>
+        <option>Não se aplica</option>
+      </select>
+    </div>
+
+    <div class="pergunta">
+      <label for="paredePronta">As paredes estão prontas para instalação?</label>
+      <select id="paredePronta">
+        <option value="">Selecione</option>
+        <option>Sim</option>
+        <option>Não</option>
+        <option>Não se aplica</option>
+      </select>
+    </div>
+
+    <div class="pergunta">
+      <label for="eletricaPronta">A parte elétrica está pronta?</label>
+      <select id="eletricaPronta">
+        <option value="">Selecione</option>
+        <option>Sim</option>
+        <option>Não</option>
+        <option>Não se aplica</option>
+      </select>
+    </div>
+
+    <div class="pergunta">
+      <label for="localLimpo">O local está limpo e liberado para montagem?</label>
+      <select id="localLimpo">
+        <option value="">Selecione</option>
+        <option>Sim</option>
+        <option>Não</option>
+        <option>Não se aplica</option>
+      </select>
+    </div>
+
+    <div class="pergunta">
+      <label for="medidasConferidas">As medidas foram conferidas no local?</label>
+      <select id="medidasConferidas">
+        <option value="">Selecione</option>
+        <option>Sim</option>
+        <option>Não</option>
+        <option>Não se aplica</option>
+      </select>
+    </div>
+
+    <h2>3. Fotos Obrigatórias</h2>
+
+    <div class="pergunta">
+      <label for="fotoPiso">Foto do piso antes da instalação</label>
+      <input type="file" id="fotoPiso" accept="image/*" />
+    </div>
+
+    <div class="pergunta">
+      <label for="fotoAmbiente">Foto geral do ambiente</label>
+      <input type="file" id="fotoAmbiente" accept="image/*" />
+    </div>
+
+    <div class="pergunta">
+      <label for="fotoParede">Foto das paredes/local de fixação</label>
+      <input type="file" id="fotoParede" accept="image/*" />
+    </div>
+
+    <div class="pergunta">
+      <label for="fotoAvaria">Foto de risco ou avaria, se houver</label>
+      <input type="file" id="fotoAvaria" accept="image/*" />
+    </div>
+
+    <label for="observacoes">Observações iniciais</label>
+    <textarea id="observacoes" placeholder="Exemplo: piso riscado perto da porta, parede sem acabamento, tomada fora do local..."></textarea>
+
+    <h2>4. Assinatura do Cliente</h2>
+
+    <label for="nomeClienteAssinatura">Nome do cliente para assinatura</label>
+    <input type="text" id="nomeClienteAssinatura" placeholder="Digite o nome de quem vai assinar" />
+
+    <label for="cpfCliente">CPF do cliente (opcional)</label>
+    <input type="text" id="cpfCliente" placeholder="Digite o CPF, se desejar" />
+
+    <div class="pergunta">
+      <label>Assinatura digital do cliente</label>
+      <canvas id="assinatura" width="480" height="180"></canvas>
+      <button type="button" onclick="limparAssinatura()" class="botao-secundario">Limpar Assinatura</button>
+      <p class="aviso-assinatura">O cliente deve assinar dentro do quadro acima.</p>
+    </div>
+
+    <button onclick="salvarChecklist()">Salvar Checklist</button>
+    <button onclick="gerarPDF()" class="botao-secundario">Gerar Relatório / PDF</button>
+    <button onclick="mostrarHistorico()" class="botao-secundario">Ver Histórico de Obras</button>
+
+    <div class="resultado" id="resultado">
+      <h2>Checklist salvo com sucesso!</h2>
+      <div id="relatorio"></div>
+    </div>
+
+    <div class="resultado" id="historico">
+      <h2>Histórico de Obras</h2>
+      <div id="listaHistorico"></div>
+    </div>
+  </div>
+
+  <script>
+    function pegarValor(id) {
+      return document.getElementById(id).value;
+    }
+
+    const canvas = document.getElementById('assinatura');
+    const ctx = canvas.getContext('2d');
+    let desenhando = false;
+    let assinaturaFeita = false;
+
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#000000';
+
+    function posicao(evento) {
+      const rect = canvas.getBoundingClientRect();
+      const toque = evento.touches ? evento.touches[0] : evento;
+      return {
+        x: (toque.clientX - rect.left) * (canvas.width / rect.width),
+        y: (toque.clientY - rect.top) * (canvas.height / rect.height)
+      };
+    }
+
+    function iniciarAssinatura(evento) {
+      evento.preventDefault();
+      desenhando = true;
+      assinaturaFeita = true;
+      const p = posicao(evento);
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+    }
+
+    function desenharAssinatura(evento) {
+      if (!desenhando) return;
+      evento.preventDefault();
+      const p = posicao(evento);
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+    }
+
+    function pararAssinatura() {
+      desenhando = false;
+    }
+
+    function limparAssinatura() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      assinaturaFeita = false;
+    }
+
+    canvas.addEventListener('mousedown', iniciarAssinatura);
+    canvas.addEventListener('mousemove', desenharAssinatura);
+    canvas.addEventListener('mouseup', pararAssinatura);
+    canvas.addEventListener('mouseleave', pararAssinatura);
+
+    canvas.addEventListener('touchstart', iniciarAssinatura);
+    canvas.addEventListener('touchmove', desenharAssinatura);
+    canvas.addEventListener('touchend', pararAssinatura);
+
+    function nomeArquivo(id) {
+      const arquivo = document.getElementById(id).files[0];
+      return arquivo ? arquivo.name : 'Nenhuma foto selecionada';
+    }
+
+    function salvarNoHistorico(dados) {
+      const historicoAtual = JSON.parse(localStorage.getItem('historicoCHObras')) || [];
+      historicoAtual.push(dados);
+      localStorage.setItem('historicoCHObras', JSON.stringify(historicoAtual));
+    }
+
+    function mostrarHistorico() {
+      const historico = JSON.parse(localStorage.getItem('historicoCHObras')) || [];
+      const lista = document.getElementById('listaHistorico');
+
+      if (historico.length === 0) {
+        lista.innerHTML = '<p>Nenhuma obra salva ainda.</p>';
+      } else {
+        let html = '';
+        historico.forEach(function(obra, index) {
+          html += '<div class="item-relatorio">';
+          html += '<strong>Obra ' + (index + 1) + '</strong><br>';
+          html += '<strong>Cliente:</strong> ' + obra.cliente + '<br>';
+          html += '<strong>Endereço:</strong> ' + obra.endereco + '<br>';
+          html += '<strong>Ambiente:</strong> ' + obra.ambiente + '<br>';
+          html += '<strong>Data:</strong> ' + obra.data + '<br>';
+          html += '<strong>Marceneiro:</strong> ' + obra.marceneiro + '<br>';
+          html += '<strong>Status:</strong> ' + (obra.statusObra || 'Não informado');
+          html += '</div>';
+        });
+        lista.innerHTML = html;
+      }
+
+      document.getElementById('historico').style.display = 'block';
+      document.getElementById('historico').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function gerarPDF() {
+      const resultado = document.getElementById('resultado');
+
+      if (resultado.style.display !== 'block') {
+        alert('Primeiro clique em Salvar Checklist. Depois gere o relatório.');
+        return;
+      }
+
+      window.print();
+    }
+
+    function salvarChecklist() {
+      const cliente = pegarValor('cliente');
+      const endereco = pegarValor('endereco');
+      const ambiente = pegarValor('ambiente');
+      const marceneiro = pegarValor('marceneiro');
+      const statusObra = pegarValor('statusObra');
+      const data = pegarValor('data');
+
+      if (!cliente || !endereco || !ambiente || !marceneiro || !statusObra || !data) {
+        alert('Preencha todos os dados da obra, incluindo o status, antes de salvar.');
+        return;
+      }
+
+      if (!assinaturaFeita) {
+        alert('O cliente precisa assinar antes de salvar o checklist.');
+        return;
+      }
+
+      const imagemAssinatura = canvas.toDataURL('image/png');
+
+      const checklist = [
+        ['Cliente', cliente],
+        ['Endereço', endereco],
+        ['Ambiente', ambiente],
+        ['Marceneiro responsável', marceneiro],
+        ['Status da obra', statusObra],
+        ['Data da instalação', data],
+        ['O piso é de madeira?', pegarValor('pisoMadeira')],
+        ['Existe risco ou avaria no piso?', pegarValor('riscoPiso')],
+        ['As paredes estão prontas?', pegarValor('paredePronta')],
+        ['A parte elétrica está pronta?', pegarValor('eletricaPronta')],
+        ['O local está limpo e liberado?', pegarValor('localLimpo')],
+        ['As medidas foram conferidas?', pegarValor('medidasConferidas')],
+        ['Foto do piso antes da instalação', nomeArquivo('fotoPiso')],
+        ['Foto geral do ambiente', nomeArquivo('fotoAmbiente')],
+        ['Foto das paredes/local de fixação', nomeArquivo('fotoParede')],
+        ['Foto de risco ou avaria', nomeArquivo('fotoAvaria')],
+        ['Observações', pegarValor('observacoes') || 'Sem observações'],
+        ['Nome de quem assinou', pegarValor('nomeClienteAssinatura') || cliente],
+        ['CPF do cliente', pegarValor('cpfCliente') || 'Não informado']
+      ];
+
+      let html = '';
+      checklist.forEach(function(item) {
+        html += '<div class="item-relatorio"><strong>' + item[0] + ':</strong> ' + (item[1] || 'Não informado') + '</div>';
+      });
+
+      html += '<div class="item-relatorio"><strong>Assinatura do cliente:</strong><br><img class="assinatura-relatorio" src="' + imagemAssinatura + '" alt="Assinatura do cliente"></div>';
+
+      salvarNoHistorico({
+        cliente: cliente,
+        endereco: endereco,
+        ambiente: ambiente,
+        marceneiro: marceneiro,
+        statusObra: statusObra,
+        data: data,
+        criadoEm: new Date().toLocaleString('pt-BR')
+      });
+
+      document.getElementById('relatorio').innerHTML = html;
+      document.getElementById('resultado').style.display = 'block';
+      document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(function() {
+          console.log('CH Obras instalado com suporte offline.');
+        })
+        .catch(function(erro) {
+          console.log('Erro ao registrar Service Worker:', erro);
+        });
+    }
+  </script>
+<div style="text-align:center; margin-top:20px;">
+    <button onclick="window.open(window.location.href, '_blank')">
+        VISUALIZAR APP
+    </button>
+</div>
+</body>
+</html>
