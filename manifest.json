@@ -11,16 +11,15 @@
   "lang": "pt-BR",
   "id": "/",
 
-  "icons": [
-    {
-      "src": "icone-ch-obras.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icone-ch-obras.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
-}
+ "icons": [
+  {
+    "src": "App%20CH%20Obras/icone-ch-obras.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  },
+  {
+    "src": "App%20CH%20Obras/icone-ch-obras.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }
+]
