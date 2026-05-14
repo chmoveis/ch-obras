@@ -480,18 +480,20 @@
 
       html += '<div class="item-relatorio"><strong>Assinatura do cliente:</strong><br><img class="assinatura-relatorio" src="' + imagemAssinatura + '" alt="Assinatura do cliente"></div>';
 
-      salvarNoHistorico({
-        cliente: cliente,
-        endereco: endereco,
-        ambiente: ambiente,
-        marceneiro: marceneiro,
-        data: data,
-        criadoEm: new Date().toLocaleString('pt-BR')
-      });
+  const dadosObra = {
+  cliente: cliente,
+  endereco: endereco,
+  ambiente: ambiente,
+  marceneiro: marceneiro,
+  data: data,
+  criadoEm: new Date().toLocaleString('pt-BR')
+};
 
-      document.getElementById('relatorio').innerHTML = html;
-      document.getElementById('resultado').style.display = 'block';
-      document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
+salvarNoHistorico(dadosObra);
+
+if (window.salvarObraNaNuvem) {
+  salvarObraNaNuvem(dadosObra);
+}
     }
   </script>
   <script>
@@ -507,9 +509,33 @@
   </script>
 </script>
 
-<script type="module">
+
   // código firebase aqui
 </script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
+  const firebaseConfig = {
+    apiKey: "AIzaSyBn_WkU9O_7St6UTL9WXVnRoqXxCkj4UXo",
+    authDomain: "ch-obras.firebaseapp.com",
+    projectId: "ch-obras",
+    storageBucket: "ch-obras.firebasestorage.app",
+    messagingSenderId: "803401819775",
+    appId: "1:803401819775:web:39426cb59349b5599a814a"
+  };
+
+  const appFirebase = initializeApp(firebaseConfig);
+  const db = getFirestore(appFirebase);
+
+  window.salvarObraNaNuvem = async function(dadosObra) {
+    await addDoc(collection(db, "obras"), {
+      ...dadosObra,
+      criadoEmServidor: serverTimestamp()
+    });
+
+    alert("Checklist salvo na nuvem com sucesso.");
+  };
+</script>
 </body>
 </html>
