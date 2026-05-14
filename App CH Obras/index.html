@@ -27,26 +27,36 @@
     .cabecalho {
       text-align: center;
       margin-bottom: 25px;
-      padding: 20px;
-      background: linear-gradient(135deg, #0f0f0f, #1f1f1f);
+      padding: 24px 20px;
+      background: linear-gradient(135deg, #050505 0%, #161616 38%, #4a4a4a 72%, #d8d8d8 100%);
       color: white;
-      border-radius: 12px;
+      border-radius: 14px;
+      border: 1px solid #7a7a7a;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
     }
 
     .cabecalho h1 {
       margin: 0;
-      font-size: 24px;
+      font-size: 28px;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.55);
     }
 
     .logo {
       width: 120px;
       margin-bottom: 15px;
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
     }
 
     .cabecalho p {
       margin: 8px 0 0;
       font-size: 14px;
       color: #f5f5f5;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
     }
 
     h2 {
@@ -207,6 +217,16 @@
 
     <label for="marceneiro">Marceneiro responsável</label>
     <input type="text" id="marceneiro" placeholder="Digite o nome do marceneiro" />
+
+    <label for="statusObra">Status da obra</label>
+    <select id="statusObra">
+      <option value="">Selecione o status</option>
+      <option>A iniciar</option>
+      <option>Em andamento</option>
+      <option>Concluída</option>
+      <option>Com pendência</option>
+      <option>Aguardando cliente</option>
+    </select>
 
     <label for="data">Data da instalação</label>
     <input type="date" id="data" />
@@ -412,7 +432,8 @@
           html += '<strong>Endereço:</strong> ' + obra.endereco + '<br>';
           html += '<strong>Ambiente:</strong> ' + obra.ambiente + '<br>';
           html += '<strong>Data:</strong> ' + obra.data + '<br>';
-          html += '<strong>Marceneiro:</strong> ' + obra.marceneiro;
+          html += '<strong>Marceneiro:</strong> ' + obra.marceneiro + '<br>';
+          html += '<strong>Status:</strong> ' + (obra.statusObra || 'Não informado');
           html += '</div>';
         });
         lista.innerHTML = html;
@@ -438,10 +459,11 @@
       const endereco = pegarValor('endereco');
       const ambiente = pegarValor('ambiente');
       const marceneiro = pegarValor('marceneiro');
+      const statusObra = pegarValor('statusObra');
       const data = pegarValor('data');
 
-      if (!cliente || !endereco || !ambiente || !marceneiro || !data) {
-        alert('Preencha todos os dados da obra antes de salvar.');
+      if (!cliente || !endereco || !ambiente || !marceneiro || !statusObra || !data) {
+        alert('Preencha todos os dados da obra, incluindo o status, antes de salvar.');
         return;
       }
 
@@ -457,6 +479,7 @@
         ['Endereço', endereco],
         ['Ambiente', ambiente],
         ['Marceneiro responsável', marceneiro],
+        ['Status da obra', statusObra],
         ['Data da instalação', data],
         ['O piso é de madeira?', pegarValor('pisoMadeira')],
         ['Existe risco ou avaria no piso?', pegarValor('riscoPiso')],
@@ -480,20 +503,19 @@
 
       html += '<div class="item-relatorio"><strong>Assinatura do cliente:</strong><br><img class="assinatura-relatorio" src="' + imagemAssinatura + '" alt="Assinatura do cliente"></div>';
 
-  const dadosObra = {
-  cliente: cliente,
-  endereco: endereco,
-  ambiente: ambiente,
-  marceneiro: marceneiro,
-  data: data,
-  criadoEm: new Date().toLocaleString('pt-BR')
-};
+      salvarNoHistorico({
+        cliente: cliente,
+        endereco: endereco,
+        ambiente: ambiente,
+        marceneiro: marceneiro,
+        statusObra: statusObra,
+        data: data,
+        criadoEm: new Date().toLocaleString('pt-BR')
+      });
 
-salvarNoHistorico(dadosObra);
-
-if (window.salvarObraNaNuvem) {
-  salvarObraNaNuvem(dadosObra);
-}
+      document.getElementById('relatorio').innerHTML = html;
+      document.getElementById('resultado').style.display = 'block';
+      document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
     }
   </script>
   <script>
@@ -507,35 +529,5 @@ if (window.salvarObraNaNuvem) {
         });
     }
   </script>
-</script>
-
-
-  // código firebase aqui
-</script>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyBn_WkU9O_7St6UTL9WXVnRoqXxCkj4UXo",
-    authDomain: "ch-obras.firebaseapp.com",
-    projectId: "ch-obras",
-    storageBucket: "ch-obras.firebasestorage.app",
-    messagingSenderId: "803401819775",
-    appId: "1:803401819775:web:39426cb59349b5599a814a"
-  };
-
-  const appFirebase = initializeApp(firebaseConfig);
-  const db = getFirestore(appFirebase);
-
-  window.salvarObraNaNuvem = async function(dadosObra) {
-    await addDoc(collection(db, "obras"), {
-      ...dadosObra,
-      criadoEmServidor: serverTimestamp()
-    });
-
-    alert("Checklist salvo na nuvem com sucesso.");
-  };
-</script>
 </body>
 </html>
