@@ -534,7 +534,14 @@
         data: data,
         criadoEm: new Date().toLocaleString('pt-BR')
       });
-
+      salvarObraNaNuvem({
+  cliente: cliente,
+  endereco: endereco,
+  ambiente: ambiente,
+  marceneiro: marceneiro,
+  statusObra: statusObra,
+  data: data
+});
       document.getElementById('relatorio').innerHTML = html;
       document.getElementById('resultado').style.display = 'block';
       document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
