@@ -428,7 +428,10 @@
     canvas.addEventListener('touchend', pararAssinatura);
 
   
-
+function nomeArquivo(id) {
+  const arquivo = document.getElementById(id).files[0];
+  return arquivo ? arquivo.name : 'Nenhuma foto selecionada';
+}
     function salvarNoHistorico(dados) {
       const historicoAtual = JSON.parse(localStorage.getItem('historicoCHObras')) || [];
       historicoAtual.push(dados);
@@ -438,7 +441,7 @@
     function mostrarHistorico() {
       const historico = JSON.parse(localStorage.getItem('historicoCHObras')) || [];
       const lista = document.getElementById('listaHistorico');
-async function mostrarHistorico() {
+
 
 const lista = document.getElementById('listaHistorico');
 
