@@ -589,19 +589,39 @@ const db = getFirestore(appFirebase);
 const storage = getStorage(appFirebase);
     
 const auth = getAuth(appFirebase);
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
+const auth = getAuth(appFirebase);
+
+window.fazerLogin = async function () {
+
     const email = prompt("Digite seu e-mail:");
     const senha = prompt("Digite sua senha:");
 
-    signInWithEmailAndPassword(auth, email, senha)
-      .then(() => {
+    try {
+
+        await signInWithEmailAndPassword(auth, email, senha);
+
         alert("Login realizado com sucesso.");
-      })
-      .catch((error) => {
+
+    } catch (error) {
+
         alert("Erro no login: " + error.message);
-      });
-  }
+
+    }
+
+}
+
+onAuthStateChanged(auth, (user) => {
+
+    if (!user) {
+
+        setTimeout(() => {
+
+            fazerLogin();
+
+        }, 500);
+
+    }
+
 });
 
 window.logoutApp = async function () {
