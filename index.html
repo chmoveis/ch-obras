@@ -610,20 +610,25 @@ window.fazerLogin = async function () {
 
 }
 
+window.fazerLogin = async function () {
+  const email = prompt("Digite seu e-mail:");
+  const senha = prompt("Digite sua senha:");
+
+  try {
+    await signInWithEmailAndPassword(auth, email, senha);
+    alert("Login realizado com sucesso.");
+  } catch (error) {
+    alert("Erro no login: " + error.message);
+  }
+};
+
 onAuthStateChanged(auth, (user) => {
-
-    if (!user) {
-
-        setTimeout(() => {
-
-            fazerLogin();
-
-        }, 500);
-
-    }
-
+  if (!user) {
+    setTimeout(() => {
+      window.fazerLogin();
+    }, 500);
+  }
 });
-
 window.logoutApp = async function () {
   await signOut(auth);
   alert("Logout realizado.");
