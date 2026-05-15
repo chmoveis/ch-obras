@@ -493,28 +493,7 @@ async function mostrarHistorico() {
   }
 
 }
-      if (historico.length === 0) {
-        lista.innerHTML = '<p>Nenhuma obra salva ainda.</p>';
-      } else {
-        let html = '';
-        historico.forEach(function(obra, index) {
-          html += '<div class="item-relatorio">';
-          html += '<strong>Obra ' + (index + 1) + '</strong><br>';
-          html += '<strong>Cliente:</strong> ' + obra.cliente + '<br>';
-          html += '<strong>Endereço:</strong> ' + obra.endereco + '<br>';
-          html += '<strong>Ambiente:</strong> ' + obra.ambiente + '<br>';
-          html += '<strong>Data:</strong> ' + obra.data + '<br>';
-          html += '<strong>Marceneiro:</strong> ' + obra.marceneiro + '<br>';
-          html += '<strong>Status:</strong> ' + (obra.statusObra || 'Não informado');
-          html += '</div>';
-        });
-        lista.innerHTML = html;
-      }
-
-      document.getElementById('historico').style.display = 'block';
-      document.getElementById('historico').scrollIntoView({ behavior: 'smooth' });
-    }
-
+      
     function gerarPDF() {
       const resultado = document.getElementById('resultado');
 
