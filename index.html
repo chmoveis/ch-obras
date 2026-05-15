@@ -591,26 +591,7 @@ const storage = getStorage(appFirebase);
 const auth = getAuth(appFirebase);
 const auth = getAuth(appFirebase);
 
-window.fazerLogin = async function () {
-
-    const email = prompt("Digite seu e-mail:");
-    const senha = prompt("Digite sua senha:");
-
-    try {
-
-        await signInWithEmailAndPassword(auth, email, senha);
-
-        alert("Login realizado com sucesso.");
-
-    } catch (error) {
-
-        alert("Erro no login: " + error.message);
-
-    }
-
-}
-
-window.fazerLogin = async function () {
+    window.fazerLogin = async function () {
   const email = prompt("Digite seu e-mail:");
   const senha = prompt("Digite sua senha:");
 
