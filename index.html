@@ -562,13 +562,13 @@ import {
   addDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-
 import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-storage.js";
+  getAuth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyBn_WkU9O_7St6UTL9WXVnRoqXxCkj4UXo",
@@ -582,8 +582,30 @@ const firebaseConfig = {
 const appFirebase = initializeApp(firebaseConfig);
 
 const db = getFirestore(appFirebase);
-
+    
 const storage = getStorage(appFirebase);
+    
+const auth = getAuth(appFirebase);
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    const email = prompt("Digite seu e-mail:");
+    const senha = prompt("Digite sua senha:");
+
+    signInWithEmailAndPassword(auth, email, senha)
+      .then(() => {
+        alert("Login realizado com sucesso.");
+      })
+      .catch((error) => {
+        alert("Erro no login: " + error.message);
+      });
+  }
+});
+
+window.logoutApp = async function () {
+  await signOut(auth);
+  alert("Logout realizado.");
+  location.reload();
+};    
 
 window.salvarObraNaNuvem = async function(dadosObra) {
 
