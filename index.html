@@ -438,67 +438,59 @@ function nomeArquivo(id) {
       localStorage.setItem('historicoCHObras', JSON.stringify(historicoAtual));
     }
 
-    function mostrarHistorico() {
-      const historico = JSON.parse(localStorage.getItem('historicoCHObras')) || [];
-      const lista = document.getElementById('listaHistorico');
+async function mostrarHistorico() {
 
+  const lista = document.getElementById('listaHistorico');
 
-const lista = document.getElementById('listaHistorico');
+  lista.innerHTML = '<p>Carregando obras...</p>';
 
-lista.innerHTML = '<p>Carregando obras...</p>';
+  try {
 
-try {
+    const querySnapshot = await getDocs(collection(db, "obras"));
 
-const querySnapshot = await getDocs(collection(db, "obras"));
+    if (querySnapshot.empty) {
+      lista.innerHTML = '<p>Nenhuma obra encontrada.</p>';
+      return;
+    }
 
-if (querySnapshot.empty) {
+    let html = '';
+    let contador = 1;
 
-lista.innerHTML = '<p>Nenhuma obra encontrada.</p>';
+    querySnapshot.forEach((doc) => {
 
-return;
+      const obra = doc.data();
 
-}
+      html += `
+      <div class="item-relatorio">
+      <strong>Obra ${contador}</strong><br>
+      <strong>Cliente:</strong> ${obra.cliente || ''}<br>
+      <strong>Endereço:</strong> ${obra.endereco || ''}<br>
+      <strong>Ambiente:</strong> ${obra.ambiente || ''}<br>
+      <strong>Data:</strong> ${obra.data || ''}<br>
+      <strong>Marceneiro:</strong> ${obra.marceneiro || ''}<br>
+      <strong>Status:</strong> ${obra.statusObra || 'Não informado'}
+      </div>
+      `;
 
-let html = '';
+      contador++;
 
-let contador = 1;
+    });
 
-querySnapshot.forEach((doc) => {
+    lista.innerHTML = html;
 
-const obra = doc.data();
+    document.getElementById('historico').style.display = 'block';
 
-html += `
-<div class="item-relatorio">
-<strong>Obra ${contador}</strong><br>
-<strong>Cliente:</strong> ${obra.cliente || ''}<br>
-<strong>Endereço:</strong> ${obra.endereco || ''}<br>
-<strong>Ambiente:</strong> ${obra.ambiente || ''}<br>
-<strong>Data:</strong> ${obra.data || ''}<br>
-<strong>Marceneiro:</strong> ${obra.marceneiro || ''}<br>
-<strong>Status:</strong> ${obra.statusObra || 'Não informado'}
-<br><strong>Criado em:</strong> ${obra.criadoEm || ''}
-</div>
-`;
+    document.getElementById('historico').scrollIntoView({
+      behavior: 'smooth'
+    });
 
-contador++;
+  } catch (erro) {
 
-});
+    lista.innerHTML = '<p>Erro ao carregar histórico.</p>';
 
-lista.innerHTML = html;
+    console.error(erro);
 
-document.getElementById('historico').style.display = 'block';
-
-document.getElementById('historico').scrollIntoView({
-behavior: 'smooth'
-});
-
-} catch (erro) {
-
-lista.innerHTML = '<p>Erro ao carregar histórico.</p>';
-
-console.error(erro);
-
-}
+  }
 
 }
       if (historico.length === 0) {
