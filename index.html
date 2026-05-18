@@ -407,9 +407,7 @@ button.botao-excluir:hover {
     <button onclick="salvarChecklist()">Salvar Checklist</button>
     <button class="botao-secundario" onclick="mostrarHistorico()">
     <button onclick="gerarPDF()" class="botao-secundario">Gerar Relatório / PDF</button>
-  <button onclick="mostrarHistorico()">
-Ver Histórico de Obras
-</button>
+    <button onclick="mostrarHistorico()">Ver Histórico de Obras</button>
 
     <div class="area-visualizar">
       <button onclick="window.open('https://chmoveis.github.io/ch-obras/', '_blank')">
@@ -899,7 +897,7 @@ window.enviarFotoParaStorage = async function(inputId, nomePasta) {
   const urlDownload = await getDownloadURL(referenciaArquivo);
 
   return urlDownload;
-};
+    };
   </script>
 </body>
 </html>
