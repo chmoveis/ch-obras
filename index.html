@@ -774,6 +774,31 @@ style="width:100%; border-radius:10px; margin-top:10px; border:2px solid #ccc;">
 
 };
 window.filtrarHistorico = function() {
+  const texto = document
+    .getElementById('buscaHistorico')
+    .value
+    .toLowerCase();
+
+  const statusFiltro = document
+    .getElementById('filtroStatus')
+    .value
+    .toLowerCase();
+
+  const itens = document.querySelectorAll('.item-relatorio');
+
+  itens.forEach((item) => {
+    const conteudo = item.innerText.toLowerCase();
+
+    const passaTexto = conteudo.includes(texto);
+    const passaStatus = !statusFiltro || conteudo.includes(statusFiltro);
+
+    if (passaTexto && passaStatus) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+};
 
   const texto = document
     .getElementById('buscaHistorico')
