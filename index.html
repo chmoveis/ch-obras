@@ -763,11 +763,11 @@ style="width:100%; border-radius:10px; margin-top:10px; border:2px solid #ccc;">
     });
 
     lista.innerHTML = html;
-
-  } catch (erro) {
-
-    console.error(erro);
-
+catch (erro) {
+console.error(erro);
+alert('Erro ao excluir obra.');
+}
+};
     lista.innerHTML = '<p>Erro ao carregar histórico.</p>';
 
   }
