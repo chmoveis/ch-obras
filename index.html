@@ -688,168 +688,67 @@ window.salvarObraNaNuvem = async function(dadosObra) {
   alert("Checklist salvo na nuvem com sucesso.");
 };
 window.mostrarHistorico = async function() {
-
   const lista = document.getElementById('listaHistorico');
-
   lista.innerHTML = '<p>Carregando obras...</p>';
-
   document.getElementById('historico').style.display = 'block';
 
   try {
-
     const querySnapshot = await getDocs(collection(db, "obras"));
 
     if (querySnapshot.empty) {
-
       lista.innerHTML = '<p>Nenhuma obra encontrada.</p>';
-
       return;
-
     }
 
     let html = '';
-
-    let contador = 1;
-
-    querySnapshot.forEach((doc) => {
-
-      const obra = doc.data();
-
-      html += `
-      <div class="item-relatorio">
-
-      <strong>Obra ${contador}</strong><br>
-
-      <strong>Cliente:</strong> ${obra.cliente || ''}<br>
-
-      <strong>Endereço:</strong> ${obra.endereco || ''}<br>
-
-      <strong>Ambiente:</strong> ${obra.ambiente || ''}<br>
-
-      <strong>Data:</strong> ${obra.data || ''}<br>
-
-      <strong>Marceneiro:</strong> ${obra.marceneiro || ''}<br>
-
-      <strong>Status:</strong> 
-<span class="
-${obra.statusObra === 'Concluída' ? 'status status-concluida' : ''}
-${obra.statusObra === 'Em andamento' ? 'status status-andamento' : ''}
-${obra.statusObra === 'Com pendência' ? 'status status-pendencia' : ''}
-${obra.statusObra === 'A iniciar' ? 'status status-iniciar' : ''}
-${obra.statusObra === 'Aguardando cliente' ? 'status status-cliente' : ''}
-">
-${obra.statusObra || 'Não informado'}
-</span><br>
-
-      <strong>Criado em:</strong> ${obra.criadoEm || ''}<br>
-${obra.fotoPisoUrl ? `
-<br>
-<img src="${obra.fotoPisoUrl}" 
-style="width:100%; border-radius:10px; margin-top:10px; border:2px solid #ccc;">
-<br>
-` : ''}
-<button 
-  type="button" 
-  onclick="excluirObra('${doc.id}')" 
-  class="botao-excluir">
-  Excluir Obra
-</button>
-
-      </div>
-      `;
-
-      contador++;
-
-    });
-
-window.mostrarHistorico = async function() {
-
-  const lista = document.getElementById('listaHistorico');
-
-  lista.innerHTML = '<p>Carregando obras...</p>';
-
-  document.getElementById('historico').style.display = 'block';
-
-  try {
-
-    const querySnapshot = await getDocs(collection(db, "obras"));
-
-    if (querySnapshot.empty) {
-
-      lista.innerHTML = '<p>Nenhuma obra encontrada.</p>';
-
-      return;
-
-    }
-
-    let html = '';
-
     let contador = 1;
 
     querySnapshot.forEach((docItem) => {
-
       const obra = docItem.data();
 
       html += `
-      <div class="item-relatorio">
+        <div class="item-relatorio">
+          <strong>Obra ${contador}</strong><br>
+          <strong>Cliente:</strong> ${obra.cliente || ''}<br>
+          <strong>Endereço:</strong> ${obra.endereco || ''}<br>
+          <strong>Ambiente:</strong> ${obra.ambiente || ''}<br>
+          <strong>Data:</strong> ${obra.data || ''}<br>
+          <strong>Marceneiro:</strong> ${obra.marceneiro || ''}<br>
+          <strong>Status:</strong>
+          <span class="
+            ${obra.statusObra === 'Concluída' ? 'status status-concluida' : ''}
+            ${obra.statusObra === 'Em andamento' ? 'status status-andamento' : ''}
+            ${obra.statusObra === 'Com pendência' ? 'status status-pendencia' : ''}
+            ${obra.statusObra === 'A iniciar' ? 'status status-iniciar' : ''}
+            ${obra.statusObra === 'Aguardando cliente' ? 'status status-cliente' : ''}
+          ">
+            ${obra.statusObra || 'Não informado'}
+          </span><br>
 
-      <strong>Obra ${contador}</strong><br>
+          <strong>Criado em:</strong> ${obra.criadoEm || ''}<br>
 
-      <strong>Cliente:</strong> ${obra.cliente || ''}<br>
+          ${obra.fotoPisoUrl ? `
+            <br>
+            <img src="${obra.fotoPisoUrl}" style="width:100%; border-radius:10px; margin-top:10px; border:2px solid #ccc;">
+            <br>
+          ` : ''}
 
-      <strong>Endereço:</strong> ${obra.endereco || ''}<br>
-
-      <strong>Ambiente:</strong> ${obra.ambiente || ''}<br>
-
-      <strong>Data:</strong> ${obra.data || ''}<br>
-
-      <strong>Marceneiro:</strong> ${obra.marceneiro || ''}<br>
-
-      <strong>Status:</strong>
-      <span class="
-      ${obra.statusObra === 'Concluída' ? 'status status-concluida' : ''}
-      ${obra.statusObra === 'Em andamento' ? 'status status-andamento' : ''}
-      ${obra.statusObra === 'Com pendência' ? 'status status-pendencia' : ''}
-      ${obra.statusObra === 'A iniciar' ? 'status status-iniciar' : ''}
-      ${obra.statusObra === 'Aguardando cliente' ? 'status status-cliente' : ''}
-      ">
-      ${obra.statusObra || 'Não informado'}
-      </span><br>
-
-      <strong>Criado em:</strong> ${obra.criadoEm || ''}<br>
-
-      ${obra.fotoPisoUrl ? `
-      <br>
-      <img src="${obra.fotoPisoUrl}"
-      style="width:100%; border-radius:10px; margin-top:10px; border:2px solid #ccc;">
-      <br>
-      ` : ''}
-
-      <button
-        type="button"
-        onclick="excluirObra('${docItem.id}')"
-        class="botao-excluir">
-        Excluir Obra
-      </button>
-
-      </div>
+          <button type="button" onclick="excluirObra('${docItem.id}')" class="botao-excluir">
+            Excluir Obra
+          </button>
+        </div>
       `;
 
       contador++;
-
     });
 
     lista.innerHTML = html;
 
   } catch (erro) {
-
     console.error(erro);
-
     lista.innerHTML = '<p>Erro ao carregar histórico.</p>';
-
   }
-
-};   
+};
 
 window.filtrarHistorico = function() {
   const texto = document.getElementById('buscaHistorico').value.toLowerCase();
@@ -860,11 +759,12 @@ window.filtrarHistorico = function() {
     const conteudo = item.innerText.toLowerCase();
     const passaTexto = conteudo.includes(texto);
     const passaStatus = !statusFiltro || conteudo.includes(statusFiltro);
-    item.style.display = (passaTexto && passaStatus) ? 'block' : 'none';
-});
 
+    item.style.display = (passaTexto && passaStatus) ? 'block' : 'none';
+  });
 };
-   window.excluirObra = async function(id) {
+
+window.excluirObra = async function(id) {
   const confirmar = confirm('Deseja realmente excluir esta obra?');
 
   if (!confirmar) return;
@@ -878,6 +778,7 @@ window.filtrarHistorico = function() {
     alert('Erro ao excluir obra.');
   }
 };
+
 window.enviarFotoParaStorage = async function(inputId, nomePasta) {
   const input = document.getElementById(inputId);
 
@@ -896,8 +797,7 @@ window.enviarFotoParaStorage = async function(inputId, nomePasta) {
   const urlDownload = await getDownloadURL(referenciaArquivo);
 
   return urlDownload;
-    }
-    };
+};
   </script>
 </body>
 </html>
