@@ -771,8 +771,9 @@ style="width:100%; border-radius:10px; margin-top:10px; border:2px solid #ccc;">
     lista.innerHTML = '<p>Erro ao carregar histórico.</p>';
 
   }
+});
+}
 
-};
 window.filtrarHistorico = function() {
   const texto = document
     .getElementById('buscaHistorico')
@@ -800,28 +801,9 @@ window.filtrarHistorico = function() {
   });
 };
 
-  const texto = document
-    .getElementById('buscaHistorico')
-    .value
-    .toLowerCase();
 
-  const itens = document.querySelectorAll('.item-relatorio');
-
-  itens.forEach((item) => {
-
-    const conteudo = item.innerText.toLowerCase();
-
-    if (conteudo.includes(texto)) {
-
-      item.style.display = 'block';
-
-    } else {
-
-      item.style.display = 'none';
-
-    }
-
-  });
+});
+}
 
 window.excluirObra = async function(id) {
 
