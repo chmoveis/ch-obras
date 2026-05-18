@@ -714,7 +714,16 @@ window.mostrarHistorico = async function() {
 
       <strong>Marceneiro:</strong> ${obra.marceneiro || ''}<br>
 
-      <strong>Status:</strong> ${obra.statusObra || 'Não informado'}<br>
+      <strong>Status:</strong> 
+<span class="
+${obra.statusObra === 'Concluída' ? 'status status-concluida' : ''}
+${obra.statusObra === 'Em andamento' ? 'status status-andamento' : ''}
+${obra.statusObra === 'Com pendência' ? 'status status-pendencia' : ''}
+${obra.statusObra === 'A iniciar' ? 'status status-iniciar' : ''}
+${obra.statusObra === 'Aguardando cliente' ? 'status status-cliente' : ''}
+">
+${obra.statusObra || 'Não informado'}
+</span><br>
 
       <strong>Criado em:</strong> ${obra.criadoEm || ''}<br>
 
