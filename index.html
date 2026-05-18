@@ -783,12 +783,11 @@ window.filtrarHistorico = function() {
     const conteudo = item.innerText.toLowerCase();
     const passaTexto = conteudo.includes(texto);
     const passaStatus = !statusFiltro || conteudo.includes(statusFiltro);
-
     item.style.display = (passaTexto && passaStatus) ? 'block' : 'none';
-  });
-};
+});
 
-window.excluirObra = async function(id) {
+};
+   window.excluirObra = async function(id) {
   const confirmar = confirm('Deseja realmente excluir esta obra?');
 
   if (!confirmar) return;
