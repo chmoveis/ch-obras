@@ -775,59 +775,33 @@ style="width:100%; border-radius:10px; margin-top:10px; border:2px solid #ccc;">
 }
 
 window.filtrarHistorico = function() {
-  const texto = document
-    .getElementById('buscaHistorico')
-    .value
-    .toLowerCase();
-
-  const statusFiltro = document
-    .getElementById('filtroStatus')
-    .value
-    .toLowerCase();
-
+  const texto = document.getElementById('buscaHistorico').value.toLowerCase();
+  const statusFiltro = document.getElementById('filtroStatus').value.toLowerCase();
   const itens = document.querySelectorAll('.item-relatorio');
 
   itens.forEach((item) => {
     const conteudo = item.innerText.toLowerCase();
-
     const passaTexto = conteudo.includes(texto);
     const passaStatus = !statusFiltro || conteudo.includes(statusFiltro);
 
-    if (passaTexto && passaStatus) {
-      item.style.display = 'block';
-    } else {
-      item.style.display = 'none';
-    }
+    item.style.display = (passaTexto && passaStatus) ? 'block' : 'none';
   });
 };
 
-
-});
-}
-
 window.excluirObra = async function(id) {
-
   const confirmar = confirm('Deseja realmente excluir esta obra?');
 
   if (!confirmar) return;
---
+
   try {
-
     await deleteDoc(doc(db, "obras", id));
-
     alert('Obra excluída com sucesso.');
-
     mostrarHistorico();
-
   } catch (erro) {
-
     console.error(erro);
-
     alert('Erro ao excluir obra.');
-
   }
-
-}; 
+};
 window.enviarFotoParaStorage = async function(inputId, nomePasta) {
   const input = document.getElementById(inputId);
 
