@@ -670,6 +670,7 @@ window.salvarObraNaNuvem = async function(dadosObra) {
 
   await addDoc(collection(db, "obras"), {
     ...dadosObra,
+   fotoPisoUrl: dadosObra.fotoPisoUrl || "", 
     criadoEmServidor: serverTimestamp()
   });
 
