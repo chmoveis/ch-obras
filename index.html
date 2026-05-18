@@ -512,7 +512,7 @@ function nomeArquivo(id) {
       window.print();
     }
 
-    function salvarChecklist() {
+   async function salvarChecklist()
       const cliente = pegarValor('cliente');
       const fotoPisoUrl = await enviarFotoParaStorage('fotoPiso', 'obras');
       const endereco = pegarValor('endereco');
