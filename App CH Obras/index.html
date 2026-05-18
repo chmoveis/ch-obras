@@ -655,6 +655,69 @@
         lista.innerHTML = '<p>Erro ao carregar histórico. Verifique login e permissões.</p>';
       }
     };
+  async function mostrarHistorico() {
+
+const lista = document.getElementById("listaHistorico");
+
+lista.innerHTML = "Carregando obras...";
+
+document.getElementById("historico").style.display = "block";
+
+try {
+
+const querySnapshot = await getDocs(collection(db, "obras"));
+
+if (querySnapshot.empty) {
+
+lista.innerHTML = "<p>Nenhuma obra encontrada.</p>";
+
+return;
+
+}
+
+let html = "";
+
+let contador = 1;
+
+querySnapshot.forEach((doc) => {
+
+const obra = doc.data();
+
+html += `
+<div class="item-relatorio">
+
+<strong>Obra ${contador}</strong><br>
+
+<strong>Cliente:</strong> ${obra.cliente || ""}<br>
+
+<strong>Endereço:</strong> ${obra.endereco || ""}<br>
+
+<strong>Ambiente:</strong> ${obra.ambiente || ""}<br>
+
+<strong>Data:</strong> ${obra.data || ""}<br>
+
+<strong>Marceneiro:</strong> ${obra.marceneiro || ""}<br>
+
+<strong>Status:</strong> ${obra.statusObra || "Não informado"}
+
+</div>
+`;
+
+contador++;
+
+});
+
+lista.innerHTML = html;
+
+} catch (erro) {
+
+console.error(erro);
+
+lista.innerHTML = "<p>Erro ao carregar histórico.</p>";
+
+}
+
+}
   </script>
 </body>
 </html>
