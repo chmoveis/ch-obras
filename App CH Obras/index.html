@@ -7,6 +7,7 @@
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
+
   <style>
     body {
       margin: 0;
@@ -99,16 +100,19 @@
       margin-top: 0;
     }
 
- button {
-    background: linear-gradient(135deg, #000000, #4d4d4d);
-    color: white;
-    border: 1px solid #8a8a8a;
-    border-radius: 12px;
-    padding: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
-}
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+      background: linear-gradient(135deg, #000000, #4d4d4d);
+      color: white;
+      border: 1px solid #8a8a8a;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    }
 
     button:hover {
       background: linear-gradient(135deg, #1a1a1a, #707070);
@@ -120,33 +124,6 @@
 
     .botao-secundario:hover {
       background: #111111;
-    }
-
-    @media print {
-      body {
-        background: white;
-      }
-
-      .app {
-        max-width: 100%;
-        padding: 10px;
-      }
-
-      button, input[type="file"] {
-        display: none;
-      }
-
-      .cabecalho {
-        background: #8B0000 !important;
-        color: white !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-
-      .resultado {
-        display: block !important;
-        border: 1px solid #999;
-      }
     }
 
     .resultado {
@@ -166,7 +143,7 @@
     }
 
     .item-relatorio {
-      padding: 8px 0;
+      padding: 10px 0;
       border-bottom: 1px solid #ddd;
     }
 
@@ -192,8 +169,46 @@
       border-radius: 8px;
       margin-top: 8px;
     }
+
+    .usuario-logado {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      background: #f7f7f7;
+      border-radius: 8px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .app {
+        max-width: 100%;
+        padding: 10px;
+      }
+
+      button, input[type="file"], .usuario-logado {
+        display: none;
+      }
+
+      .cabecalho {
+        background: linear-gradient(135deg, #050505 0%, #161616 38%, #4a4a4a 72%, #d8d8d8 100%) !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .resultado {
+        display: block !important;
+        border: 1px solid #999;
+      }
+    }
   </style>
 </head>
+
 <body>
   <div class="app">
     <div class="cabecalho">
@@ -201,6 +216,8 @@
       <h1>CH Obras</h1>
       <p>Checklist de Instalação - CH Móveis Sob Medida</p>
     </div>
+
+    <div class="usuario-logado" id="usuarioLogado"></div>
 
     <h2>1. Dados da Obra</h2>
 
@@ -219,11 +236,11 @@
     <label for="statusObra">Status da obra</label>
     <select id="statusObra">
       <option value="">Selecione o status</option>
-      <option>A iniciar</option>
-      <option>Em andamento</option>
-      <option>Concluída</option>
-      <option>Com pendência</option>
-      <option>Aguardando cliente</option>
+      <option value="A iniciar">🟡 A iniciar</option>
+      <option value="Em andamento">🔵 Em andamento</option>
+      <option value="Concluída">🟢 Concluída</option>
+      <option value="Com pendência">🔴 Com pendência</option>
+      <option value="Aguardando cliente">🟠 Aguardando cliente</option>
     </select>
 
     <label for="data">Data da instalação</label>
@@ -334,6 +351,7 @@
     <button onclick="salvarChecklist()">Salvar Checklist</button>
     <button onclick="gerarPDF()" class="botao-secundario">Gerar Relatório / PDF</button>
     <button onclick="mostrarHistorico()" class="botao-secundario">Ver Histórico de Obras</button>
+    <button onclick="logoutApp()" class="botao-secundario">Sair do Sistema</button>
 
     <div class="resultado" id="resultado">
       <h2>Checklist salvo com sucesso!</h2>
@@ -409,38 +427,6 @@
       return arquivo ? arquivo.name : 'Nenhuma foto selecionada';
     }
 
-    function salvarNoHistorico(dados) {
-      const historicoAtual = JSON.parse(localStorage.getItem('historicoCHObras')) || [];
-      historicoAtual.push(dados);
-      localStorage.setItem('historicoCHObras', JSON.stringify(historicoAtual));
-    }
-
-    function mostrarHistorico() {
-      const historico = JSON.parse(localStorage.getItem('historicoCHObras')) || [];
-      const lista = document.getElementById('listaHistorico');
-
-      if (historico.length === 0) {
-        lista.innerHTML = '<p>Nenhuma obra salva ainda.</p>';
-      } else {
-        let html = '';
-        historico.forEach(function(obra, index) {
-          html += '<div class="item-relatorio">';
-          html += '<strong>Obra ' + (index + 1) + '</strong><br>';
-          html += '<strong>Cliente:</strong> ' + obra.cliente + '<br>';
-          html += '<strong>Endereço:</strong> ' + obra.endereco + '<br>';
-          html += '<strong>Ambiente:</strong> ' + obra.ambiente + '<br>';
-          html += '<strong>Data:</strong> ' + obra.data + '<br>';
-          html += '<strong>Marceneiro:</strong> ' + obra.marceneiro + '<br>';
-          html += '<strong>Status:</strong> ' + (obra.statusObra || 'Não informado');
-          html += '</div>';
-        });
-        lista.innerHTML = html;
-      }
-
-      document.getElementById('historico').style.display = 'block';
-      document.getElementById('historico').scrollIntoView({ behavior: 'smooth' });
-    }
-
     function gerarPDF() {
       const resultado = document.getElementById('resultado');
 
@@ -459,6 +445,9 @@
       const marceneiro = pegarValor('marceneiro');
       const statusObra = pegarValor('statusObra');
       const data = pegarValor('data');
+      const observacoes = pegarValor('observacoes');
+      const nomeAssinatura = pegarValor('nomeClienteAssinatura') || cliente;
+      const cpfCliente = pegarValor('cpfCliente') || 'Não informado';
 
       if (!cliente || !endereco || !ambiente || !marceneiro || !statusObra || !data) {
         alert('Preencha todos os dados da obra, incluindo o status, antes de salvar.');
@@ -489,9 +478,9 @@
         ['Foto geral do ambiente', nomeArquivo('fotoAmbiente')],
         ['Foto das paredes/local de fixação', nomeArquivo('fotoParede')],
         ['Foto de risco ou avaria', nomeArquivo('fotoAvaria')],
-        ['Observações', pegarValor('observacoes') || 'Sem observações'],
-        ['Nome de quem assinou', pegarValor('nomeClienteAssinatura') || cliente],
-        ['CPF do cliente', pegarValor('cpfCliente') || 'Não informado']
+        ['Observações', observacoes || 'Sem observações'],
+        ['Nome de quem assinou', nomeAssinatura],
+        ['CPF do cliente', cpfCliente]
       ];
 
       let html = '';
@@ -501,21 +490,38 @@
 
       html += '<div class="item-relatorio"><strong>Assinatura do cliente:</strong><br><img class="assinatura-relatorio" src="' + imagemAssinatura + '" alt="Assinatura do cliente"></div>';
 
-      salvarNoHistorico({
+      const dadosObra = {
         cliente: cliente,
         endereco: endereco,
         ambiente: ambiente,
         marceneiro: marceneiro,
         statusObra: statusObra,
         data: data,
+        observacoes: observacoes || '',
+        nomeAssinatura: nomeAssinatura,
+        cpfCliente: cpfCliente,
+        assinatura: imagemAssinatura,
+        fotoPiso: nomeArquivo('fotoPiso'),
+        fotoAmbiente: nomeArquivo('fotoAmbiente'),
+        fotoParede: nomeArquivo('fotoParede'),
+        fotoAvaria: nomeArquivo('fotoAvaria'),
         criadoEm: new Date().toLocaleString('pt-BR')
-      });
+      };
+
+      localStorage.setItem('ultimoChecklistCHObras', JSON.stringify(dadosObra));
+
+      if (window.salvarObraNaNuvem) {
+        window.salvarObraNaNuvem(dadosObra);
+      } else {
+        alert('Checklist salvo localmente. Firebase ainda não carregou.');
+      }
 
       document.getElementById('relatorio').innerHTML = html;
       document.getElementById('resultado').style.display = 'block';
       document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
     }
   </script>
+
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
@@ -527,10 +533,128 @@
         });
     }
   </script>
-<div style="text-align:center; margin-top:20px;">
-    <button onclick="window.open(window.location.href, '_blank')">
-        VISUALIZAR APP
-    </button>
-</div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBn_WkU9o_7St6UTL9WXVnRoqXxCkj4UXo",
+      authDomain: "ch-obras.firebaseapp.com",
+      projectId: "ch-obras",
+      storageBucket: "ch-obras.appspot.com",
+      messagingSenderId: "803401819775",
+      appId: "1:803401819775:web:39426cb59349b5599a814a"
+    };
+
+    const appFirebase = initializeApp(firebaseConfig);
+    const db = getFirestore(appFirebase);
+    const auth = getAuth(appFirebase);
+
+    window.fazerLogin = async function () {
+      const email = prompt("Digite seu e-mail:");
+      const senha = prompt("Digite sua senha:");
+
+      try {
+        await signInWithEmailAndPassword(auth, email, senha);
+        alert("Login realizado com sucesso.");
+      } catch (error) {
+        alert("Erro no login: " + error.message);
+      }
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      const boxUsuario = document.getElementById('usuarioLogado');
+
+      if (!user) {
+        boxUsuario.style.display = 'none';
+        setTimeout(() => {
+          window.fazerLogin();
+        }, 500);
+      } else {
+        boxUsuario.style.display = 'block';
+        boxUsuario.innerHTML = 'Usuário logado: <strong>' + user.email + '</strong>';
+      }
+    });
+
+    window.logoutApp = async function () {
+      await signOut(auth);
+      alert("Logout realizado.");
+      location.reload();
+    };
+
+    window.salvarObraNaNuvem = async function(dadosObra) {
+      try {
+        await addDoc(collection(db, "obras"), {
+          ...dadosObra,
+          criadoEmServidor: serverTimestamp()
+        });
+
+        alert("Checklist salvo na nuvem com sucesso.");
+      } catch (erro) {
+        console.error("Erro ao salvar na nuvem:", erro);
+        alert("Erro ao salvar na nuvem. Verifique login e permissões.");
+      }
+    };
+
+    window.mostrarHistorico = async function() {
+      const lista = document.getElementById('listaHistorico');
+      const historico = document.getElementById('historico');
+
+      lista.innerHTML = '<p>Carregando obras...</p>';
+      historico.style.display = 'block';
+      historico.scrollIntoView({ behavior: 'smooth' });
+
+      try {
+        const querySnapshot = await getDocs(collection(db, "obras"));
+
+        if (querySnapshot.empty) {
+          lista.innerHTML = '<p>Nenhuma obra encontrada.</p>';
+          return;
+        }
+
+        let html = '';
+        let contador = 1;
+
+        querySnapshot.forEach((doc) => {
+          const obra = doc.data();
+
+          html += `
+            <div class="item-relatorio">
+              <strong>Obra ${contador}</strong><br>
+              <strong>Cliente:</strong> ${obra.cliente || ''}<br>
+              <strong>Endereço:</strong> ${obra.endereco || ''}<br>
+              <strong>Ambiente:</strong> ${obra.ambiente || ''}<br>
+              <strong>Data:</strong> ${obra.data || ''}<br>
+              <strong>Marceneiro:</strong> ${obra.marceneiro || ''}<br>
+              <strong>Status:</strong> ${obra.statusObra || 'Não informado'}<br>
+              <strong>Criado em:</strong> ${obra.criadoEm || ''}
+            </div>
+          `;
+
+          contador++;
+        });
+
+        lista.innerHTML = html;
+      } catch (erro) {
+        console.error("Erro ao carregar histórico:", erro);
+        lista.innerHTML = '<p>Erro ao carregar histórico. Verifique login e permissões.</p>';
+      }
+    };
+  </script>
 </body>
 </html>
