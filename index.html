@@ -514,6 +514,7 @@ function nomeArquivo(id) {
 
     function salvarChecklist() {
       const cliente = pegarValor('cliente');
+      const fotoPisoUrl = await enviarFotoParaStorage('fotoPiso', 'obras');
       const endereco = pegarValor('endereco');
       const ambiente = pegarValor('ambiente');
       const marceneiro = pegarValor('marceneiro');
