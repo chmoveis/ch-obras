@@ -428,7 +428,14 @@ button.botao-excluir:hover {
     placeholder="Buscar por cliente, endereço ou marceneiro"
     oninput="filtrarHistorico()"
   />
-
+<select id="filtroStatus" onchange="filtrarHistorico()">
+  <option value="">Todos os status</option>
+  <option value="A iniciar">A iniciar</option>
+  <option value="Em andamento">Em andamento</option>
+  <option value="Concluída">Concluída</option>
+  <option value="Com pendência">Com pendência</option>
+  <option value="Aguardando cliente">Aguardando cliente</option>
+</select>
   <div id="listaHistorico"></div>
 </div>  
 
