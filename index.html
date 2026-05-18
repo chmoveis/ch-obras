@@ -804,6 +804,25 @@ window.filtrarHistorico = function() {
   }
 
 }; 
+window.enviarFotoParaStorage = async function(inputId, nomePasta) {
+  const input = document.getElementById(inputId);
+
+  if (!input || !input.files || input.files.length === 0) {
+    return "";
+  }
+
+  const arquivo = input.files[0];
+  const nomeArquivo = Date.now() + "-" + arquivo.name;
+  const caminho = nomePasta + "/" + nomeArquivo;
+
+  const referenciaArquivo = ref(storage, caminho);
+
+  await uploadBytes(referenciaArquivo, arquivo);
+
+  const urlDownload = await getDownloadURL(referenciaArquivo);
+
+  return urlDownload;
+}; 
   </script>
 </body>
 </html>
