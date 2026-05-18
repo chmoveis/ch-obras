@@ -363,11 +363,18 @@
       <div id="relatorio"></div>
     </div>
 
-    <div class="resultado" id="historico">
-      <h2>Histórico de Obras</h2>
-      <div id="listaHistorico"></div>
-    </div>
-  </div>
+  <div class="resultado" id="historico">
+  <h2>Histórico de Obras</h2>
+
+  <input 
+    type="text" 
+    id="buscaHistorico" 
+    placeholder="Buscar por cliente, endereço ou marceneiro"
+    oninput="filtrarHistorico()"
+  />
+
+  <div id="listaHistorico"></div>
+</div>  
 
   <script>
     function pegarValor(id) {
