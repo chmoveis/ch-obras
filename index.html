@@ -662,7 +662,14 @@ window.mostrarHistorico = async function() {
 
       <strong>Status:</strong> ${obra.statusObra || 'Não informado'}<br>
 
-      <strong>Criado em:</strong> ${obra.criadoEm || ''}
+      <strong>Criado em:</strong> ${obra.criadoEm || ''}<br>
+
+<button 
+  type="button" 
+  onclick="excluirObra('${doc.id}')" 
+  class="botao-secundario">
+  Excluir Obra
+</button>
 
       </div>
       `;
@@ -708,6 +715,29 @@ window.filtrarHistorico = function() {
   });
 
 };
+ window.excluirObra = async function(id) {
+
+  const confirmar = confirm('Deseja realmente excluir esta obra?');
+
+  if (!confirmar) return;
+
+  try {
+
+    await deleteDoc(doc(db, "obras", id));
+
+    alert('Obra excluída com sucesso.');
+
+    mostrarHistorico();
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    alert('Erro ao excluir obra.');
+
+  }
+
+}; 
   </script>
 </body>
 </html>
