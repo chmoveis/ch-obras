@@ -682,7 +682,32 @@ window.mostrarHistorico = async function() {
   }
 
 };
+window.filtrarHistorico = function() {
 
+  const texto = document
+    .getElementById('buscaHistorico')
+    .value
+    .toLowerCase();
+
+  const itens = document.querySelectorAll('.item-relatorio');
+
+  itens.forEach((item) => {
+
+    const conteudo = item.innerText.toLowerCase();
+
+    if (conteudo.includes(texto)) {
+
+      item.style.display = 'block';
+
+    } else {
+
+      item.style.display = 'none';
+
+    }
+
+  });
+
+};
   </script>
 </body>
 </html>
