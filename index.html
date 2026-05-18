@@ -823,13 +823,12 @@ window.filtrarHistorico = function() {
 
   });
 
-};
- window.excluirObra = async function(id) {
+window.excluirObra = async function(id) {
 
   const confirmar = confirm('Deseja realmente excluir esta obra?');
 
   if (!confirmar) return;
-
+--
   try {
 
     await deleteDoc(doc(db, "obras", id));
