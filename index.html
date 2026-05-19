@@ -602,6 +602,7 @@ function gerarPDF() {
   const marceneiro = pegarValor('marceneiro');
   const statusObra = pegarValor('statusObra');
   const data = pegarValor('data');
+  const dataGeracao = new Date().toLocaleString('pt-BR');
   const observacoes = pegarValor('observacoes') || 'Sem observações';
 
   const checklist = [
