@@ -1025,11 +1025,13 @@ window.filtrarHistorico = function() {
     item.style.display = (passaTexto && passaStatus) ? 'block' : 'none';
   });
 };
-window.limparFiltrosHistorico = function() {
+window.ocultarHistorico = function() {
 
-document.getElementById('buscaHistorico').value = '';
+document.getElementById('historico').style.display = 'none';
 
-document.getElementById('filtroStatus').value = '';
+document.getElementById('dashboardResumo').style.display = 'none';
+
+};
 
 filtrarHistorico();
 
