@@ -513,16 +513,38 @@ function nomeArquivo(id) {
 
    
       
-    function gerarPDF() {
-      const resultado = document.getElementById('resultado');
+      function gerarPDF() {
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
 
-      if (resultado.style.display !== 'block') {
-        alert('Primeiro clique em Salvar Checklist. Depois gere o relatório.');
-        return;
-      }
+  const cliente = pegarValor('cliente');
+  const endereco = pegarValor('endereco');
+  const ambiente = pegarValor('ambiente');
+  const marceneiro = pegarValor('marceneiro');
+  const statusObra = pegarValor('statusObra');
+  const data = pegarValor('data');
+  const observacoes = pegarValor('observacoes') || 'Sem observações';
 
-      window.print();
-    }
+  pdf.setFontSize(18);
+  pdf.text('CH Obras - Relatório de Instalação', 20, 20);
+
+  pdf.setFontSize(11);
+  pdf.text(`Cliente: ${cliente}`, 20, 40);
+  pdf.text(`Endereço: ${endereco}`, 20, 50);
+  pdf.text(`Ambiente: ${ambiente}`, 20, 60);
+  pdf.text(`Marceneiro: ${marceneiro}`, 20, 70);
+  pdf.text(`Status: ${statusObra}`, 20, 80);
+  pdf.text(`Data: ${data}`, 20, 90);
+
+  pdf.text('Observações:', 20, 105);
+  pdf.text(observacoes, 20, 115, { maxWidth: 170 });
+
+  const assinatura = canvas.toDataURL('image/png');
+  pdf.text('Assinatura do Cliente:', 20, 145);
+  pdf.addImage(assinatura, 'PNG', 20, 150, 80, 30);
+
+  pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
+}
       async function salvarChecklist() {
       const cliente = pegarValor('cliente');
       const fotoPisoUrl = await enviarFotoParaStorage('fotoPiso', 'obras');
