@@ -990,8 +990,8 @@ document.getElementById('totalObras').innerText = totalObras;
 document.getElementById('obrasAndamento').innerText = obrasAndamento;
 document.getElementById('obrasConcluidas').innerText = obrasConcluidas;
 const porcentagem =
-total > 0
-? Math.round((concluidas / total) * 100)
+totalObras > 0
+? Math.round((obrasConcluidas / totalObras) * 100)
 : 0;
 
 document.getElementById('taxaConclusao').innerText =
