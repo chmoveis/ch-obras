@@ -614,12 +614,18 @@ function gerarPDF() {
     ['Medidas conferidas?', pegarValor('medidasConferidas')]
   ];
 
-  pdf.setFillColor(212, 160, 23);
-  pdf.rect(0, 0, 210, 40, 'F');
+  
 
-  pdf.setTextColor(255, 255, 255);
+ pdf.setTextColor(0, 0, 0);
+ const logo = new Image();
+
+logo.src = 'logotipo novo atual.jpg';
   pdf.setFontSize(18);
-  pdf.text('CH Obras', 20, 12);
+  pdf.addImage(logo, 'JPEG', 15, 8, 32, 32);
+
+pdf.setFontSize(18);
+
+pdf.text('CH Obras', 55, 18);
 
   pdf.setFontSize(11);
   pdf.text('Relatório de Instalação - CH Móveis Sob Medida', 20, 21);
