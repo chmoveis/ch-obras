@@ -880,7 +880,8 @@ window.salvarObraNaNuvem = async function(dadosObra) {
   alert("Checklist salvo na nuvem com sucesso.");
 };
 window.mostrarHistorico = async function() {
-const historicoDiv = document.getElementById('historico');  
+const historicoDiv = document.getElementById('historico');
+const lista = document.getElementById('listaHistorico');  
 const obrasOrdenadas = query(
   collection(db, "obras"),
   orderBy("criadoEmServidor", "desc")
