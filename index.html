@@ -514,6 +514,7 @@ function nomeArquivo(id) {
    
       
 function gerarPDF() {
+
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF();
 
@@ -540,10 +541,12 @@ function gerarPDF() {
   pdf.setTextColor(255, 255, 255);
   pdf.setFontSize(18);
   pdf.text('CH Obras', 20, 12);
+
   pdf.setFontSize(11);
   pdf.text('Relatório de Instalação - CH Móveis Sob Medida', 20, 21);
 
   pdf.setTextColor(0, 0, 0);
+
   pdf.setFontSize(14);
   pdf.text('Dados da Obra', 20, 42);
 
@@ -559,6 +562,7 @@ function gerarPDF() {
   pdf.text('Checklist Técnico', 20, 125);
 
   let y = 138;
+
   pdf.setFontSize(11);
 
   checklist.forEach((item) => {
@@ -570,54 +574,61 @@ function gerarPDF() {
   pdf.text('Observações', 20, y + 8);
 
   pdf.setFontSize(11);
-  pdf.text(observacoes, 20, y + 18, { maxWidth: 170 });
-  const fotoObra = document.getElementById('fotoPiso').files[0];
+  pdf.text(observacoes, 20, y + 18, {
+    maxWidth: 170
+  });
+
   const assinatura = canvas.toDataURL('image/png');
+
+  pdf.setFontSize(14);
+  pdf.text('Assinatura do Cliente', 20, 235);
+
+  pdf.addImage(
+    assinatura,
+    'PNG',
+    20,
+    240,
+    90,
+    35
+  );
+
+  const fotoObra = document.getElementById('fotoPiso').files[0];
+
   if (fotoObra) {
-  const reader = new FileReader();
 
-  reader.onload = function(event) {
-    pdf.setFontSize(14);
-    pdf.text('Foto da Obra', 20, 185);
+    const reader = new FileReader();
 
-    pdf.addImage(
-      event.target.result,
-      'JPEG',
-      20,
-      190,
-      80,
-      40
-    );
+    reader.onload = function(event) {
 
-    pdf.setFontSize(14);
-    pdf.text('Assinatura do Cliente', 20, 240);
+      pdf.setFontSize(14);
+      pdf.text('Foto da Obra', 120, 185);
 
-    const assinatura = canvas.toDataURL('image/png');
+      pdf.addImage(
+        event.target.result,
+        'JPEG',
+        120,
+        190,
+        70,
+        40
+      );
 
-if (fotoObra) {
+      pdf.setFontSize(9);
 
-  const reader = new FileReader();
+      pdf.text(
+        'Documento gerado automaticamente pelo sistema CH Obras.',
+        20,
+        285
+      );
 
-  reader.onload = function(event) {
+      pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
+    };
 
-    pdf.setFontSize(14);
-    pdf.text('Foto da Obra', 20, 185);
+    reader.readAsDataURL(fotoObra);
 
-    pdf.addImage(
-      event.target.result,
-      'JPEG',
-      20,
-      190,
-      80,
-      40
-    );
-
-    pdf.setFontSize(14);
-    pdf.text('Assinatura do Cliente', 20, 240);
-
-    pdf.addImage(assinatura, 'PNG', 20, 245, 90, 35);
+  } else {
 
     pdf.setFontSize(9);
+
     pdf.text(
       'Documento gerado automaticamente pelo sistema CH Obras.',
       20,
@@ -625,27 +636,8 @@ if (fotoObra) {
     );
 
     pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
-  };
-
-  reader.readAsDataURL(fotoObra);
-
-} else {
-
-  pdf.setFontSize(14);
-  pdf.text('Assinatura do Cliente', 20, 235);
-
-  pdf.addImage(assinatura, 'PNG', 20, 240, 90, 35);
-
-  pdf.setFontSize(9);
-  pdf.text(
-    'Documento gerado automaticamente pelo sistema CH Obras.',
-    20,
-    285
-  );
-
-  pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
+  }
 }
-
       async function salvarChecklist() {
       const cliente = pegarValor('cliente');
       const fotoPisoUrl = await enviarFotoParaStorage('fotoPiso', 'obras');
