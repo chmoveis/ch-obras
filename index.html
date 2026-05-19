@@ -1000,6 +1000,15 @@ window.filtrarHistorico = function() {
     item.style.display = (passaTexto && passaStatus) ? 'block' : 'none';
   });
 };
+window.limparFiltrosHistorico = function() {
+
+document.getElementById('buscaHistorico').value = '';
+
+document.getElementById('filtroStatus').value = '';
+
+filtrarHistorico();
+
+};    
 
 window.excluirObra = async function(id) {
   const confirmar = confirm('Deseja realmente excluir esta obra?');
