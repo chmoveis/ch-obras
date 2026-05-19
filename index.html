@@ -1041,9 +1041,12 @@ filtrarHistorico();
     
 
 window.excluirObra = async function(id) {
-  const confirmar = confirm('Deseja realmente excluir esta obra?');
+const confirmar = prompt('Para excluir esta obra, digite EXCLUIR:');
 
-  if (!confirmar) return;
+if (confirmar !== 'EXCLUIR') {
+  alert('Exclusão cancelada.');
+  return;
+} 
 
   try {
     await deleteDoc(doc(db, "obras", id));
