@@ -550,7 +550,8 @@ function gerarPDF() {
 
   pdf.setFontSize(14);
   pdf.text('Dados da Obra', 20, 42);
-
+  pdf.setFontSize(11);
+  pdf.text(`Número da Obra: ${numeroObra}`, 20, 50);
   pdf.setFontSize(11);
   pdf.text(`Cliente: ${cliente}`, 20, 55);
   pdf.text(`Endereço: ${endereco}`, 20, 65);
