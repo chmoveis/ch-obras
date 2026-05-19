@@ -865,9 +865,16 @@ window.salvarObraNaNuvem = async function(dadosObra) {
   alert("Checklist salvo na nuvem com sucesso.");
 };
 window.mostrarHistorico = async function() {
-  const lista = document.getElementById('listaHistorico');
-  lista.innerHTML = '<p>Carregando obras...</p>';
-  document.getElementById('historico').style.display = 'block';
+  const historicoDiv = document.getElementById('historico');
+const lista = document.getElementById('listaHistorico');
+
+if (!historicoDiv || !lista) {
+  alert('Erro: seção de histórico não encontrada.');
+  return;
+}
+
+lista.innerHTML = '<p>Carregando obras...</p>';
+historicoDiv.style.display = 'block';
 
   try {
     const querySnapshot = await getDocs(collection(db, "obras"));
