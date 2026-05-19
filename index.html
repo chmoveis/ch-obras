@@ -1074,6 +1074,36 @@ window.enviarFotoParaStorage = async function(inputId, nomePasta) {
 
   return urlDownload;
 };
+window.limparFormulario = function() {
+
+document.getElementById('cliente').value = '';
+
+document.getElementById('endereco').value = '';
+
+document.getElementById('ambiente').value = '';
+
+document.getElementById('marceneiro').value = '';
+
+document.getElementById('statusObra').selectedIndex = 0;
+
+document.getElementById('data').value = '';
+
+document.getElementById('observacoes').value = '';
+
+document.getElementById('nomeAssinatura').value = '';
+
+document.getElementById('cpfCliente').value = '';
+
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+alert('Formulário limpo para nova obra.');
+
+window.scrollTo({
+top: 0,
+behavior: 'smooth'
+});
+
+};  
   </script>
 </body>
 </html>
