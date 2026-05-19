@@ -519,6 +519,7 @@ function gerarPDF() {
   const pdf = new jsPDF();
 
   const cliente = pegarValor('cliente');
+  const numeroObra = 'OBRA-' + Date.now();
   const endereco = pegarValor('endereco');
   const ambiente = pegarValor('ambiente');
   const marceneiro = pegarValor('marceneiro');
