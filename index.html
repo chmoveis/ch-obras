@@ -828,7 +828,7 @@ window.mostrarHistorico = async function() {
 
       html += `
         <div class="item-relatorio">
-          <strong>Obra ${contador}</strong><br>
+          <strong>${obra.numeroObra || 'Obra ' + contador}</strong><br>
           <strong>Cliente:</strong> ${obra.cliente || ''}<br>
           <strong>Endereço:</strong> ${obra.endereco || ''}<br>
           <strong>Ambiente:</strong> ${obra.ambiente || ''}<br>
