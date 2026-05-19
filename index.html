@@ -642,6 +642,7 @@ function gerarPDF() {
 }
       async function salvarChecklist() {
       const cliente = pegarValor('cliente');
+      const numeroObra = 'OBRA-' + Date.now();  
       const fotoPisoUrl = await enviarFotoParaStorage('fotoPiso', 'obras');
       const endereco = pegarValor('endereco');
       const ambiente = pegarValor('ambiente');
