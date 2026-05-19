@@ -571,9 +571,38 @@ function gerarPDF() {
 
   pdf.setFontSize(11);
   pdf.text(observacoes, 20, y + 18, { maxWidth: 170 });
-
+  const fotoObra = document.getElementById('fotoPiso').files[0];
   const assinatura = canvas.toDataURL('image/png');
+  if (fotoObra) {
+  const reader = new FileReader();
 
+  reader.onload = function(event) {
+    pdf.setFontSize(14);
+    pdf.text('Foto da Obra', 20, 185);
+
+    pdf.addImage(
+      event.target.result,
+      'JPEG',
+      20,
+      190,
+      80,
+      40
+    );
+
+    pdf.setFontSize(14);
+    pdf.text('Assinatura do Cliente', 20, 240);
+
+    const assinatura = canvas.toDataURL('image/png');
+
+    pdf.addImage(assinatura, 'PNG', 20, 245, 90, 35);
+
+    pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
+  };
+
+  reader.readAsDataURL(fotoObra);
+
+  return;
+}
   pdf.setFontSize(14);
   pdf.text('Assinatura do Cliente', 20, 235);
   pdf.addImage(assinatura, 'PNG', 20, 240, 90, 35);
