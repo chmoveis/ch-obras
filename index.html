@@ -989,6 +989,13 @@ document.getElementById('ultimaAtualizacao').innerText =
 document.getElementById('totalObras').innerText = totalObras;
 document.getElementById('obrasAndamento').innerText = obrasAndamento;
 document.getElementById('obrasConcluidas').innerText = obrasConcluidas;
+const porcentagem =
+total > 0
+? Math.round((concluidas / total) * 100)
+: 0;
+
+document.getElementById('taxaConclusao').innerText =
+'Taxa de conclusão: ' + porcentagem + '%';    
 document.getElementById('obrasPendentes').innerText = obrasPendentes;
 document.getElementById('obrasIniciar').innerText = obrasIniciar;
 document.getElementById('obrasCliente').innerText = obrasCliente;    
