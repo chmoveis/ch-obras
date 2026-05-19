@@ -513,7 +513,7 @@ function nomeArquivo(id) {
 
    
       
-      function gerarPDF() {
+function gerarPDF() {
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF();
 
@@ -525,23 +525,61 @@ function nomeArquivo(id) {
   const data = pegarValor('data');
   const observacoes = pegarValor('observacoes') || 'Sem observações';
 
+  const checklist = [
+    ['Piso é de madeira?', pegarValor('pisoMadeira')],
+    ['Risco ou avaria no piso?', pegarValor('riscoPiso')],
+    ['Paredes prontas?', pegarValor('paredePronta')],
+    ['Parte elétrica pronta?', pegarValor('eletricaPronta')],
+    ['Local limpo e liberado?', pegarValor('localLimpo')],
+    ['Medidas conferidas?', pegarValor('medidasConferidas')]
+  ];
+
+  pdf.setFillColor(20, 20, 20);
+  pdf.rect(0, 0, 210, 28, 'F');
+
+  pdf.setTextColor(255, 255, 255);
   pdf.setFontSize(18);
-  pdf.text('CH Obras - Relatório de Instalação', 20, 20);
+  pdf.text('CH Obras', 20, 12);
+  pdf.setFontSize(11);
+  pdf.text('Relatório de Instalação - CH Móveis Sob Medida', 20, 21);
+
+  pdf.setTextColor(0, 0, 0);
+  pdf.setFontSize(14);
+  pdf.text('Dados da Obra', 20, 42);
 
   pdf.setFontSize(11);
-  pdf.text(`Cliente: ${cliente}`, 20, 40);
-  pdf.text(`Endereço: ${endereco}`, 20, 50);
-  pdf.text(`Ambiente: ${ambiente}`, 20, 60);
-  pdf.text(`Marceneiro: ${marceneiro}`, 20, 70);
-  pdf.text(`Status: ${statusObra}`, 20, 80);
-  pdf.text(`Data: ${data}`, 20, 90);
+  pdf.text(`Cliente: ${cliente}`, 20, 55);
+  pdf.text(`Endereço: ${endereco}`, 20, 65);
+  pdf.text(`Ambiente: ${ambiente}`, 20, 75);
+  pdf.text(`Marceneiro: ${marceneiro}`, 20, 85);
+  pdf.text(`Status: ${statusObra}`, 20, 95);
+  pdf.text(`Data: ${data}`, 20, 105);
 
-  pdf.text('Observações:', 20, 105);
-  pdf.text(observacoes, 20, 115, { maxWidth: 170 });
+  pdf.setFontSize(14);
+  pdf.text('Checklist Técnico', 20, 125);
+
+  let y = 138;
+  pdf.setFontSize(11);
+
+  checklist.forEach((item) => {
+    pdf.text(`${item[0]} ${item[1] || 'Não informado'}`, 20, y);
+    y += 10;
+  });
+
+  pdf.setFontSize(14);
+  pdf.text('Observações', 20, y + 8);
+
+  pdf.setFontSize(11);
+  pdf.text(observacoes, 20, y + 18, { maxWidth: 170 });
 
   const assinatura = canvas.toDataURL('image/png');
-  pdf.text('Assinatura do Cliente:', 20, 145);
-  pdf.addImage(assinatura, 'PNG', 20, 150, 80, 30);
+
+  pdf.setFontSize(14);
+  pdf.text('Assinatura do Cliente', 20, 235);
+  pdf.addImage(assinatura, 'PNG', 20, 240, 90, 35);
+
+  pdf.setFontSize(9);
+  pdf.text('Documento gerado automaticamente pelo sistema CH Obras.', 20, 285);
 
   pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
 }
