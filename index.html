@@ -970,6 +970,8 @@ ${obra.numeroObra || 'SEM NÚMERO'}
     });
 
     lista.innerHTML = html;
+document.getElementById('ultimaAtualizacao').innerText =
+  'Última atualização: ' + new Date().toLocaleString('pt-BR');    
 document.getElementById('totalObras').innerText = totalObras;
 document.getElementById('obrasAndamento').innerText = obrasAndamento;
 document.getElementById('obrasConcluidas').innerText = obrasConcluidas;
