@@ -884,6 +884,19 @@ window.mostrarHistorico = async function() {
     let obrasConcluidas = 0;
     let obrasPendentes = 0;
     querySnapshot.forEach((docItem) => {
+  totalObras++;
+
+if (docItem.data().statusObra === 'Em andamento') {
+  obrasAndamento++;
+}
+
+if (docItem.data().statusObra === 'Concluída') {
+  obrasConcluidas++;
+}
+
+if (docItem.data().statusObra === 'Com pendência') {
+  obrasPendentes++;
+}    
       const obra = docItem.data();
 
       html += `
