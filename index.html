@@ -908,7 +908,10 @@ if (docItem.data().statusObra === 'Concluída') {
 
 if (docItem.data().statusObra === 'Com pendência') {
   obrasPendentes++;
-}    
+}
+if (docItem.data().statusObra === 'A iniciar') {
+  obrasIniciar++;
+}      
       const obra = docItem.data();
 
       html += `
