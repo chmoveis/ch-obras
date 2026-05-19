@@ -879,7 +879,10 @@ window.mostrarHistorico = async function() {
 
     let html = '';
     let contador = 1;
-
+    let totalObras = 0;
+    let obrasAndamento = 0;
+    let obrasConcluidas = 0;
+    let obrasPendentes = 0;
     querySnapshot.forEach((docItem) => {
       const obra = docItem.data();
 
