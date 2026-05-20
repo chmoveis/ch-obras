@@ -1311,7 +1311,7 @@ window.editarObra = async function(id) {
       obraSelecionada.cpfAssinante || '';
 
     window.idObraEditando = id;
-
+   document.getElementById('avisoEdicao').style.display = 'block';
     alert('Obra carregada para edição.');
 
     window.scrollTo({
