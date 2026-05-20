@@ -782,17 +782,21 @@ if (qrImagem) {
       20,
       285
     );
-    const qrImagem = qrDiv.querySelector('img') || qrDiv.querySelector('canvas');
+  const qrCanvas = qrDiv.querySelector('canvas');
 
-if (qrImagem) {
+if (qrCanvas) {
+
+  const qrBase64 = qrCanvas.toDataURL('image/png');
+
   pdf.addImage(
-    qrImagem,
+    qrBase64,
     'PNG',
     150,
     230,
     35,
     35
   );
+
 }
     pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
   }
