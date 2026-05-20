@@ -625,10 +625,18 @@ logo.src = 'logotipo novo atual.jpg';
 
 pdf.setFontSize(18);
 
-pdf.text('CH Obras', 55, 18);
+pdf.text('CH Obras', 60, 18);
+
+pdf.setFontSize(12);
+
+pdf.text(
+'Relatório de Instalação - CH Móveis Sob Medida',
+60,
+26
+);
 
   pdf.setFontSize(11);
-  pdf.text('Relatório de Instalação - CH Móveis Sob Medida', 20, 21);
+  
   pdf.setFontSize(13);
   pdf.text(`Cliente: ${cliente || 'Não informado'}`, 20, 30);
 
