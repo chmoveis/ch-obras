@@ -1312,7 +1312,7 @@ window.editarObra = async function(id) {
       obraSelecionada.cpfAssinante || '';
 
     window.idObraEditando = id;
-   document.getElementById('avisoEdicao').style.display = 'block';
+  document.getElementById('botaoSalvar').innerText = 'Atualizar Obra';
     alert('Obra carregada para edição.');
 
     window.scrollTo({
