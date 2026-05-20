@@ -621,29 +621,29 @@ function gerarPDF() {
 
 logo.src = 'logotipo novo atual.jpg';
   pdf.setFontSize(18);
-  pdf.addImage(logo, 'JPEG', 15, 8, 32, 32);
+ pdf.addImage(logo, 'JPEG', 15, 10, 26, 26);
 
 pdf.setFontSize(18);
 
-pdf.text('CH Obras', 60, 18);
+pdf.text('CH Obras', 50, 18);
 
 pdf.setFontSize(12);
 
 pdf.text(
 'Relatório de Instalação - CH Móveis Sob Medida',
-60,
+50,
 26
 );
 
   pdf.setFontSize(11);
   
   pdf.setFontSize(13);
-  pdf.text(`Cliente: ${cliente || 'Não informado'}`, 20, 30);
+ pdf.text(`Cliente: ${cliente || 'Não informado'}`, 20, 42);
 
   pdf.setTextColor(0, 0, 0);
 
   pdf.setFontSize(14);
-  pdf.text('Dados da Obra', 20, 52);
+  pdf.text('Dados da Obra', 20, 58);
   pdf.setFontSize(11);
   pdf.setTextColor(212, 160, 23);
   pdf.setFontSize(13);
