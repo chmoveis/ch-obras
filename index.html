@@ -680,19 +680,20 @@ pdf.text(
   pdf.text(observacoes, 20, y + 18, {
     maxWidth: 170
   });
+  y += 40;
 
   const assinatura = canvas.toDataURL('image/png');
 
   pdf.setFontSize(14);
-  pdf.text('Assinatura do Cliente', 20, 245);
+  pdf.text('Assinatura do Cliente', 20, y);
 
  pdf.addImage(
     assinatura,
     'PNG',
-    20,
-    250,
-    90,
-    28
+  20,
+  y + 5,
+  90,
+  28
   );
 
   const fotoObra = document.getElementById('fotoPiso').files[0];
