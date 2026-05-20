@@ -596,7 +596,23 @@ function gerarPDF() {
   const pdf = new jsPDF();
 
   const cliente = pegarValor('cliente');
-  const numeroObra = 'OBRA-' + Date.now();
+  const anoAtual = new Date().getFullYear();
+
+const numeroSequencial =
+localStorage.getItem('contadorObras')
+? parseInt(localStorage.getItem('contadorObras')) + 1
+: 1;
+
+localStorage.setItem(
+'contadorObras',
+numeroSequencial
+);
+
+const numeroFormatado =
+String(numeroSequencial).padStart(4, '0');
+
+const numeroObra =
+`OBRA-${anoAtual}-${numeroFormatado}`;
   const endereco = pegarValor('endereco');
   const ambiente = pegarValor('ambiente');
   const marceneiro = pegarValor('marceneiro');
