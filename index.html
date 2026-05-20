@@ -620,18 +620,18 @@ function gerarPDF() {
  const logo = new Image();
 
 logo.src = 'logotipo novo atual.jpg';
-  pdf.setFontSize(18);
- pdf.addImage(logo, 'JPEG', 15, 10, 22, 18);
+pdf.setFontSize(18);
+pdf.addImage(logo, 'JPEG', 15, 8, 35, 28);
 
 pdf.setFontSize(18);
 
-pdf.text('CH Obras', 105, 18, { align: 'center' });
+pdf.text('CH Obras', 120, 18, { align: 'center' });
 
 pdf.setFontSize(12);
 
 pdf.text(
 'Relatório de Instalação - CH Móveis Sob Medida',
-105,
+120,
 26,
 { align: 'center' }
 );
