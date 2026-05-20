@@ -1275,62 +1275,57 @@ behavior: 'smooth'
 };  
 window.editarObra = async function(id) {
 
+  if (!id) {
+    alert('Obra não encontrada.');
+    return;
+  }
+
   try {
 
-    const obrasSnapshot = await getDocs(collection(db, "obras"));
+    const querySnapshot = await getDocs(collection(db, "obras"));
 
-    let obraSelecionada = null;
-
-    obrasSnapshot.forEach((docItem) => {
+    querySnapshot.forEach((docItem) => {
 
       if (docItem.id === id) {
-        obraSelecionada = {
-          id: docItem.id,
-          ...docItem.data()
-        };
+
+        const obra = docItem.data();
+
+        document.getElementById('cliente').value =
+          obra.cliente || '';
+
+        document.getElementById('endereco').value =
+          obra.endereco || '';
+
+        document.getElementById('ambiente').value =
+          obra.ambiente || '';
+
+        document.getElementById('marceneiro').value =
+          obra.marceneiro || '';
+
+        document.getElementById('statusObra').value =
+          obra.statusObra || '';
+
+        document.getElementById('data').value =
+          obra.data || '';
+
+        document.getElementById('nomeClienteAssinatura').value =
+          obra.nomeAssinante || '';
+
+        document.getElementById('cpfCliente').value =
+          obra.cpfAssinante || '';
+
+        document.getElementById('observacoes').value =
+          obra.observacoes || '';
+
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+
+        alert('Obra carregada para edição.');
+
       }
 
-    });
-
-    if (!obraSelecionada) {
-      alert('Obra não encontrada.');
-      return;
-    }
-
-    document.getElementById('cliente').value =
-      obraSelecionada.cliente || '';
-
-    document.getElementById('endereco').value =
-      obraSelecionada.endereco || '';
-
-    document.getElementById('ambiente').value =
-      obraSelecionada.ambiente || '';
-
-    document.getElementById('marceneiro').value =
-      obraSelecionada.marceneiro || '';
-
-    document.getElementById('statusObra').value =
-      obraSelecionada.statusObra || '';
-
-    document.getElementById('data').value =
-      obraSelecionada.data || '';
-
-    document.getElementById('observacoes').value =
-      obraSelecionada.observacoes || '';
-
-    document.getElementById('nomeClienteAssinatura').value =
-      obraSelecionada.nomeAssinante || '';
-
-    document.getElementById('cpfCliente').value =
-      obraSelecionada.cpfAssinante || '';
-
-    window.idObraEditando = id;
-  document.getElementById('botaoSalvar').innerText = 'Atualizar Obra';
-    alert('Obra carregada para edição.');
-
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
     });
 
   } catch (erro) {
@@ -1341,7 +1336,7 @@ window.editarObra = async function(id) {
 
   }
 
-};  
+};
 window.limparFiltrosHistorico = function() {
 
   document.getElementById('buscaHistorico').value = '';
