@@ -1330,6 +1330,15 @@ window.editarObra = async function(id) {
   }
 
 };  
+window.limparFiltrosHistorico = function() {
+
+  document.getElementById('buscaHistorico').value = '';
+
+  document.getElementById('filtroStatus').selectedIndex = 0;
+
+  filtrarHistorico();
+
+}; 
   </script>
 </body>
 </html>
