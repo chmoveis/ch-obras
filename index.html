@@ -680,7 +680,7 @@ pdf.text(
   pdf.text(observacoes, 20, y + 18, {
     maxWidth: 170
   });
-  y += 40;
+  y += 28;
 
   const assinatura = canvas.toDataURL('image/png');
 
@@ -690,11 +690,11 @@ pdf.text(
  pdf.addImage(
     assinatura,
     'PNG',
-  20,
-  y + 5,
-  90,
-  28
-  );
+    20,
+    y + 2,
+    70,
+    20
+);
 
   const fotoObra = document.getElementById('fotoPiso').files[0];
 
@@ -719,9 +719,11 @@ pdf.text(
       pdf.setFontSize(9);
 
       pdf.text(
-        'Documento gerado automaticamente pelo sistema CH Obras.',
-        20,
-        285
+       pdf.text(
+     'Documento gerado automaticamente pelo sistema CH Obras.',
+      20,
+      280
+      );
       );
 
       pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
