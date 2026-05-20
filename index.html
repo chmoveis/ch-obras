@@ -768,6 +768,8 @@ if (qrImagem) {
     35
   );
 }
+      pdf.setFontSize(8);
+  pdf.text('QR Code da Obra', 150, 270);
       pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
     };
 
