@@ -805,6 +805,7 @@ pdf.text(
       ];
 
       let html = '';
+       html += '<div class="item-relatorio"><strong>Número da Obra:</strong> ' + numeroObra + '</div>'; 
       checklist.forEach(function(item) {
         html += '<div class="item-relatorio"><strong>' + item[0] + ':</strong> ' + (item[1] || 'Não informado') + '</div>';
       });
