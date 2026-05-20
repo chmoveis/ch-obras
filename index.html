@@ -1059,7 +1059,13 @@ if (docItem.data().statusObra === 'Aguardando cliente') {
       const obra = docItem.data();
 
       html += `
-        <div class="item-relatorio">
+   <div class="item-relatorio
+${obra.statusObra === 'Concluída' ? 'borda-concluida' : ''}
+${obra.statusObra === 'Em andamento' ? 'borda-andamento' : ''}
+${obra.statusObra === 'Com pendência' ? 'borda-pendencia' : ''}
+${obra.statusObra === 'A iniciar' ? 'borda-iniciar' : ''}
+${obra.statusObra === 'Aguardando cliente' ? 'borda-cliente' : ''}
+">     
  <strong style="font-size:18px; color:#d4a017;">
 ${obra.numeroObra || 'SEM NÚMERO'}
 </strong><br><br>         
