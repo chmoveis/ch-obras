@@ -754,7 +754,18 @@ pdf.text(
       280
       );
       
+      const qrImagem = qrDiv.querySelector('img') || qrDiv.querySelector('canvas');
 
+if (qrImagem) {
+  pdf.addImage(
+    qrImagem,
+    'PNG',
+    150,
+    230,
+    35,
+    35
+  );
+}
       pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
     };
 
@@ -769,7 +780,18 @@ pdf.text(
       20,
       285
     );
+    const qrImagem = qrDiv.querySelector('img') || qrDiv.querySelector('canvas');
 
+if (qrImagem) {
+  pdf.addImage(
+    qrImagem,
+    'PNG',
+    150,
+    230,
+    35,
+    35
+  );
+}
     pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
   }
 }
