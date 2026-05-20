@@ -680,11 +680,12 @@ pdf.text(
   pdf.text(`Status: ${statusObra}`, 20, 112);
   pdf.text(`Data da instalação: ${data || 'Não informada'}`, 20, 122);
   pdf.text(`Gerado em: ${dataGeracao}`, 20, 132);
-
+  pdf.text(`Assinado por: ${nomeAssinante || 'Não informado'}`, 20, 142);
+  pdf.text(`CPF: ${cpfAssinante || 'Não informado'}`, 20, 152);
   pdf.setFontSize(14);
-  pdf.text('Checklist Técnico', 20, 150);
+  pdf.text('Checklist Técnico', 20, 165);
 
-  let y = 165;
+  let y = 178;
 
   pdf.setFontSize(11);
 
