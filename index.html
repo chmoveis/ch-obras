@@ -1250,7 +1250,8 @@ document.getElementById('fotoParede').value = '';
 document.getElementById('fotoAvaria').value = '';
 document.getElementById('relatorio').innerHTML = '';
 document.getElementById('resultado').style.display = 'none';  
-
+window.idObraEditando = null;
+document.getElementById('avisoEdicao').style.display = 'none';
 alert('Formulário limpo para nova obra.');
 
 window.scrollTo({
