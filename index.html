@@ -832,10 +832,16 @@ if (qrCanvas) {
   }
 }
       async function salvarChecklist() {
-      const data = pegarValor('data');
-      const nomeAssinante = pegarValor('nomeClienteAssinatura') || cliente;
-      const cpfAssinante = pegarValor('cpfCliente') || 'Não informado';  
       const cliente = pegarValor('cliente');
+
+const nomeAssinante =
+  pegarValor('nomeClienteAssinatura') || cliente;
+
+const cpfAssinante =
+  pegarValor('cpfCliente') || 'Não informado';
+
+const data = pegarValor('data');  
+      
       const anoAtual = new Date().getFullYear();
 
 const numeroSequencial =
