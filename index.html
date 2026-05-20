@@ -612,6 +612,14 @@ const numeroFormatado =
 String(numeroSequencial).padStart(4, '0');
 
 const numeroObra =
+  const qrTexto = numeroObra + ' | Cliente: ' + (cliente || 'Não informado');
+  const qrDiv = document.createElement('div');
+
+new QRCode(qrDiv, {
+    text: qrTexto,
+    width: 80,
+    height: 80
+});
 `OBRA-${anoAtual}-${numeroFormatado}`;
   const endereco = pegarValor('endereco');
   const ambiente = pegarValor('ambiente');
