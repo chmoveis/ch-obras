@@ -621,12 +621,7 @@ const numeroObra =
   const nomeAssinante = pegarValor('nomeClienteAssinatura') || cliente;
   const cpfAssinante = pegarValor('cpfCliente') || 'Não informado';
   const nomeAssinante =
-pegarValor('nomeClienteAssinatura') || cliente;
 
-const cpfAssinante =
-pegarValor('cpfCliente') || 'Não informado';
-  const nomeAssinante = pegarValor('nomeClienteAssinatura') || cliente;
-  const cpfAssinante = pegarValor('cpfCliente') || 'Não informado';
   const dataGeracao = new Date().toLocaleString('pt-BR');
   const observacoes = pegarValor('observacoes') || 'Sem observações';
 
@@ -770,6 +765,9 @@ pdf.text(
   }
 }
       async function salvarChecklist() {
+      const data = pegarValor('data');
+      const nomeAssinante = pegarValor('nomeClienteAssinatura') || cliente;
+      const cpfAssinante = pegarValor('cpfCliente') || 'Não informado';  
       const cliente = pegarValor('cliente');
       const numeroObra = 'OBRA-' + Date.now();  
       const fotoPisoUrl = await enviarFotoParaStorage('fotoPiso', 'obras');
