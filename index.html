@@ -618,6 +618,11 @@ const numeroObra =
   const marceneiro = pegarValor('marceneiro');
   const statusObra = pegarValor('statusObra');
   const data = pegarValor('data');
+  const nomeAssinante =
+pegarValor('nomeClienteAssinatura') || cliente;
+
+const cpfAssinante =
+pegarValor('cpfCliente') || 'Não informado';
   const nomeAssinante = pegarValor('nomeClienteAssinatura') || cliente;
   const cpfAssinante = pegarValor('cpfCliente') || 'Não informado';
   const dataGeracao = new Date().toLocaleString('pt-BR');
