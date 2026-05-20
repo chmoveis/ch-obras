@@ -831,39 +831,46 @@ if (qrCanvas) {
     pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
   }
 }
-      async function salvarChecklist() {
- const cliente = pegarValor('cliente');
+async function salvarChecklist() {
 
-const nomeAssinante =
-pegarValor('nomeClienteAssinatura') || cliente;
+  const cliente = pegarValor('cliente');
 
-const cpfAssinante =
-pegarValor('cpfCliente') || 'Não informado';
+  const nomeAssinante =
+    pegarValor('nomeClienteAssinatura') || cliente;
 
-const data = pegarValor('data');  
-      
-      const anoAtual = new Date().getFullYear();
+  const cpfAssinante =
+    pegarValor('cpfCliente') || 'Não informado';
 
-const numeroSequencial =
-localStorage.getItem('contadorObras')
-? parseInt(localStorage.getItem('contadorObras')) + 1
-: 1;
+  const data = pegarValor('data');
 
-localStorage.setItem(
-'contadorObras',
-numeroSequencial
-);
+  const anoAtual = new Date().getFullYear();
 
-const numeroFormatado =
-String(numeroSequencial).padStart(4, '0');
+  const numeroSequencial =
+    localStorage.getItem('contadorObras')
+      ? parseInt(localStorage.getItem('contadorObras')) + 1
+      : 1;
 
-const numeroObra =
-`OBRA-${anoAtual}-${numeroFormatado}`; 
-      const fotoPisoUrl = await enviarFotoParaStorage('fotoPiso', 'obras');
-      const endereco = pegarValor('endereco');
-      const ambiente = pegarValor('ambiente');
-      const marceneiro = pegarValor('marceneiro');
-      const statusObra = pegarValor('statusObra');
+  localStorage.setItem(
+    'contadorObras',
+    numeroSequencial
+  );
+
+  const numeroFormatado =
+    String(numeroSequencial).padStart(4, '0');
+
+  const numeroObra =
+    `OBRA-${anoAtual}-${numeroFormatado}`;
+
+  const fotoPisoUrl =
+    await enviarFotoParaStorage('fotoPiso', 'obras');
+
+  const endereco = pegarValor('endereco');
+
+  const ambiente = pegarValor('ambiente');
+
+  const marceneiro = pegarValor('marceneiro');
+
+  const statusObra = pegarValor('statusObra');
       
 
       if (!cliente || !endereco || !ambiente || !marceneiro || !statusObra || !data) {
