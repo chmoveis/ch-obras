@@ -1061,7 +1061,7 @@ window.salvarObraNaNuvem = async function(dadosObra) {
   );
 
   mostrarLoading();alert("Obra atualizada com sucesso.");
-  mostrarHistorico();
+ 
   window.idObraEditando = null;
 
 } else {
@@ -1072,9 +1072,10 @@ window.salvarObraNaNuvem = async function(dadosObra) {
     criadoEmServidor: serverTimestamp()
   });
 
-  esconderLoading();alert("Checklist salvo na nuvem com sucesso.");
+();alert("Checklist salvo na nuvem com sucesso.");
 }
-mostrarHistorico();
+  
+  mostrarHistorico();
    
 
  
