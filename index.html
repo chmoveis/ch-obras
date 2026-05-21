@@ -1048,6 +1048,23 @@ window.salvarObraNaNuvem = async function(dadosObra) {
 
 } else {
 
+ if (window.idObraEditando) {
+
+  await updateDoc(
+    doc(db, "obras", window.idObraEditando),
+    {
+      ...dadosObra,
+      fotoPisoUrl: dadosObra.fotoPisoUrl || "",
+      atualizadoEmServidor: serverTimestamp()
+    }
+  );
+
+  alert("Obra atualizada com sucesso.");
+
+  window.idObraEditando = null;
+
+} else {
+
   await addDoc(collection(db, "obras"), {
     ...dadosObra,
     fotoPisoUrl: dadosObra.fotoPisoUrl || "",
@@ -1055,6 +1072,7 @@ window.salvarObraNaNuvem = async function(dadosObra) {
   });
 
   alert("Checklist salvo na nuvem com sucesso.");
+}
 }
     ...dadosObra,
    fotoPisoUrl: dadosObra.fotoPisoUrl || "", 
