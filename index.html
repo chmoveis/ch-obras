@@ -1025,7 +1025,7 @@ const auth = getAuth(appFirebase);
 
   try {
     await signInWithEmailAndPassword(auth, email, senha);
-    alert("Login realizado com sucesso.");
+    mostrarLoading();alert("Login realizado com sucesso.");
   } catch (error) {
     esconderLoading();alert("Erro no login: " + error.message);
   }
@@ -1059,7 +1059,7 @@ window.salvarObraNaNuvem = async function(dadosObra) {
     }
   );
 
-  alert("Obra atualizada com sucesso.");
+  mostrarLoading();alert("Obra atualizada com sucesso.");
   mostrarHistorico();
   window.idObraEditando = null;
 
@@ -1250,7 +1250,7 @@ if (confirmar !== 'EXCLUIR') {
     mostrarHistorico();
   } catch (erro) {
     console.error(erro);
-    alert('Erro ao excluir obra.');
+    mostrarLoading();alert('Erro ao excluir obra.');
   }
 };
 
@@ -1310,7 +1310,7 @@ document.getElementById('resultado').style.display = 'none';
 window.idObraEditando = null;
 document.getElementById('avisoEdicao').style.display = 'none';
 document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';  
-alert('Formulário limpo para nova obra.');
+mostrarLoading();alert('Formulário limpo para nova obra.');
 
 window.scrollTo({
 top: 0,
