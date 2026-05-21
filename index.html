@@ -1250,7 +1250,7 @@ filtrarHistorico();
 
     
 
-window.excluirObra = async function(id) {
+
 window.excluirObra = async function(id) {
 
 const confirmar = confirm("Tem certeza que deseja excluir esta obra?");
@@ -1259,17 +1259,23 @@ if (!confirmar) {
 return;
 }
 
-await deleteDoc(doc(db, "obras", id));
-    esconderLoading();
-    alert('Obra excluída com sucesso.');
-    
-    mostrarHistorico();
-  } catch (erro) {
-    console.error(erro);
-    mostrarLoading();alert('Erro ao excluir obra.');
-  }
-};
+try {
 
+await deleteDoc(doc(db, "obras", id));
+
+alert('Obra excluída com sucesso.');
+
+mostrarHistorico();
+
+} catch (erro) {
+
+console.error(erro);
+
+alert('Erro ao excluir obra.');
+
+}
+
+};
 window.enviarFotoParaStorage = async function(inputId, nomePasta) {
   const input = document.getElementById(inputId);
 
