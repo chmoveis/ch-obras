@@ -1031,24 +1031,9 @@ window.logoutApp = async function () {
 
 window.salvarObraNaNuvem = async function(dadosObra) {
 
- if (window.idObraEditando) {
+ 
 
-  await updateDoc(
-    doc(db, "obras", window.idObraEditando),
-    {
-      ...dadosObra,
-      fotoPisoUrl: dadosObra.fotoPisoUrl || "",
-      atualizadoEmServidor: serverTimestamp()
-    }
-  );
-
-  alert("Obra atualizada com sucesso.");
-
-  window.idObraEditando = null;
-
-} else {
-
- if (window.idObraEditando) {
+  if (window.idObraEditando) {
 
   await updateDoc(
     doc(db, "obras", window.idObraEditando),
