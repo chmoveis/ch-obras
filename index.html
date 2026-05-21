@@ -9,7 +9,7 @@
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
   <style>
-   body {
+body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
@@ -20,182 +20,158 @@
   background-attachment: fixed;
   background-position: center;
   color: #111;
+  overflow-x: hidden;
 }
- 
-  .app {
+
+.app {
   max-width: 520px;
   margin: 20px auto;
   min-height: 100vh;
-
   background: rgba(255,255,255,0.82);
-
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-
   border: 1px solid rgba(255,255,255,0.25);
-
   border-radius: 24px;
-
-  box-shadow:
-    0 8px 40px rgba(0,0,0,0.18);
-
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
   padding: 24px;
-
   box-sizing: border-box;
 }
 
-    .cabecalho {
-      text-align: center;
-      margin-bottom: 25px;
-      padding: 24px 20px;
-      background: linear-gradient(135deg, #050505 0%, #161616 38%, #4a4a4a 72%, #d8d8d8 100%);
-      color: white;
-      border-radius: 14px;
-      border: 1px solid #7a7a7a;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
-    }
+.cabecalho {
+  text-align: center;
+  margin-bottom: 25px;
+  padding: 24px 20px;
+  background: linear-gradient(135deg, #050505 0%, #161616 38%, #4a4a4a 72%, #d8d8d8 100%);
+  color: white;
+  border-radius: 18px;
+  border: 1px solid #7a7a7a;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+}
 
-    .cabecalho h1 {
-      margin: 0;
-      font-size: 28px;
-      letter-spacing: 0.5px;
-      color: #ffffff;
-      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.55);
-    }
+.cabecalho h1 {
+  margin: 0;
+  font-size: 28px;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.55);
+}
 
-    .logo {
-      display: block;
-      width: 85px;
-      max-width: 65%;
-      height: auto;
-      margin: 0 auto 14px auto;
-      background: #ffffff;
-      padding: 4px;
-      border-radius: 10px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.45);
-      object-fit: contain;
-    }
+.logo {
+  display: block;
+  width: 85px;
+  max-width: 65%;
+  height: auto;
+  margin: 0 auto 14px auto;
+  background: #ffffff;
+  padding: 4px;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.45);
+  object-fit: contain;
+}
 
-    .cabecalho p {
-      margin: 8px 0 0;
-      font-size: 14px;
-      color: #f5f5f5;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-    }
+.cabecalho p {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: #f5f5f5;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
 
-    h2 {
-      border-bottom: 2px solid #d4a017;
-      padding-bottom: 8px;
-      margin-top: 30px;
-      font-size: 19px;
-    }
+h2 {
+  border-bottom: 2px solid #d4a017;
+  padding-bottom: 8px;
+  margin-top: 30px;
+  font-size: 19px;
+}
 
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 16px;
+  margin-top: 6px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.92);
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,0.04),
+    0 2px 10px rgba(0,0,0,0.04);
+  font-size: 16px;
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
 
 input:focus,
 select:focus,
 textarea:focus {
   outline: none;
-
   border: 1px solid #d4a017;
-
   box-shadow:
     0 0 0 4px rgba(212,160,23,0.15),
     0 6px 20px rgba(0,0,0,0.08);
-
   transform: translateY(-1px);
 }
 
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
 
-    .pergunta {
-      margin-top: 15px;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      background: #fafafa;
-    }
+.pergunta {
+  margin-top: 15px;
+  padding: 14px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.72);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
 
-    .pergunta label {
-      margin-top: 0;
-    }
+.pergunta label {
+  margin-top: 0;
+}
 
 button {
   width: 100%;
-
   padding: 16px;
-
   border: none;
-
   border-radius: 18px;
-
-  background:
-    linear-gradient(135deg, #050505 0%, #1f1f1f 45%, #555555 100%);
-
+  background: linear-gradient(135deg, #050505 0%, #1f1f1f 45%, #555555 100%);
   color: white;
-
   font-size: 17px;
-
   font-weight: bold;
-
   cursor: pointer;
-
   transition:
     transform 0.18s ease,
     box-shadow 0.25s ease,
     opacity 0.25s ease;
-
-  box-shadow:
-    0 8px 22px rgba(0,0,0,0.25);
-
+  box-shadow: 0 8px 22px rgba(0,0,0,0.25);
   margin-top: 14px;
 }
 
- button:hover {
+button:hover {
   transform: translateY(-2px);
-
-  box-shadow:
-    0 12px 28px rgba(0,0,0,0.32);
-
+  box-shadow: 0 12px 28px rgba(0,0,0,0.32);
   opacity: 0.96;
 }
+
 button:active {
   transform: scale(0.98);
 }
-    .botao-secundario {
-      background: linear-gradient(135deg, #111111, #333333);
-    }
 
-    .botao-secundario:hover {
+.botao-secundario {
+  background: linear-gradient(135deg, #111111, #333333);
+}
+
+.botao-secundario:hover {
   background: linear-gradient(135deg, #222222, #555555);
 }
-button.botao-excluir {
-  display: block !important;
-  width: 100% !important;
-  margin: 18px auto 0 auto !important;
-  padding: 14px !important;
-  background: linear-gradient(135deg, #c62828, #8e0000) !important;
-  color: #ffffff !important;
-  border: 1px solid #ffb3b3 !important;
-  border-radius: 12px !important;
-  font-size: 16px !important;
-  font-weight: bold !important;
-  cursor: pointer !important;
-  text-align: center !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.35) !important;
-}
 
-button.botao-excluir:hover {
-  background: linear-gradient(135deg, #8e0000, #5c0000) !important;
-}
-
+button.botao-excluir,
 .botao-perigo {
   display: block !important;
   width: 100% !important;
@@ -212,6 +188,7 @@ button.botao-excluir:hover {
   box-shadow: 0 4px 12px rgba(0,0,0,0.35) !important;
 }
 
+button.botao-excluir:hover,
 .botao-perigo:hover {
   background: linear-gradient(135deg, #8e0000, #5c0000) !important;
 }
@@ -249,21 +226,24 @@ button.botao-excluir:hover {
   background: #fff0d6;
   color: #a65c00;
 }
-    .resultado {
-      display: none;
-      margin-top: 25px;
-      padding: 15px;
-      background: #eef7ee;
-      border: 1px solid #9ccc9c;
-      border-radius: 10px;
-    }
 
-    .resultado h2 {
-      margin-top: 0;
-      border-bottom: none;
-      padding-bottom: 0;
-      font-size: 20px;
-    }
+.resultado {
+  display: none;
+  margin-top: 25px;
+  padding: 15px;
+  background: rgba(238,247,238,0.88);
+  border: 1px solid #9ccc9c;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.resultado h2 {
+  margin-top: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+  font-size: 20px;
+}
+
 .cards-resumo {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -278,6 +258,12 @@ button.botao-excluir:hover {
   padding: 14px;
   box-shadow: 0 4px 14px rgba(0,0,0,0.12);
   text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-resumo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.16);
 }
 
 .card-resumo h3 {
@@ -290,13 +276,20 @@ button.botao-excluir:hover {
   font-size: 26px;
   font-weight: bold;
 }
+
 .item-relatorio {
-  background: #ffffff;
-  padding: 16px;
+  background: rgba(255,255,255,0.96);
+  padding: 18px;
   margin-bottom: 18px;
-  border-radius: 12px;
-  border-left: 5px solid #d4a017;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+  border-radius: 18px;
+  border-left: 6px solid #d4a017;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.item-relatorio:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.16);
 }
 
 .borda-concluida {
@@ -319,33 +312,34 @@ button.botao-excluir:hover {
   border-left: 8px solid #d97706 !important;
 }
 
-    canvas {
-      width: 100%;
-      height: 180px;
-      border: 2px dashed #d4a017;
-      border-radius: 10px;
-      background: white;
-      margin-top: 10px;
-      touch-action: none;
-    }
+canvas {
+  width: 100%;
+  height: 180px;
+  border: 2px dashed #d4a017;
+  border-radius: 14px;
+  background: white;
+  margin-top: 10px;
+  touch-action: none;
+}
 
-    .aviso-assinatura {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 0;
-    }
+.aviso-assinatura {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 0;
+}
 
-    .assinatura-relatorio {
-      max-width: 100%;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin-top: 8px;
-    }
+.assinatura-relatorio {
+  max-width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 8px;
+}
 
-    .area-visualizar {
-      text-align: center;
-      margin-top: 20px;
-    }
+.area-visualizar {
+  text-align: center;
+  margin-top: 20px;
+}
+
 @keyframes girar {
   from {
     transform: rotate(0deg);
@@ -355,33 +349,37 @@ button.botao-excluir:hover {
     transform: rotate(360deg);
   }
 }
-    @media print {
-      body {
-        background: white;
-      }
 
-      .app {
-        max-width: 100%;
-        padding: 10px;
-      }
+@media print {
+  body {
+    background: white;
+  }
 
-      button, input[type="file"], .area-visualizar {
-        display: none;
-      }
+  .app {
+    max-width: 100%;
+    padding: 10px;
+    box-shadow: none;
+    border-radius: 0;
+    background: white;
+  }
 
-      .cabecalho {
-        background: linear-gradient(135deg, #050505 0%, #161616 38%, #4a4a4a 72%, #d8d8d8 100%) !important;
-        color: white !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
+  button, input[type="file"], .area-visualizar {
+    display: none;
+  }
 
-      .resultado {
-        display: block !important;
-        border: 1px solid #999;
-      }
-    }
-  </style>
+  .cabecalho {
+    background: linear-gradient(135deg, #050505 0%, #161616 38%, #4a4a4a 72%, #d8d8d8 100%) !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .resultado {
+    display: block !important;
+    border: 1px solid #999;
+  }
+}
+</style>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> 
  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -906,7 +904,8 @@ if (qrCanvas) {
     pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
   }
 }
-async function salvarChecklist() {mostrarLoading();
+async function salvarChecklist() {
+  mostrarLoading();
 
   const cliente = pegarValor('cliente');
 
@@ -999,7 +998,7 @@ async function salvarChecklist() {mostrarLoading();
         data: data,
         criadoEm: new Date().toLocaleString('pt-BR')
       });
-      salvarObraNaNuvem({
+      await salvarObraNaNuvem({
   numeroObra: numeroObra,      
   cliente: cliente,
   fotoPisoUrl: fotoPisoUrl,
@@ -1104,111 +1103,110 @@ window.logoutApp = async function () {
 
 window.salvarObraNaNuvem = async function(dadosObra) {
 
- 
+  try {
 
-  if (window.idObraEditando) {
+    if (window.idObraEditando) {
 
-  await updateDoc(
-    doc(db, "obras", window.idObraEditando),
-    {
-      ...dadosObra,
-      fotoPisoUrl: dadosObra.fotoPisoUrl || "",
-      atualizadoEmServidor: serverTimestamp()
+      await updateDoc(
+        doc(db, "obras", window.idObraEditando),
+        {
+          ...dadosObra,
+          fotoPisoUrl: dadosObra.fotoPisoUrl || "",
+          atualizadoEmServidor: serverTimestamp()
+        }
+      );
+
+      alert("Obra atualizada com sucesso.");
+
+      window.idObraEditando = null;
+      document.getElementById('avisoEdicao').style.display = 'none';
+      document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';
+
+    } else {
+
+      await addDoc(collection(db, "obras"), {
+        ...dadosObra,
+        fotoPisoUrl: dadosObra.fotoPisoUrl || "",
+        criadoEmServidor: serverTimestamp()
+      });
+
+      alert("Checklist salvo na nuvem com sucesso.");
     }
-  );
 
-  alert("Obra atualizada com sucesso.");
- 
-  window.idObraEditando = null;
-document.getElementById('avisoEdicao').style.display = 'none';
-document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';
-} else {
+    esconderLoading();
+    mostrarHistorico();
 
-  await addDoc(collection(db, "obras"), {
-    ...dadosObra,
-    fotoPisoUrl: dadosObra.fotoPisoUrl || "",
-    criadoEmServidor: serverTimestamp()
-  });
-
-alert("Checklist salvo na nuvem com sucesso.");
-}
-
-  
-  
-esconderLoading();
-
-mostrarHistorico();   
+  } catch (erro) {
+    console.error(erro);
+    esconderLoading();
+    alert("Erro ao salvar obra.");
+  }
 };
- 
 
 window.mostrarHistorico = async function() {
-const historicoDiv = document.getElementById('historico');
-const lista = document.getElementById('listaHistorico');  
-const obrasOrdenadas = query(
-  collection(db, "obras"),
-  orderBy("criadoEmServidor", "desc")
-);
+  const historicoDiv = document.getElementById('historico');
+  const lista = document.getElementById('listaHistorico');
 
-const querySnapshot = await getDocs(obrasOrdenadas);
+  if (!historicoDiv || !lista) {
+    alert('Erro: seção de histórico não encontrada.');
+    return;
+  }
 
-if (!historicoDiv || !lista) {
-  esconderLoading();alert('Erro: seção de histórico não encontrada.');
-  return;
-}
+  lista.innerHTML = '<p>Carregando obras...</p>';
+  historicoDiv.style.display = 'block';
+  document.getElementById('dashboardResumo').style.display = 'block';
 
-lista.innerHTML = '<p>Carregando obras...</p>';
-historicoDiv.style.display = 'block';
-document.getElementById('dashboardResumo').style.display = 'block';
   try {
-    const querySnapshot = await getDocs(collection(db, "obras"));
+    const obrasOrdenadas = query(
+      collection(db, "obras"),
+      orderBy("criadoEmServidor", "desc")
+    );
+
+    const querySnapshot = await getDocs(obrasOrdenadas);
 
     if (querySnapshot.empty) {
       lista.innerHTML = '<p>Nenhuma obra encontrada.</p>';
+      document.getElementById('totalObras').innerText = 0;
+      document.getElementById('obrasAndamento').innerText = 0;
+      document.getElementById('obrasConcluidas').innerText = 0;
+      document.getElementById('obrasPendentes').innerText = 0;
+      document.getElementById('obrasIniciar').innerText = 0;
+      document.getElementById('obrasCliente').innerText = 0;
+      document.getElementById('taxaConclusao').innerText = 'Taxa de conclusão: 0%';
       return;
     }
 
     let html = '';
-    let contador = 1;
     let totalObras = 0;
     let obrasAndamento = 0;
     let obrasConcluidas = 0;
     let obrasPendentes = 0;
     let obrasIniciar = 0;
     let obrasCliente = 0;
+
     querySnapshot.forEach((docItem) => {
-  totalObras++;
+      totalObras++;
 
-if (docItem.data().statusObra === 'Em andamento') {
-  obrasAndamento++;
-}
-
-if (docItem.data().statusObra === 'Concluída') {
-  obrasConcluidas++;
-}
-
-if (docItem.data().statusObra === 'Com pendência') {
-  obrasPendentes++;
-}
-if (docItem.data().statusObra === 'A iniciar') {
-  obrasIniciar++;
-} 
-if (docItem.data().statusObra === 'Aguardando cliente') {
-  obrasCliente++;
-}      
       const obra = docItem.data();
 
+      if (obra.statusObra === 'Em andamento') obrasAndamento++;
+      if (obra.statusObra === 'Concluída') obrasConcluidas++;
+      if (obra.statusObra === 'Com pendência') obrasPendentes++;
+      if (obra.statusObra === 'A iniciar') obrasIniciar++;
+      if (obra.statusObra === 'Aguardando cliente') obrasCliente++;
+
       html += `
-   <div class="item-relatorio
-${obra.statusObra === 'Concluída' ? 'borda-concluida' : ''}
-${obra.statusObra === 'Em andamento' ? 'borda-andamento' : ''}
-${obra.statusObra === 'Com pendência' ? 'borda-pendencia' : ''}
-${obra.statusObra === 'A iniciar' ? 'borda-iniciar' : ''}
-${obra.statusObra === 'Aguardando cliente' ? 'borda-cliente' : ''}
-">     
- <strong style="font-size:18px; color:#d4a017;">
-${obra.numeroObra || 'SEM NÚMERO'}
-</strong><br><br>         
-          
+        <div class="item-relatorio
+          ${obra.statusObra === 'Concluída' ? 'borda-concluida' : ''}
+          ${obra.statusObra === 'Em andamento' ? 'borda-andamento' : ''}
+          ${obra.statusObra === 'Com pendência' ? 'borda-pendencia' : ''}
+          ${obra.statusObra === 'A iniciar' ? 'borda-iniciar' : ''}
+          ${obra.statusObra === 'Aguardando cliente' ? 'borda-cliente' : ''}
+        ">
+          <strong style="font-size:18px; color:#d4a017;">
+            ${obra.numeroObra || 'SEM NÚMERO'}
+          </strong><br><br>
+
           <strong>Cliente:</strong> ${obra.cliente || ''}<br>
           <strong>Endereço:</strong> ${obra.endereco || ''}<br>
           <strong>Ambiente:</strong> ${obra.ambiente || ''}<br>
@@ -1228,46 +1226,53 @@ ${obra.numeroObra || 'SEM NÚMERO'}
           </span><br>
 
           <strong>Criado em:</strong> ${obra.criadoEm || ''}<br>
+
           ${obra.assinaturaCliente ? `
-  <br>
-  <strong>Assinatura do Cliente:</strong><br>
-  <img src="${obra.assinaturaCliente}" 
-       style="width:100%; max-width:300px; background:white; border:2px solid #ccc; border-radius:10px; margin-top:10px;">
-  <br>
-` : ''}
-          ${obra.fotoPisoUrl ? `
             <br>
-            <img src="${obra.fotoPisoUrl}" style="width:100%; border-radius:10px; margin-top:10px; border:2px solid #ccc;">
+            <strong>Assinatura do Cliente:</strong><br>
+            <img src="${obra.assinaturaCliente}"
+              style="width:100%; max-width:300px; background:white; border:2px solid #ccc; border-radius:10px; margin-top:10px;">
             <br>
           ` : ''}
-        <button class="botao-secundario" onclick="editarObra('${docItem.id}')">
-  Editar Obra
-</button>
-         <button class="botao-perigo" onclick="excluirObra('${docItem.id}')">
+
+          ${obra.fotoPisoUrl ? `
+            <br>
+            <img src="${obra.fotoPisoUrl}"
+              style="width:100%; border-radius:10px; margin-top:10px; border:2px solid #ccc;">
+            <br>
+          ` : ''}
+
+          <button class="botao-secundario" onclick="editarObra('${docItem.id}')">
+            Editar Obra
+          </button>
+
+          <button class="botao-perigo" onclick="excluirObra('${docItem.id}')">
             Excluir Obra
           </button>
         </div>
       `;
-
-      contador++;
     });
 
     lista.innerHTML = html;
-document.getElementById('ultimaAtualizacao').innerText =
-  'Última atualização: ' + new Date().toLocaleString('pt-BR');    
-document.getElementById('totalObras').innerText = totalObras;
-document.getElementById('obrasAndamento').innerText = obrasAndamento;
-document.getElementById('obrasConcluidas').innerText = obrasConcluidas;
-const porcentagem =
-totalObras > 0
-? Math.round((obrasConcluidas / totalObras) * 100)
-: 0;
 
-document.getElementById('taxaConclusao').innerText =
-'Taxa de conclusão: ' + porcentagem + '%';    
-document.getElementById('obrasPendentes').innerText = obrasPendentes;
-document.getElementById('obrasIniciar').innerText = obrasIniciar;
-document.getElementById('obrasCliente').innerText = obrasCliente;    
+    document.getElementById('ultimaAtualizacao').innerText =
+      'Última atualização: ' + new Date().toLocaleString('pt-BR');
+
+    document.getElementById('totalObras').innerText = totalObras;
+    document.getElementById('obrasAndamento').innerText = obrasAndamento;
+    document.getElementById('obrasConcluidas').innerText = obrasConcluidas;
+    document.getElementById('obrasPendentes').innerText = obrasPendentes;
+    document.getElementById('obrasIniciar').innerText = obrasIniciar;
+    document.getElementById('obrasCliente').innerText = obrasCliente;
+
+    const porcentagem =
+      totalObras > 0
+        ? Math.round((obrasConcluidas / totalObras) * 100)
+        : 0;
+
+    document.getElementById('taxaConclusao').innerText =
+      'Taxa de conclusão: ' + porcentagem + '%';
+
   } catch (erro) {
     console.error(erro);
     lista.innerHTML = '<p>Erro ao carregar histórico.</p>';
@@ -1302,33 +1307,30 @@ filtrarHistorico();
 
 window.excluirObra = async function(id) {
 
-const confirmar = confirm("Tem certeza que deseja excluir esta obra?");
+  const confirmar = confirm("Tem certeza que deseja excluir esta obra?");
 
-if (!confirmar) {
-return;
-}
+  if (!confirmar) {
+    return;
+  }
 
-try {
+  try {
+    mostrarLoading();
 
-mostrarLoading();
+    await deleteDoc(doc(db, "obras", id));
 
-await deleteDoc(doc(db, "obras", id));
+    esconderLoading();
 
-esconderLoading();
+    alert('Obra excluída com sucesso.');
 
-alert('Obra excluída com sucesso.');
+    mostrarHistorico();
 
-mostrarHistorico();
-
-} catch (erro) {
-
-console.error(erro);
-
-alert('Erro ao excluir obra.');
-
-}
-
+  } catch (erro) {
+    console.error(erro);
+    esconderLoading();
+    alert('Erro ao excluir obra.');
+  }
 };
+
 window.enviarFotoParaStorage = async function(inputId, nomePasta) {
   const input = document.getElementById(inputId);
 
@@ -1495,8 +1497,7 @@ border:6px solid #ffffff33;
 border-top:6px solid #d4a017;
 border-radius:50%;
 animation:girar 1s linear infinite;
-margin-bottom:20px;
-"></div>
+margin-bottom:20px;"></div>
 
 Salvando obra...
 
