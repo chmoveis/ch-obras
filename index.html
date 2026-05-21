@@ -1251,8 +1251,11 @@ if (confirmar !== 'EXCLUIR') {
 } 
 
   try {
+    mostrarLoading();
     await deleteDoc(doc(db, "obras", id));
-    esconderLoading();alert('Obra excluída com sucesso.');
+    esconderLoading();
+    alert('Obra excluída com sucesso.');
+    
     mostrarHistorico();
   } catch (erro) {
     console.error(erro);
