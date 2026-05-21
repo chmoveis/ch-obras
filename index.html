@@ -891,12 +891,12 @@ async function salvarChecklist() {mostrarLoading();
       
 
       if (!cliente || !endereco || !ambiente || !marceneiro || !statusObra || !data) {
-        alert('Preencha todos os dados da obra, incluindo o status, antes de salvar.');
+      esconderLoading();alert('Preencha todos os dados da obra, incluindo o status, antes de salvar.');
         return;
       }
 
       if (!assinaturaFeita) {
-        alert('O cliente precisa assinar antes de salvar o checklist.');
+      esconderLoading();alert('O cliente precisa assinar antes de salvar o checklist.');
         return;
       }
 
@@ -1027,7 +1027,7 @@ const auth = getAuth(appFirebase);
     await signInWithEmailAndPassword(auth, email, senha);
     alert("Login realizado com sucesso.");
   } catch (error) {
-    alert("Erro no login: " + error.message);
+    esconderLoading();alert("Erro no login: " + error.message);
   }
 };
 
@@ -1040,7 +1040,7 @@ onAuthStateChanged(auth, (user) => {
 });
 window.logoutApp = async function () {
   await signOut(auth);
-  alert("Logout realizado.");
+  esconderLoading();alert("Logout realizado.");
   location.reload();
 };    
 
@@ -1071,7 +1071,7 @@ window.salvarObraNaNuvem = async function(dadosObra) {
     criadoEmServidor: serverTimestamp()
   });
 
-  alert("Checklist salvo na nuvem com sucesso.");
+  esconderLoading();alert("Checklist salvo na nuvem com sucesso.");
 }
 mostrarHistorico();
    
@@ -1089,7 +1089,7 @@ const obrasOrdenadas = query(
 const querySnapshot = await getDocs(obrasOrdenadas);
 
 if (!historicoDiv || !lista) {
-  alert('Erro: seção de histórico não encontrada.');
+  esconderLoading();alert('Erro: seção de histórico não encontrada.');
   return;
 }
 
@@ -1240,13 +1240,13 @@ window.excluirObra = async function(id) {
 const confirmar = prompt('Para excluir esta obra, digite EXCLUIR:');
 
 if (confirmar !== 'EXCLUIR') {
-  alert('Exclusão cancelada.');
+  esconderLoading();alert('Exclusão cancelada.');
   return;
 } 
 
   try {
     await deleteDoc(doc(db, "obras", id));
-    alert('Obra excluída com sucesso.');
+    esconderLoading();alert('Obra excluída com sucesso.');
     mostrarHistorico();
   } catch (erro) {
     console.error(erro);
@@ -1321,7 +1321,7 @@ behavior: 'smooth'
 window.editarObra = async function(id) {
 
   if (!id) {
-    alert('Obra não encontrada.');
+    esconderLoading();alert('Obra não encontrada.');
     return;
   }
 
@@ -1367,7 +1367,7 @@ window.editarObra = async function(id) {
           behavior: 'smooth'
         });
 
-        alert('Obra carregada para edição.');
+        esconderLoading();alert('Obra carregada para edição.');
     window.idObraEditando = id;
 
    document.getElementById('avisoEdicao').style.display = 'block';
@@ -1381,7 +1381,7 @@ window.editarObra = async function(id) {
 
     console.error(erro);
 
-    alert('Erro ao carregar obra.');
+    esconderLoading();alert('Erro ao carregar obra.');
 
   }
 
