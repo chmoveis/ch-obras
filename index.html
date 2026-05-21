@@ -1063,7 +1063,8 @@ window.salvarObraNaNuvem = async function(dadosObra) {
   alert("Obra atualizada com sucesso.");
  
   window.idObraEditando = null;
-
+document.getElementById('avisoEdicao').style.display = 'none';
+document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';
 } else {
 
   await addDoc(collection(db, "obras"), {
