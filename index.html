@@ -558,6 +558,13 @@ Limpar Filtros
 
   <script>
     function pegarValor(id) {
+      function mostrarLoading() {
+  document.getElementById('loadingOverlay').style.display = 'flex';
+}
+
+function esconderLoading() {
+  document.getElementById('loadingOverlay').style.display = 'none';
+}
       return document.getElementById(id).value;
     }
 
