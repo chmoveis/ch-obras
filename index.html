@@ -1328,7 +1328,11 @@ window.editarObra = async function(id) {
         });
 
         alert('Obra carregada para edição.');
+    window.idObraEditando = id;
 
+   document.getElementById('avisoEdicao').style.display = 'block';
+
+   document.getElementById('botaoSalvar').innerText = 'Atualizar Obra';
       }
 
     });
