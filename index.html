@@ -848,7 +848,7 @@ if (qrCanvas) {
     pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
   }
 }
-async function salvarChecklist() {
+async function salvarChecklist() {mostrarLoading();
 
   const cliente = pegarValor('cliente');
 
