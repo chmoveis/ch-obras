@@ -148,20 +148,28 @@ button.botao-excluir {
   text-align: center !important;
   box-shadow: 0 4px 12px rgba(0,0,0,0.35) !important;
 }
+
+button.botao-excluir:hover {
+  background: linear-gradient(135deg, #8e0000, #5c0000) !important;
+}
+
 .botao-perigo {
+  display: block !important;
+  width: 100% !important;
+  margin: 18px auto 0 auto !important;
+  padding: 14px !important;
   background: linear-gradient(135deg, #c62828, #8e0000) !important;
   color: #ffffff !important;
   border: 1px solid #ffb3b3 !important;
+  border-radius: 12px !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35) !important;
 }
 
 .botao-perigo:hover {
-  background: linear-gradient(135deg, #8e0000, #5c0000) !important;
-
-.botao-perigo:hover {
-  background: linear-gradient(135deg, #8e0000, #5c0000) !important;
-}
-
-button.botao-excluir:hover {
   background: linear-gradient(135deg, #8e0000, #5c0000) !important;
 }
 
@@ -217,14 +225,15 @@ button.botao-excluir:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  margin-top: 15px;
 }
 
 .card-resumo {
   background: #ffffff;
-  border-left: 5px solid #d4a017;
-  border-radius: 12px;
+  border-left: 6px solid #d4a017;
+  border-radius: 14px;
   padding: 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
   text-align: center;
 }
 
@@ -235,10 +244,10 @@ button.botao-excluir:hover {
 
 .card-resumo p {
   margin: 0;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: bold;
 }
-  .item-relatorio {
+.item-relatorio {
   background: #ffffff;
   padding: 16px;
   margin-bottom: 18px;
@@ -265,13 +274,6 @@ button.botao-excluir:hover {
 
 .borda-cliente {
   border-left: 8px solid #d97706 !important;
-} 
-  background: #ffffff;
-  padding: 16px;
-  margin-bottom: 18px;
-  border-radius: 12px;
-  border-left: 5px solid #d4a017;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
 }
 
     canvas {
@@ -1038,7 +1040,7 @@ const auth = getAuth(appFirebase);
 
   try {
     await signInWithEmailAndPassword(auth, email, senha);
-    mostrarLoading();alert("Login realizado com sucesso.");
+    alert("Login realizado com sucesso.");
   } catch (error) {
     esconderLoading();alert("Erro no login: " + error.message);
   }
@@ -1195,10 +1197,10 @@ ${obra.numeroObra || 'SEM NÚMERO'}
             <img src="${obra.fotoPisoUrl}" style="width:100%; border-radius:10px; margin-top:10px; border:2px solid #ccc;">
             <br>
           ` : ''}
-        <button class="botao-secundario" onclick="editarObra('${doc.id}')">
+        <button class="botao-secundario" onclick="editarObra('${docItem.id}')">
   Editar Obra
 </button>
-         <button class="botao-perigo" onclick="excluirObra('${doc.id}')">
+         <button class="botao-perigo" onclick="excluirObra('${docItem.id}')">
             Excluir Obra
           </button>
         </div>
@@ -1265,7 +1267,11 @@ return;
 
 try {
 
+mostrarLoading();
+
 await deleteDoc(doc(db, "obras", id));
+
+esconderLoading();
 
 alert('Obra excluída com sucesso.');
 
@@ -1336,7 +1342,7 @@ document.getElementById('resultado').style.display = 'none';
 window.idObraEditando = null;
 document.getElementById('avisoEdicao').style.display = 'none';
 document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';  
-mostrarLoading();alert('Formulário limpo para nova obra.');
+alert('Formulário limpo para nova obra.');
 
 window.scrollTo({
 top: 0,
