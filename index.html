@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
- <link rel="manifest" href="App%20CH%20Obras/manifest.json">
+  <link rel="manifest" href="App%20CH%20Obras/manifest.json">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -202,30 +202,11 @@ button.botao-excluir:hover,
   margin-top: 4px;
 }
 
-.status-concluida {
-  background: #d9f7df;
-  color: #1b7f34;
-}
-
-.status-andamento {
-  background: #fff3cd;
-  color: #856404;
-}
-
-.status-pendencia {
-  background: #fde2e2;
-  color: #b71c1c;
-}
-
-.status-iniciar {
-  background: #e3f2fd;
-  color: #0d47a1;
-}
-
-.status-cliente {
-  background: #fff0d6;
-  color: #a65c00;
-}
+.status-concluida { background: #d9f7df; color: #1b7f34; }
+.status-andamento { background: #fff3cd; color: #856404; }
+.status-pendencia { background: #fde2e2; color: #b71c1c; }
+.status-iniciar { background: #e3f2fd; color: #0d47a1; }
+.status-cliente { background: #fff0d6; color: #a65c00; }
 
 .resultado {
   display: none;
@@ -292,24 +273,50 @@ button.botao-excluir:hover,
   box-shadow: 0 10px 28px rgba(0,0,0,0.16);
 }
 
-.borda-concluida {
-  border-left: 8px solid #1b7f34 !important;
+.borda-concluida { border-left: 8px solid #1b7f34 !important; }
+.borda-andamento { border-left: 8px solid #d4a017 !important; }
+.borda-pendencia { border-left: 8px solid #b71c1c !important; }
+.borda-iniciar { border-left: 8px solid #0d47a1 !important; }
+.borda-cliente { border-left: 8px solid #d97706 !important; }
+
+.galeria-fotos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
 }
 
-.borda-andamento {
-  border-left: 8px solid #d4a017 !important;
+.galeria-fotos img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid #e5e5e5;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
-.borda-pendencia {
-  border-left: 8px solid #b71c1c !important;
+.qr-box {
+  margin-top: 12px;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 
-.borda-iniciar {
-  border-left: 8px solid #0d47a1 !important;
+.qr-box small {
+  color: #666;
 }
 
-.borda-cliente {
-  border-left: 8px solid #d97706 !important;
+.painel-admin {
+  background: rgba(255,255,255,0.94);
+  border: 1px solid rgba(212,160,23,0.35);
+  border-radius: 18px;
+  padding: 16px;
+  margin-top: 20px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
 }
 
 canvas {
@@ -341,19 +348,12 @@ canvas {
 }
 
 @keyframes girar {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @media print {
-  body {
-    background: white;
-  }
+  body { background: white; }
 
   .app {
     max-width: 100%;
@@ -408,11 +408,11 @@ canvas {
 
     <label for="statusObra">Status da obra</label>
     <select id="statusObra">
-  <option value="A iniciar">🟡 A iniciar</option>
-<option value="Em andamento">🔵 Em andamento</option>
-<option value="Concluída">🟢 Concluída</option>
-<option value="Com pendência">🔴 Com pendência</option>
-<option value="Aguardando cliente">🟠 Aguardando cliente</option>
+      <option value="A iniciar">🟡 A iniciar</option>
+      <option value="Em andamento">🔵 Em andamento</option>
+      <option value="Concluída">🟢 Concluída</option>
+      <option value="Com pendência">🔴 Com pendência</option>
+      <option value="Aguardando cliente">🟠 Aguardando cliente</option>
     </select>
 
     <label for="data">Data da instalação</label>
@@ -483,23 +483,23 @@ canvas {
     <h2>3. Fotos Obrigatórias</h2>
 
     <div class="pergunta">
-      <label for="fotoPiso">Foto do piso antes da instalação</label>
-      <input type="file" id="fotoPiso" accept="image/*" />
+      <label for="fotoPiso">Fotos do piso antes da instalação</label>
+      <input type="file" id="fotoPiso" accept="image/*" multiple />
     </div>
 
     <div class="pergunta">
-      <label for="fotoAmbiente">Foto geral do ambiente</label>
-      <input type="file" id="fotoAmbiente" accept="image/*" />
+      <label for="fotoAmbiente">Fotos gerais do ambiente</label>
+      <input type="file" id="fotoAmbiente" accept="image/*" multiple />
     </div>
 
     <div class="pergunta">
-      <label for="fotoParede">Foto das paredes/local de fixação</label>
-      <input type="file" id="fotoParede" accept="image/*" />
+      <label for="fotoParede">Fotos das paredes/local de fixação</label>
+      <input type="file" id="fotoParede" accept="image/*" multiple />
     </div>
 
     <div class="pergunta">
-      <label for="fotoAvaria">Foto de risco ou avaria, se houver</label>
-      <input type="file" id="fotoAvaria" accept="image/*" />
+      <label for="fotoAvaria">Fotos de risco ou avaria, se houver</label>
+      <input type="file" id="fotoAvaria" accept="image/*" multiple />
     </div>
 
     <label for="observacoes">Observações iniciais</label>
@@ -519,223 +519,234 @@ canvas {
       <button type="button" onclick="limparAssinatura()" class="botao-secundario">Limpar Assinatura</button>
       <p class="aviso-assinatura">O cliente deve assinar dentro do quadro acima.</p>
     </div>
-   <div id="avisoEdicao" style="display:none; background:#fff3cd; border:1px solid #d4a017; padding:12px; border-radius:10px; margin-top:20px; font-weight:bold; text-align:center;">
-    Modo edição ativo
-</div>
+
+    <div id="avisoEdicao" style="display:none; background:#fff3cd; border:1px solid #d4a017; padding:12px; border-radius:10px; margin-top:20px; font-weight:bold; text-align:center;">
+      Modo edição ativo
+    </div>
+
     <button id="botaoSalvar" onclick="salvarChecklist()">Salvar Checklist</button>
-    <button type="button" onclick="limparFormulario()" class="botao-secundario">
-Nova Obra / Limpar Formulário
-</button>
+    <button type="button" onclick="limparFormulario()" class="botao-secundario">Nova Obra / Limpar Formulário</button>
     <button onclick="gerarPDF()" class="botao-secundario">Gerar Relatório / PDF</button>
     <button onclick="mostrarHistorico()">Ver Histórico de Obras</button>
-    <button type="button" onclick="ocultarHistorico()" class="botao-secundario">
-Ocultar Histórico
-</button>
-    <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="botao-secundario">
-Voltar ao Topo
-</button>
+    <button type="button" onclick="ocultarHistorico()" class="botao-secundario">Ocultar Histórico</button>
+    <button type="button" onclick="exportarCSV()" class="botao-secundario">Exportar Relatório CSV</button>
+    <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="botao-secundario">Voltar ao Topo</button>
 
     <div class="area-visualizar">
-      <button onclick="window.open('https://chmoveis.github.io/ch-obras/', '_blank')">
-        Visualizar App
-      </button>
+      <button onclick="window.open('https://chmoveis.github.io/ch-obras/', '_blank')">Visualizar App</button>
     </div>
 
     <div class="resultado" id="resultado">
       <h2>Checklist salvo com sucesso!</h2>
       <div id="relatorio"></div>
     </div>
-<div class="resultado" id="dashboardResumo">
 
-<h2>Resumo das Obras</h2>
-<p id="ultimaAtualizacao" style="font-size:12px; color:#666; margin-top:-10px;">
-Última atualização: --
-</p>  
+    <div class="resultado" id="dashboardResumo">
+      <h2>Resumo das Obras</h2>
+      <p id="ultimaAtualizacao" style="font-size:12px; color:#666; margin-top:-10px;">Última atualização: --</p>  
 
-<div class="cards-resumo">
+      <div class="cards-resumo">
+        <div class="card-resumo"><h3>📋 Total</h3><p id="totalObras">0</p></div>
+        <div class="card-resumo"><h3>🔵 A iniciar</h3><p id="obrasIniciar">0</p></div>
+        <div class="card-resumo"><h3>🟡 Em andamento</h3><p id="obrasAndamento">0</p></div>
+        <div class="card-resumo"><h3>🟣 Aguardando cliente</h3><p id="obrasCliente">0</p></div>
+        <div class="card-resumo"><h3>🔴 Com pendência</h3><p id="obrasPendentes">0</p></div>
+        <div class="card-resumo"><h3>🟢 Concluídas</h3><p id="obrasConcluidas">0</p></div>
+      </div>
 
-<div class="card-resumo">
-<h3>📋 Total</h3>
-<p id="totalObras">0</p>
-</div>  
- <div class="card-resumo">
-<h3>🔵 A iniciar</h3>
-<p id="obrasIniciar">0</p>
-</div> 
+      <p id="taxaConclusao" style="text-align:center; font-weight:bold; margin-top:15px;">Taxa de conclusão: 0%</p>
 
+      <div class="painel-admin">
+        <h2>Painel Administrativo</h2>
+        <p><strong>Uso:</strong> acompanhamento de obras, edição, exclusão, busca, filtro, fotos, QR Code e exportação.</p>
+        <p id="statusConexao" style="font-size:13px; color:#666;">Status: aguardando carregamento.</p>
+      </div>
 
-<div class="card-resumo">
-<h3>🟡 Em andamento</h3>
-<p id="obrasAndamento">0</p>
-</div>
+      <div class="resultado" id="historico">
+        <h2>Histórico de Obras</h2>
 
-<div class="card-resumo">
-<h3>🟣 Aguardando cliente</h3>
-<p id="obrasCliente">0</p>
-</div> 
-<div class="card-resumo">
-<h3>🔴 Com pendência</h3>
-<p id="obrasPendentes">0</p>
-</div>  
-<div class="card-resumo">
-<h3>🟢 Concluídas</h3>
-<p id="obrasConcluidas">0</p>
-</div>
+        <input type="text" id="buscaHistorico" placeholder="Busca inteligente: cliente, endereço, marceneiro, número da obra, ambiente ou CPF" oninput="filtrarHistorico()" />
 
-</div>
-<p id="taxaConclusao" style="text-align:center; font-weight:bold; margin-top:15px;">
-Taxa de conclusão: 0%
-</p>  
-  <div class="resultado" id="historico">
-  <h2>Histórico de Obras</h2>
+        <select id="filtroStatus" onchange="filtrarHistorico()">
+          <option value="">Todos os status</option>
+          <option value="A iniciar">A iniciar</option>
+          <option value="Em andamento">Em andamento</option>
+          <option value="Concluída">Concluída</option>
+          <option value="Com pendência">Com pendência</option>
+          <option value="Aguardando cliente">Aguardando cliente</option>
+        </select>
 
-  <input 
-    type="text" 
-    id="buscaHistorico" 
-    placeholder="Buscar por cliente, endereço ou marceneiro"
-    oninput="filtrarHistorico()"
-  />
-<select id="filtroStatus" onchange="filtrarHistorico()">
-  <option value="">Todos os status</option>
-  <option value="A iniciar">A iniciar</option>
-  <option value="Em andamento">Em andamento</option>
-  <option value="Concluída">Concluída</option>
-  <option value="Com pendência">Com pendência</option>
-  <option value="Aguardando cliente">Aguardando cliente</option>
-</select>
-
-    <button type="button" onclick="limparFiltrosHistorico()" class="botao-secundario">
-Limpar Filtros
-</button>  
-  <div id="listaHistorico"></div>
-</div>
-</div>
+        <button type="button" onclick="limparFiltrosHistorico()" class="botao-secundario">Limpar Filtros</button>
+        <div id="listaHistorico"></div>
+      </div>
+    </div>
+  </div>
 
   <script>
 function pegarValor(id) {
   return document.getElementById(id).value;
 }
 
-function mostrarLoading() {
-  document.getElementById('loadingOverlay').style.display = 'flex';
+function mostrarLoading(texto = 'Salvando obra...') {
+  const overlay = document.getElementById('loadingOverlay');
+  const textoLoading = document.getElementById('loadingTexto');
+  if (textoLoading) textoLoading.innerText = texto;
+  overlay.style.display = 'flex';
 }
 
 function esconderLoading() {
   document.getElementById('loadingOverlay').style.display = 'none';
 }
 
-    const canvas = document.getElementById('assinatura');
-    const ctx = canvas.getContext('2d');
-    let desenhando = false;
-    let assinaturaFeita = false;
+const canvas = document.getElementById('assinatura');
+const ctx = canvas.getContext('2d');
+let desenhando = false;
+let assinaturaFeita = false;
 
-    ctx.lineWidth = 3;
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = '#000000';
+ctx.lineWidth = 3;
+ctx.lineCap = 'round';
+ctx.strokeStyle = '#000000';
 
-    function posicao(evento) {
-      const rect = canvas.getBoundingClientRect();
-      const toque = evento.touches ? evento.touches[0] : evento;
-      return {
-        x: (toque.clientX - rect.left) * (canvas.width / rect.width),
-        y: (toque.clientY - rect.top) * (canvas.height / rect.height)
-      };
-    }
-
-    function iniciarAssinatura(evento) {
-      evento.preventDefault();
-      desenhando = true;
-      assinaturaFeita = true;
-      const p = posicao(evento);
-      ctx.beginPath();
-      ctx.moveTo(p.x, p.y);
-    }
-
-    function desenharAssinatura(evento) {
-      if (!desenhando) return;
-      evento.preventDefault();
-      const p = posicao(evento);
-      ctx.lineTo(p.x, p.y);
-      ctx.stroke();
-    }
-
-    function pararAssinatura() {
-      desenhando = false;
-    }
-
-    function limparAssinatura() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      assinaturaFeita = false;
-    }
-
-    canvas.addEventListener('mousedown', iniciarAssinatura);
-    canvas.addEventListener('mousemove', desenharAssinatura);
-    canvas.addEventListener('mouseup', pararAssinatura);
-    canvas.addEventListener('mouseleave', pararAssinatura);
-
-    canvas.addEventListener('touchstart', iniciarAssinatura);
-    canvas.addEventListener('touchmove', desenharAssinatura);
-    canvas.addEventListener('touchend', pararAssinatura);
-
-  
-function nomeArquivo(id) {
-  const arquivo = document.getElementById(id).files[0];
-  return arquivo ? arquivo.name : 'Nenhuma foto selecionada';
+function posicao(evento) {
+  const rect = canvas.getBoundingClientRect();
+  const toque = evento.touches ? evento.touches[0] : evento;
+  return {
+    x: (toque.clientX - rect.left) * (canvas.width / rect.width),
+    y: (toque.clientY - rect.top) * (canvas.height / rect.height)
+  };
 }
-    function salvarNoHistorico(dados) {
-      const historicoAtual = JSON.parse(localStorage.getItem('historicoCHObras')) || [];
-      historicoAtual.push(dados);
-      localStorage.setItem('historicoCHObras', JSON.stringify(historicoAtual));
-    }
 
+function iniciarAssinatura(evento) {
+  evento.preventDefault();
+  desenhando = true;
+  assinaturaFeita = true;
+  const p = posicao(evento);
+  ctx.beginPath();
+  ctx.moveTo(p.x, p.y);
+}
 
+function desenharAssinatura(evento) {
+  if (!desenhando) return;
+  evento.preventDefault();
+  const p = posicao(evento);
+  ctx.lineTo(p.x, p.y);
+  ctx.stroke();
+}
 
-   
-      
-function gerarPDF() {
+function pararAssinatura() {
+  desenhando = false;
+}
 
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF();
+function limparAssinatura() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  assinaturaFeita = false;
+}
 
-  const cliente = pegarValor('cliente');
+canvas.addEventListener('mousedown', iniciarAssinatura);
+canvas.addEventListener('mousemove', desenharAssinatura);
+canvas.addEventListener('mouseup', pararAssinatura);
+canvas.addEventListener('mouseleave', pararAssinatura);
+canvas.addEventListener('touchstart', iniciarAssinatura);
+canvas.addEventListener('touchmove', desenharAssinatura);
+canvas.addEventListener('touchend', pararAssinatura);
+
+function nomesArquivos(id) {
+  const input = document.getElementById(id);
+  if (!input || !input.files || input.files.length === 0) return 'Nenhuma foto selecionada';
+  return Array.from(input.files).map(file => file.name).join(', ');
+}
+
+function salvarNoHistorico(dados) {
+  const historicoAtual = JSON.parse(localStorage.getItem('historicoCHObras')) || [];
+  historicoAtual.push(dados);
+  localStorage.setItem('historicoCHObras', JSON.stringify(historicoAtual));
+}
+
+function gerarNumeroObra() {
   const anoAtual = new Date().getFullYear();
+  const numeroSequencial = localStorage.getItem('contadorObras')
+    ? parseInt(localStorage.getItem('contadorObras')) + 1
+    : 1;
+  localStorage.setItem('contadorObras', numeroSequencial);
+  const numeroFormatado = String(numeroSequencial).padStart(4, '0');
+  return `OBRA-${anoAtual}-${numeroFormatado}`;
+}
 
-const numeroSequencial =
-localStorage.getItem('contadorObras')
-? parseInt(localStorage.getItem('contadorObras')) + 1
-: 1;
+function criarQRCodeBase64(texto) {
+  return new Promise((resolve) => {
+    const qrDiv = document.createElement('div');
+    new QRCode(qrDiv, { text: texto, width: 120, height: 120 });
+    setTimeout(() => {
+      const canvasQr = qrDiv.querySelector('canvas');
+      if (canvasQr) resolve(canvasQr.toDataURL('image/png'));
+      else resolve('');
+    }, 300);
+  });
+}
 
-localStorage.setItem(
-'contadorObras',
-numeroSequencial
-);
+function lerArquivoComoDataURL(arquivo) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = event => resolve(event.target.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(arquivo);
+  });
+}
 
-const numeroFormatado =
-String(numeroSequencial).padStart(4, '0');
+async function gerarPDF() {
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF('p', 'mm', 'a4');
 
-const numeroObra = `OBRA-${anoAtual}-${numeroFormatado}`;
-
-const qrTexto = numeroObra;
-
-const qrDiv = document.createElement('div');
-
-new QRCode(qrDiv, {
-  text: qrTexto,
-  width: 80,
-  height: 80
-});
-  const endereco = pegarValor('endereco');
-  const ambiente = pegarValor('ambiente');
-  const marceneiro = pegarValor('marceneiro');
-  const statusObra = pegarValor('statusObra');
-  const data = pegarValor('data');
+  const cliente = pegarValor('cliente') || 'Não informado';
+  const endereco = pegarValor('endereco') || 'Não informado';
+  const ambiente = pegarValor('ambiente') || 'Não informado';
+  const marceneiro = pegarValor('marceneiro') || 'Não informado';
+  const statusObra = pegarValor('statusObra') || 'Não informado';
+  const data = pegarValor('data') || 'Não informada';
   const nomeAssinante = pegarValor('nomeClienteAssinatura') || cliente;
   const cpfAssinante = pegarValor('cpfCliente') || 'Não informado';
-  
-
-  const dataGeracao = new Date().toLocaleString('pt-BR');
   const observacoes = pegarValor('observacoes') || 'Sem observações';
+  const numeroObra = window.numeroObraAtualPDF || gerarNumeroObra();
+  const dataGeracao = new Date().toLocaleString('pt-BR');
+  const assinatura = canvas.toDataURL('image/png');
+  const qrBase64 = await criarQRCodeBase64(numeroObra);
 
+  pdf.setFillColor(10, 10, 10);
+  pdf.roundedRect(10, 8, 190, 26, 4, 4, 'F');
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(18);
+  pdf.text('CH Obras', 105, 18, { align: 'center' });
+  pdf.setFontSize(10);
+  pdf.text('Relatório de Instalação - CH Móveis Sob Medida', 105, 26, { align: 'center' });
+
+  pdf.setTextColor(212, 160, 23);
+  pdf.setFontSize(13);
+  pdf.text(numeroObra, 150, 44);
+
+  pdf.setTextColor(0, 0, 0);
+  pdf.setFontSize(12);
+  pdf.text('Dados da Obra', 15, 44);
+  pdf.setFontSize(10);
+  pdf.text(`Cliente: ${cliente}`, 15, 55);
+  pdf.text(`Endereço: ${endereco}`, 15, 63);
+  pdf.text(`Ambiente: ${ambiente}`, 15, 71);
+  pdf.text(`Marceneiro: ${marceneiro}`, 15, 79);
+  pdf.text(`Status: ${statusObra}`, 15, 87);
+  pdf.text(`Data da instalação: ${data}`, 15, 95);
+  pdf.text(`Gerado em: ${dataGeracao}`, 15, 103);
+  pdf.text(`Assinado por: ${nomeAssinante}`, 15, 111);
+  pdf.text(`CPF: ${cpfAssinante}`, 15, 119);
+
+  if (qrBase64) {
+    pdf.addImage(qrBase64, 'PNG', 160, 50, 32, 32);
+    pdf.setFontSize(8);
+    pdf.text('QR Code da Obra', 160, 86);
+  }
+
+  pdf.setFontSize(12);
+  pdf.text('Checklist Técnico', 15, 132);
+  pdf.setFontSize(10);
+  let y = 142;
   const checklist = [
     ['Piso é de madeira?', pegarValor('pisoMadeira')],
     ['Risco ou avaria no piso?', pegarValor('riscoPiso')],
@@ -745,276 +756,119 @@ new QRCode(qrDiv, {
     ['Medidas conferidas?', pegarValor('medidasConferidas')]
   ];
 
-  
-
- pdf.setTextColor(0, 0, 0);
- const logo = new Image();
-
-logo.src = 'logotipo novo atual.jpg';
-pdf.setFontSize(18);
-pdf.addImage(logo, 'JPEG', 15, 8, 35, 28);
-
-pdf.setFontSize(18);
-
-pdf.text('CH Obras', 120, 18, { align: 'center' });
-
-pdf.setFontSize(12);
-
-pdf.text(
-'Relatório de Instalação - CH Móveis Sob Medida',
-120,
-26,
-{ align: 'center' }
-);
-
-  pdf.setFontSize(11);
-  
-  pdf.setFontSize(13);
- pdf.text(`Cliente: ${cliente || 'Não informado'}`, 20, 42);
-
-  pdf.setTextColor(0, 0, 0);
-
-  pdf.setFontSize(14);
-  pdf.text('Dados da Obra', 20, 58);
-  pdf.setFontSize(11);
-  pdf.setTextColor(212, 160, 23);
-  pdf.setFontSize(13);
-  pdf.text(`Nº ${numeroObra}`, 150, 42);
-
-  pdf.setTextColor(0, 0, 0);
-  pdf.setFontSize(11);
-  pdf.setFontSize(11);
-  pdf.text(`Cliente: ${cliente}`, 20, 72);
-  pdf.text(`Endereço: ${endereco}`, 20, 82);
-  pdf.text(`Ambiente: ${ambiente}`, 20, 92);
-  pdf.text(`Marceneiro: ${marceneiro}`, 20, 102);
-  pdf.text(`Status: ${statusObra}`, 20, 112);
-  pdf.text(`Data da instalação: ${data || 'Não informada'}`, 20, 122);
-  pdf.text(`Gerado em: ${dataGeracao}`, 20, 132);
-  pdf.text(`Assinado por: ${nomeAssinante || 'Não informado'}`, 20, 142);
-  pdf.text(`CPF: ${cpfAssinante || 'Não informado'}`, 20, 152);
-  pdf.setFontSize(14);
-  pdf.text('Checklist Técnico', 20, 165);
-
-  let y = 178;
-
-  pdf.setFontSize(11);
-
   checklist.forEach((item) => {
-    pdf.text(`${item[0]} ${item[1] || 'Não informado'}`, 20, y);
-    y += 10;
+    pdf.text(`${item[0]} ${item[1] || 'Não informado'}`, 15, y);
+    y += 8;
   });
 
-  pdf.setFontSize(14);
-  pdf.text('Observações', 20, y + 8);
+  pdf.setFontSize(12);
+  pdf.text('Observações', 15, y + 5);
+  pdf.setFontSize(10);
+  pdf.text(observacoes, 15, y + 14, { maxWidth: 180 });
+  y += 34;
 
-  pdf.setFontSize(11);
-  pdf.text(observacoes, 20, y + 18, {
-    maxWidth: 170
+  pdf.setFontSize(12);
+  pdf.text('Assinatura do Cliente', 15, y);
+  pdf.addImage(assinatura, 'PNG', 15, y + 4, 80, 30);
+
+  const fotos = [];
+  ['fotoPiso', 'fotoAmbiente', 'fotoParede', 'fotoAvaria'].forEach(id => {
+    const input = document.getElementById(id);
+    if (input && input.files) fotos.push(...Array.from(input.files));
   });
-  y += 28;
 
-  const assinatura = canvas.toDataURL('image/png');
+  if (fotos.length > 0) {
+    pdf.addPage();
+    pdf.setFontSize(14);
+    pdf.text('Fotos da Obra', 15, 20);
+    let fx = 15;
+    let fy = 30;
 
-  pdf.setFontSize(14);
-  pdf.text('Assinatura do Cliente', 20, y);
-
- pdf.addImage(
-    assinatura,
-    'PNG',
-    20,
-    y + 2,
-    70,
-    20
-);
-
-  const fotoObra = document.getElementById('fotoPiso').files[0];
-
-  if (fotoObra) {
-
-    const reader = new FileReader();
-
-    reader.onload = function(event) {
-
-      pdf.setFontSize(14);
-      pdf.text('Foto da Obra', 120, 185);
-
-      pdf.addImage(
-        event.target.result,
-        'JPEG',
-        120,
-        190,
-        70,
-        40
-      );
-
-      pdf.setFontSize(9);
-
-      
-       pdf.text(
-     'Documento gerado automaticamente pelo sistema CH Obras.',
-      20,
-      280
-      );
-      
-      const qrImagem = qrDiv.querySelector('img') || qrDiv.querySelector('canvas');
-
-if (qrImagem) {
-  pdf.addImage(
-    qrImagem,
-    'PNG',
-    150,
-    230,
-    35,
-    35
-  );
-}
-      pdf.setFontSize(8);
-  pdf.text('QR Code da Obra', 150, 270);
-      pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
-    };
-
-    reader.readAsDataURL(fotoObra);
-
-  } else {
-
-    pdf.setFontSize(9);
-
-    pdf.text(
-      'Documento gerado automaticamente pelo sistema CH Obras.',
-      20,
-      285
-    );
-  const qrCanvas = qrDiv.querySelector('canvas');
-
-if (qrCanvas) {
-
-  const qrBase64 = qrCanvas.toDataURL('image/png');
-
-  pdf.addImage(
-    qrBase64,
-    'PNG',
-    150,
-    230,
-    35,
-    35
-  );
-
-}
-    pdf.save(`relatorio-ch-obras-${cliente || 'cliente'}.pdf`);
+    for (let i = 0; i < Math.min(fotos.length, 6); i++) {
+      const img = await lerArquivoComoDataURL(fotos[i]);
+      pdf.addImage(img, 'JPEG', fx, fy, 80, 55);
+      fx += 95;
+      if (fx > 110) {
+        fx = 15;
+        fy += 70;
+      }
+    }
   }
+
+  pdf.setProperties({
+    title: `Relatório ${numeroObra}`,
+    subject: 'Relatório de instalação CH Obras',
+    author: 'CH Móveis Sob Medida'
+  });
+
+  pdf.save(`relatorio-ch-obras-${cliente}.pdf`);
 }
+
 async function salvarChecklist() {
-  mostrarLoading();
+  mostrarLoading('Salvando obra...');
 
   const cliente = pegarValor('cliente');
-
-  const nomeAssinante =
-    pegarValor('nomeClienteAssinatura') || cliente;
-
-  const cpfAssinante =
-    pegarValor('cpfCliente') || 'Não informado';
-
+  const nomeAssinante = pegarValor('nomeClienteAssinatura') || cliente;
+  const cpfAssinante = pegarValor('cpfCliente') || 'Não informado';
   const data = pegarValor('data');
-
-  const anoAtual = new Date().getFullYear();
-
-  const numeroSequencial =
-    localStorage.getItem('contadorObras')
-      ? parseInt(localStorage.getItem('contadorObras')) + 1
-      : 1;
-
-  localStorage.setItem(
-    'contadorObras',
-    numeroSequencial
-  );
-
-  const numeroFormatado =
-    String(numeroSequencial).padStart(4, '0');
-
-  const numeroObra =
-    `OBRA-${anoAtual}-${numeroFormatado}`;
-
-  const fotoPisoUrl =
-    await enviarFotoParaStorage('fotoPiso', 'obras');
-
   const endereco = pegarValor('endereco');
-
   const ambiente = pegarValor('ambiente');
-
   const marceneiro = pegarValor('marceneiro');
-
   const statusObra = pegarValor('statusObra');
-      
 
-      if (!cliente || !endereco || !ambiente || !marceneiro || !statusObra || !data) {
-      esconderLoading();alert('Preencha todos os dados da obra, incluindo o status, antes de salvar.');
-        return;
-      }
+  if (!cliente || !endereco || !ambiente || !marceneiro || !statusObra || !data) {
+    esconderLoading();
+    alert('Preencha todos os dados da obra, incluindo o status, antes de salvar.');
+    return;
+  }
 
-      if (!assinaturaFeita) {
-      esconderLoading();alert('O cliente precisa assinar antes de salvar o checklist.');
-        return;
-      }
+  if (!assinaturaFeita && !window.idObraEditando) {
+    esconderLoading();
+    alert('O cliente precisa assinar antes de salvar o checklist.');
+    return;
+  }
 
-      const imagemAssinatura = canvas.toDataURL('image/png');
+  const numeroObra = window.idObraEditando && window.numeroObraEditando ? window.numeroObraEditando : gerarNumeroObra();
+  window.numeroObraAtualPDF = numeroObra;
 
-      const checklist = [
-        ['Cliente', cliente],
-        ['Endereço', endereco],
-        ['Ambiente', ambiente],
-        ['Marceneiro responsável', marceneiro],
-        ['Status da obra', statusObra],
-        ['Data da instalação', data],
-        ['O piso é de madeira?', pegarValor('pisoMadeira')],
-        ['Existe risco ou avaria no piso?', pegarValor('riscoPiso')],
-        ['As paredes estão prontas?', pegarValor('paredePronta')],
-        ['A parte elétrica está pronta?', pegarValor('eletricaPronta')],
-        ['O local está limpo e liberado?', pegarValor('localLimpo')],
-        ['As medidas foram conferidas?', pegarValor('medidasConferidas')],
-        ['Foto do piso antes da instalação', nomeArquivo('fotoPiso')],
-        ['Foto geral do ambiente', nomeArquivo('fotoAmbiente')],
-        ['Foto das paredes/local de fixação', nomeArquivo('fotoParede')],
-        ['Foto de risco ou avaria', nomeArquivo('fotoAvaria')],
-        ['Observações', pegarValor('observacoes') || 'Sem observações'],
-        ['Nome de quem assinou', pegarValor('nomeClienteAssinatura') || cliente],
-        ['CPF do cliente', pegarValor('cpfCliente') || 'Não informado']
-      ];
+  const imagemAssinatura = canvas.toDataURL('image/png');
 
-      let html = '';
-       html += '<div class="item-relatorio"><strong>Número da Obra:</strong> ' + numeroObra + '</div>'; 
-      checklist.forEach(function(item) {
-        html += '<div class="item-relatorio"><strong>' + item[0] + ':</strong> ' + (item[1] || 'Não informado') + '</div>';
-      });
+  const fotosUrls = await enviarFotosParaStorage(['fotoPiso', 'fotoAmbiente', 'fotoParede', 'fotoAvaria'], 'obras');
+  const fotoPisoUrl = fotosUrls.length > 0 ? fotosUrls[0] : '';
 
-      html += '<div class="item-relatorio"><strong>Assinatura do cliente:</strong><br><img class="assinatura-relatorio" src="' + imagemAssinatura + '" alt="Assinatura do cliente"></div>';
+  const dadosObra = {
+    numeroObra,
+    cliente,
+    endereco,
+    ambiente,
+    marceneiro,
+    statusObra,
+    data,
+    nomeAssinante,
+    cpfAssinante,
+    observacoes: pegarValor('observacoes') || 'Sem observações',
+    assinaturaCliente: imagemAssinatura,
+    fotoPisoUrl,
+    fotosUrls,
+    nomesFotos: [nomesArquivos('fotoPiso'), nomesArquivos('fotoAmbiente'), nomesArquivos('fotoParede'), nomesArquivos('fotoAvaria')].join(' | '),
+    atualizadoLocalmenteEm: new Date().toLocaleString('pt-BR')
+  };
 
-      salvarNoHistorico({
-        cliente: cliente,
-        endereco: endereco,
-        ambiente: ambiente,
-        marceneiro: marceneiro,
-        statusObra: statusObra,
-        data: data,
-        criadoEm: new Date().toLocaleString('pt-BR')
-      });
-      await salvarObraNaNuvem({
-  numeroObra: numeroObra,      
-  cliente: cliente,
-  fotoPisoUrl: fotoPisoUrl,
-  assinaturaCliente: imagemAssinatura,
-  endereco: endereco,
-  ambiente: ambiente,
-  marceneiro: marceneiro,
-  statusObra: statusObra,
-  data: data,
-  nomeAssinante: nomeAssinante,
-  cpfAssinante: cpfAssinante
-});
-      document.getElementById('relatorio').innerHTML = html;
-      document.getElementById('resultado').style.display = 'block';
-      document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
+  salvarNoHistorico({ ...dadosObra, criadoEm: new Date().toLocaleString('pt-BR') });
+  await salvarObraNaNuvem(dadosObra);
+
+  let html = `<div class="item-relatorio"><strong>Número da Obra:</strong> ${numeroObra}</div>`;
+  Object.entries(dadosObra).forEach(([chave, valor]) => {
+    if (!['assinaturaCliente', 'fotosUrls'].includes(chave)) {
+      html += `<div class="item-relatorio"><strong>${chave}:</strong> ${valor || 'Não informado'}</div>`;
     }
+  });
+  html += `<div class="item-relatorio"><strong>Assinatura do cliente:</strong><br><img class="assinatura-relatorio" src="${imagemAssinatura}" alt="Assinatura do cliente"></div>`;
+
+  document.getElementById('relatorio').innerHTML = html;
+  document.getElementById('resultado').style.display = 'block';
+  document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
+}
   </script>
 
   <script>
@@ -1057,26 +911,22 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
-
 const firebaseConfig = {
   apiKey: "AIzaSyBn_WkU9o_7St6UTL9WXVnRoqXxCkj4UXo",
   authDomain: "ch-obras.firebaseapp.com",
   projectId: "ch-obras",
-storageBucket: "ch-obras.firebasestorage.app",
+  storageBucket: "ch-obras.firebasestorage.app",
   messagingSenderId: "803401819775",
   appId: "1:803401819775:web:39426cb59349b5599a814a"
 };
 
 const appFirebase = initializeApp(firebaseConfig);
-
 const db = getFirestore(appFirebase);
-    
 const storage = getStorage(appFirebase);
-    
 const auth = getAuth(appFirebase);
+let obrasCache = [];
 
-
-    window.fazerLogin = async function () {
+window.fazerLogin = async function () {
   const email = prompt("Digite seu e-mail:");
   const senha = prompt("Digite sua senha:");
 
@@ -1084,7 +934,7 @@ const auth = getAuth(appFirebase);
     await signInWithEmailAndPassword(auth, email, senha);
     alert("Login realizado com sucesso.");
   } catch (error) {
-    esconderLoading();alert("Erro no login: " + error.message);
+    alert("Erro no login: " + error.message);
   }
 };
 
@@ -1093,40 +943,63 @@ onAuthStateChanged(auth, (user) => {
     setTimeout(() => {
       window.fazerLogin();
     }, 500);
+  } else {
+    const status = document.getElementById('statusConexao');
+    if (status) status.innerText = 'Status: usuário autenticado e Firebase conectado.';
   }
 });
+
 window.logoutApp = async function () {
   await signOut(auth);
-  esconderLoading();alert("Logout realizado.");
+  alert("Logout realizado.");
   location.reload();
-};    
+};
+
+window.enviarFotosParaStorage = async function(inputIds, nomePasta) {
+  const urls = [];
+
+  for (const inputId of inputIds) {
+    const input = document.getElementById(inputId);
+
+    if (!input || !input.files || input.files.length === 0) continue;
+
+    for (const arquivo of Array.from(input.files)) {
+      const nomeArquivo = Date.now() + '-' + Math.random().toString(36).slice(2) + '-' + arquivo.name;
+      const caminho = nomePasta + '/' + nomeArquivo;
+      const referenciaArquivo = ref(storage, caminho);
+      await uploadBytes(referenciaArquivo, arquivo);
+      const urlDownload = await getDownloadURL(referenciaArquivo);
+      urls.push(urlDownload);
+    }
+  }
+
+  return urls;
+};
+
+window.enviarFotoParaStorage = async function(inputId, nomePasta) {
+  const urls = await window.enviarFotosParaStorage([inputId], nomePasta);
+  return urls[0] || '';
+};
 
 window.salvarObraNaNuvem = async function(dadosObra) {
-
   try {
-
     if (window.idObraEditando) {
-
       await updateDoc(
         doc(db, "obras", window.idObraEditando),
         {
           ...dadosObra,
-          fotoPisoUrl: dadosObra.fotoPisoUrl || "",
           atualizadoEmServidor: serverTimestamp()
         }
       );
 
       alert("Obra atualizada com sucesso.");
-
       window.idObraEditando = null;
+      window.numeroObraEditando = null;
       document.getElementById('avisoEdicao').style.display = 'none';
       document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';
-
     } else {
-
       await addDoc(collection(db, "obras"), {
         ...dadosObra,
-        fotoPisoUrl: dadosObra.fotoPisoUrl || "",
         criadoEmServidor: serverTimestamp()
       });
 
@@ -1135,7 +1008,6 @@ window.salvarObraNaNuvem = async function(dadosObra) {
 
     esconderLoading();
     mostrarHistorico();
-
   } catch (erro) {
     console.error(erro);
     esconderLoading();
@@ -1157,173 +1029,158 @@ window.mostrarHistorico = async function() {
   document.getElementById('dashboardResumo').style.display = 'block';
 
   try {
-    const obrasOrdenadas = query(
-      collection(db, "obras"),
-      orderBy("criadoEmServidor", "desc")
-    );
-
+    const obrasOrdenadas = query(collection(db, "obras"), orderBy("criadoEmServidor", "desc"));
     const querySnapshot = await getDocs(obrasOrdenadas);
-
-    if (querySnapshot.empty) {
-      lista.innerHTML = '<p>Nenhuma obra encontrada.</p>';
-      document.getElementById('totalObras').innerText = 0;
-      document.getElementById('obrasAndamento').innerText = 0;
-      document.getElementById('obrasConcluidas').innerText = 0;
-      document.getElementById('obrasPendentes').innerText = 0;
-      document.getElementById('obrasIniciar').innerText = 0;
-      document.getElementById('obrasCliente').innerText = 0;
-      document.getElementById('taxaConclusao').innerText = 'Taxa de conclusão: 0%';
-      return;
-    }
-
-    let html = '';
-    let totalObras = 0;
-    let obrasAndamento = 0;
-    let obrasConcluidas = 0;
-    let obrasPendentes = 0;
-    let obrasIniciar = 0;
-    let obrasCliente = 0;
+    obrasCache = [];
 
     querySnapshot.forEach((docItem) => {
-      totalObras++;
-
-      const obra = docItem.data();
-
-      if (obra.statusObra === 'Em andamento') obrasAndamento++;
-      if (obra.statusObra === 'Concluída') obrasConcluidas++;
-      if (obra.statusObra === 'Com pendência') obrasPendentes++;
-      if (obra.statusObra === 'A iniciar') obrasIniciar++;
-      if (obra.statusObra === 'Aguardando cliente') obrasCliente++;
-
-      html += `
-        <div class="item-relatorio
-          ${obra.statusObra === 'Concluída' ? 'borda-concluida' : ''}
-          ${obra.statusObra === 'Em andamento' ? 'borda-andamento' : ''}
-          ${obra.statusObra === 'Com pendência' ? 'borda-pendencia' : ''}
-          ${obra.statusObra === 'A iniciar' ? 'borda-iniciar' : ''}
-          ${obra.statusObra === 'Aguardando cliente' ? 'borda-cliente' : ''}
-        ">
-          <strong style="font-size:18px; color:#d4a017;">
-            ${obra.numeroObra || 'SEM NÚMERO'}
-          </strong><br><br>
-
-          <strong>Cliente:</strong> ${obra.cliente || ''}<br>
-          <strong>Endereço:</strong> ${obra.endereco || ''}<br>
-          <strong>Ambiente:</strong> ${obra.ambiente || ''}<br>
-          <strong>Data:</strong> ${obra.data || ''}<br>
-          <strong>Marceneiro:</strong> ${obra.marceneiro || ''}<br>
-          <strong>Assinado por:</strong> ${obra.nomeAssinante || 'Não informado'}<br>
-          <strong>CPF:</strong> ${obra.cpfAssinante || 'Não informado'}<br>
-          <strong>Status:</strong>
-          <span class="
-            ${obra.statusObra === 'Concluída' ? 'status status-concluida' : ''}
-            ${obra.statusObra === 'Em andamento' ? 'status status-andamento' : ''}
-            ${obra.statusObra === 'Com pendência' ? 'status status-pendencia' : ''}
-            ${obra.statusObra === 'A iniciar' ? 'status status-iniciar' : ''}
-            ${obra.statusObra === 'Aguardando cliente' ? 'status status-cliente' : ''}
-          ">
-            ${obra.statusObra || 'Não informado'}
-          </span><br>
-
-          <strong>Criado em:</strong> ${obra.criadoEm || ''}<br>
-
-          ${obra.assinaturaCliente ? `
-            <br>
-            <strong>Assinatura do Cliente:</strong><br>
-            <img src="${obra.assinaturaCliente}"
-              style="width:100%; max-width:300px; background:white; border:2px solid #ccc; border-radius:10px; margin-top:10px;">
-            <br>
-          ` : ''}
-
-          ${obra.fotoPisoUrl ? `
-            <br>
-            <img src="${obra.fotoPisoUrl}"
-              style="width:100%; border-radius:10px; margin-top:10px; border:2px solid #ccc;">
-            <br>
-          ` : ''}
-
-          <button class="botao-secundario" onclick="editarObra('${docItem.id}')">
-            Editar Obra
-          </button>
-
-          <button class="botao-perigo" onclick="excluirObra('${docItem.id}')">
-            Excluir Obra
-          </button>
-        </div>
-      `;
+      obrasCache.push({ id: docItem.id, ...docItem.data() });
     });
 
-    lista.innerHTML = html;
-
-    document.getElementById('ultimaAtualizacao').innerText =
-      'Última atualização: ' + new Date().toLocaleString('pt-BR');
-
-    document.getElementById('totalObras').innerText = totalObras;
-    document.getElementById('obrasAndamento').innerText = obrasAndamento;
-    document.getElementById('obrasConcluidas').innerText = obrasConcluidas;
-    document.getElementById('obrasPendentes').innerText = obrasPendentes;
-    document.getElementById('obrasIniciar').innerText = obrasIniciar;
-    document.getElementById('obrasCliente').innerText = obrasCliente;
-
-    const porcentagem =
-      totalObras > 0
-        ? Math.round((obrasConcluidas / totalObras) * 100)
-        : 0;
-
-    document.getElementById('taxaConclusao').innerText =
-      'Taxa de conclusão: ' + porcentagem + '%';
-
+    localStorage.setItem('obrasCacheCHObras', JSON.stringify(obrasCache));
+    renderizarHistorico(obrasCache);
   } catch (erro) {
     console.error(erro);
-    lista.innerHTML = '<p>Erro ao carregar histórico.</p>';
+    const cache = JSON.parse(localStorage.getItem('obrasCacheCHObras')) || [];
+    obrasCache = cache;
+    renderizarHistorico(cache);
+    const status = document.getElementById('statusConexao');
+    if (status) status.innerText = 'Status: usando cache local/offline.';
   }
 };
 
-window.filtrarHistorico = function() {
-  const texto = document.getElementById('buscaHistorico').value.toLowerCase();
-  const statusFiltro = document.getElementById('filtroStatus').value.toLowerCase();
-  const itens = document.querySelectorAll('.item-relatorio');
+function renderizarHistorico(obras) {
+  const lista = document.getElementById('listaHistorico');
 
-  itens.forEach((item) => {
-    const conteudo = item.innerText.toLowerCase();
-    const passaTexto = conteudo.includes(texto);
-    const passaStatus = !statusFiltro || conteudo.includes(statusFiltro);
-
-    item.style.display = (passaTexto && passaStatus) ? 'block' : 'none';
-  });
-};
-window.ocultarHistorico = function() {
-
-document.getElementById('historico').style.display = 'none';
-
-document.getElementById('dashboardResumo').style.display = 'none';
-
-};
-
-filtrarHistorico();
-
-    
-
-
-window.excluirObra = async function(id) {
-
-  const confirmar = confirm("Tem certeza que deseja excluir esta obra?");
-
-  if (!confirmar) {
+  if (!obras || obras.length === 0) {
+    lista.innerHTML = '<p>Nenhuma obra encontrada.</p>';
+    atualizarDashboard([]);
     return;
   }
 
+  let html = '';
+
+  obras.forEach((obra) => {
+    const fotos = Array.isArray(obra.fotosUrls) ? obra.fotosUrls : (obra.fotoPisoUrl ? [obra.fotoPisoUrl] : []);
+    const termoBusca = `${obra.numeroObra || ''} ${obra.cliente || ''} ${obra.endereco || ''} ${obra.ambiente || ''} ${obra.marceneiro || ''} ${obra.statusObra || ''} ${obra.cpfAssinante || ''}`.toLowerCase();
+
+    html += `
+      <div class="item-relatorio
+        ${obra.statusObra === 'Concluída' ? 'borda-concluida' : ''}
+        ${obra.statusObra === 'Em andamento' ? 'borda-andamento' : ''}
+        ${obra.statusObra === 'Com pendência' ? 'borda-pendencia' : ''}
+        ${obra.statusObra === 'A iniciar' ? 'borda-iniciar' : ''}
+        ${obra.statusObra === 'Aguardando cliente' ? 'borda-cliente' : ''}
+      " data-busca="${termoBusca}" data-status="${obra.statusObra || ''}">
+        <strong style="font-size:18px; color:#d4a017;">${obra.numeroObra || 'SEM NÚMERO'}</strong><br><br>
+
+        <strong>Cliente:</strong> ${obra.cliente || ''}<br>
+        <strong>Endereço:</strong> ${obra.endereco || ''}<br>
+        <strong>Ambiente:</strong> ${obra.ambiente || ''}<br>
+        <strong>Data:</strong> ${obra.data || ''}<br>
+        <strong>Marceneiro:</strong> ${obra.marceneiro || ''}<br>
+        <strong>Assinado por:</strong> ${obra.nomeAssinante || 'Não informado'}<br>
+        <strong>CPF:</strong> ${obra.cpfAssinante || 'Não informado'}<br>
+        <strong>Status:</strong>
+        <span class="
+          ${obra.statusObra === 'Concluída' ? 'status status-concluida' : ''}
+          ${obra.statusObra === 'Em andamento' ? 'status status-andamento' : ''}
+          ${obra.statusObra === 'Com pendência' ? 'status status-pendencia' : ''}
+          ${obra.statusObra === 'A iniciar' ? 'status status-iniciar' : ''}
+          ${obra.statusObra === 'Aguardando cliente' ? 'status status-cliente' : ''}
+        ">${obra.statusObra || 'Não informado'}</span><br>
+        <strong>Observações:</strong> ${obra.observacoes || 'Sem observações'}<br>
+
+        <div class="qr-box">
+          <div id="qr-${obra.id}"></div>
+          <div><strong>QR Code da Obra</strong><br><small>${obra.numeroObra || ''}</small></div>
+        </div>
+
+        ${obra.assinaturaCliente ? `
+          <br><strong>Assinatura do Cliente:</strong><br>
+          <img src="${obra.assinaturaCliente}" style="width:100%; max-width:300px; background:white; border:2px solid #ccc; border-radius:10px; margin-top:10px;">
+        ` : ''}
+
+        ${fotos.length > 0 ? `
+          <br><strong>Galeria de Fotos:</strong>
+          <div class="galeria-fotos">
+            ${fotos.map(url => `<img src="${url}" alt="Foto da obra">`).join('')}
+          </div>
+        ` : ''}
+
+        <button class="botao-secundario" onclick="editarObra('${obra.id}')">Editar Obra</button>
+        <button class="botao-secundario" onclick="gerarPDFDaObra('${obra.id}')">Gerar PDF desta Obra</button>
+        <button class="botao-perigo" onclick="excluirObra('${obra.id}')">Excluir Obra</button>
+      </div>
+    `;
+  });
+
+  lista.innerHTML = html;
+
+  obras.forEach((obra) => {
+    const qrContainer = document.getElementById(`qr-${obra.id}`);
+    if (qrContainer && !qrContainer.hasChildNodes()) {
+      new QRCode(qrContainer, { text: obra.numeroObra || obra.id, width: 70, height: 70 });
+    }
+  });
+
+  atualizarDashboard(obras);
+  filtrarHistorico();
+}
+
+function atualizarDashboard(obras) {
+  const totalObras = obras.length;
+  const obrasAndamento = obras.filter(o => o.statusObra === 'Em andamento').length;
+  const obrasConcluidas = obras.filter(o => o.statusObra === 'Concluída').length;
+  const obrasPendentes = obras.filter(o => o.statusObra === 'Com pendência').length;
+  const obrasIniciar = obras.filter(o => o.statusObra === 'A iniciar').length;
+  const obrasCliente = obras.filter(o => o.statusObra === 'Aguardando cliente').length;
+
+  document.getElementById('ultimaAtualizacao').innerText = 'Última atualização: ' + new Date().toLocaleString('pt-BR');
+  document.getElementById('totalObras').innerText = totalObras;
+  document.getElementById('obrasAndamento').innerText = obrasAndamento;
+  document.getElementById('obrasConcluidas').innerText = obrasConcluidas;
+  document.getElementById('obrasPendentes').innerText = obrasPendentes;
+  document.getElementById('obrasIniciar').innerText = obrasIniciar;
+  document.getElementById('obrasCliente').innerText = obrasCliente;
+
+  const porcentagem = totalObras > 0 ? Math.round((obrasConcluidas / totalObras) * 100) : 0;
+  document.getElementById('taxaConclusao').innerText = 'Taxa de conclusão: ' + porcentagem + '%';
+
+  const status = document.getElementById('statusConexao');
+  if (status) status.innerText = `Status: ${totalObras} obras carregadas no painel.`;
+}
+
+window.filtrarHistorico = function() {
+  const texto = document.getElementById('buscaHistorico').value.toLowerCase().trim();
+  const statusFiltro = document.getElementById('filtroStatus').value;
+  const termos = texto.split(' ').filter(Boolean);
+  const itens = document.querySelectorAll('.item-relatorio');
+
+  itens.forEach((item) => {
+    const busca = item.dataset.busca || item.innerText.toLowerCase();
+    const status = item.dataset.status || '';
+    const passaTexto = termos.length === 0 || termos.every(t => busca.includes(t));
+    const passaStatus = !statusFiltro || status === statusFiltro;
+    item.style.display = (passaTexto && passaStatus) ? 'block' : 'none';
+  });
+};
+
+window.ocultarHistorico = function() {
+  document.getElementById('historico').style.display = 'none';
+  document.getElementById('dashboardResumo').style.display = 'none';
+};
+
+window.excluirObra = async function(id) {
+  const confirmar = confirm("Tem certeza que deseja excluir esta obra?");
+  if (!confirmar) return;
+
   try {
-    mostrarLoading();
-
+    mostrarLoading('Excluindo obra...');
     await deleteDoc(doc(db, "obras", id));
-
     esconderLoading();
-
     alert('Obra excluída com sucesso.');
-
     mostrarHistorico();
-
   } catch (erro) {
     console.error(erro);
     esconderLoading();
@@ -1331,148 +1188,126 @@ window.excluirObra = async function(id) {
   }
 };
 
-window.enviarFotoParaStorage = async function(inputId, nomePasta) {
-  const input = document.getElementById(inputId);
-
-  if (!input || !input.files || input.files.length === 0) {
-    return "";
-  }
-
-  const arquivo = input.files[0];
-  const nomeArquivo = Date.now() + "-" + arquivo.name;
-  const caminho = nomePasta + "/" + nomeArquivo;
-
-  const referenciaArquivo = ref(storage, caminho);
-
-  await uploadBytes(referenciaArquivo, arquivo);
-
-  const urlDownload = await getDownloadURL(referenciaArquivo);
-
-  return urlDownload;
-};
 window.limparFormulario = function() {
+  document.getElementById('cliente').value = '';
+  document.getElementById('endereco').value = '';
+  document.getElementById('ambiente').value = '';
+  document.getElementById('marceneiro').value = '';
+  document.getElementById('statusObra').selectedIndex = 0;
+  document.getElementById('data').value = '';
+  document.getElementById('observacoes').value = '';
+  document.getElementById('nomeClienteAssinatura').value = '';
+  document.getElementById('cpfCliente').value = '';
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  assinaturaFeita = false;
 
-document.getElementById('cliente').value = '';
+  ['pisoMadeira', 'riscoPiso', 'paredePronta', 'eletricaPronta', 'localLimpo', 'medidasConferidas'].forEach(id => document.getElementById(id).selectedIndex = 0);
+  ['fotoPiso', 'fotoAmbiente', 'fotoParede', 'fotoAvaria'].forEach(id => document.getElementById(id).value = '');
 
-document.getElementById('endereco').value = '';
+  document.getElementById('relatorio').innerHTML = '';
+  document.getElementById('resultado').style.display = 'none';
+  window.idObraEditando = null;
+  window.numeroObraEditando = null;
+  document.getElementById('avisoEdicao').style.display = 'none';
+  document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';
+  alert('Formulário limpo para nova obra.');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 
-document.getElementById('ambiente').value = '';
-
-document.getElementById('marceneiro').value = '';
-
-document.getElementById('statusObra').selectedIndex = 0;
-
-document.getElementById('data').value = '';
-
-document.getElementById('observacoes').value = '';
-
-// document.getElementById('nomeAssinatura').value = '';
-
-document.getElementById('cpfCliente').value = '';
-
-ctx.clearRect(0, 0, canvas.width, canvas.height);
-document.getElementById('pisoMadeira').selectedIndex = 0;
-document.getElementById('riscoPiso').selectedIndex = 0;
-document.getElementById('paredePronta').selectedIndex = 0;
-document.getElementById('eletricaPronta').selectedIndex = 0;
-document.getElementById('localLimpo').selectedIndex = 0;
-document.getElementById('medidasConferidas').selectedIndex = 0;
-
-document.getElementById('fotoPiso').value = '';
-document.getElementById('fotoAmbiente').value = '';
-document.getElementById('fotoParede').value = '';
-document.getElementById('fotoAvaria').value = '';
-document.getElementById('relatorio').innerHTML = '';
-document.getElementById('resultado').style.display = 'none';  
-window.idObraEditando = null;
-document.getElementById('avisoEdicao').style.display = 'none';
-document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';  
-alert('Formulário limpo para nova obra.');
-
-window.scrollTo({
-top: 0,
-behavior: 'smooth'
-});
-
-};  
 window.editarObra = async function(id) {
-
   if (!id) {
-    esconderLoading();alert('Obra não encontrada.');
+    alert('Obra não encontrada.');
     return;
   }
 
   try {
+    let obraEncontrada = obrasCache.find(o => o.id === id);
 
-    const querySnapshot = await getDocs(collection(db, "obras"));
+    if (!obraEncontrada) {
+      const querySnapshot = await getDocs(collection(db, "obras"));
+      querySnapshot.forEach((docItem) => {
+        if (docItem.id === id) obraEncontrada = { id: docItem.id, ...docItem.data() };
+      });
+    }
 
-    querySnapshot.forEach((docItem) => {
+    if (!obraEncontrada) {
+      alert('Obra não encontrada.');
+      return;
+    }
 
-      if (docItem.id === id) {
+    const obra = obraEncontrada;
+    document.getElementById('cliente').value = obra.cliente || '';
+    document.getElementById('endereco').value = obra.endereco || '';
+    document.getElementById('ambiente').value = obra.ambiente || '';
+    document.getElementById('marceneiro').value = obra.marceneiro || '';
+    document.getElementById('statusObra').value = obra.statusObra || '';
+    document.getElementById('data').value = obra.data || '';
+    document.getElementById('nomeClienteAssinatura').value = obra.nomeAssinante || '';
+    document.getElementById('cpfCliente').value = obra.cpfAssinante || '';
+    document.getElementById('observacoes').value = obra.observacoes || '';
 
-        const obra = docItem.data();
-
-        document.getElementById('cliente').value =
-          obra.cliente || '';
-
-        document.getElementById('endereco').value =
-          obra.endereco || '';
-
-        document.getElementById('ambiente').value =
-          obra.ambiente || '';
-
-        document.getElementById('marceneiro').value =
-          obra.marceneiro || '';
-
-        document.getElementById('statusObra').value =
-          obra.statusObra || '';
-
-        document.getElementById('data').value =
-          obra.data || '';
-
-        document.getElementById('nomeClienteAssinatura').value =
-          obra.nomeAssinante || '';
-
-        document.getElementById('cpfCliente').value =
-          obra.cpfAssinante || '';
-
-        document.getElementById('observacoes').value =
-          obra.observacoes || '';
-
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-
-        esconderLoading();alert('Obra carregada para edição.');
     window.idObraEditando = id;
+    window.numeroObraEditando = obra.numeroObra || null;
+    document.getElementById('avisoEdicao').style.display = 'block';
+    document.getElementById('botaoSalvar').innerText = 'Atualizar Obra';
 
-   document.getElementById('avisoEdicao').style.display = 'block';
-
-   document.getElementById('botaoSalvar').innerText = 'Atualizar Obra';
-      }
-
-    });
-
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    alert('Obra carregada para edição.');
   } catch (erro) {
-
     console.error(erro);
+    alert('Erro ao carregar obra.');
+  }
+};
 
-    esconderLoading();alert('Erro ao carregar obra.');
+window.limparFiltrosHistorico = function() {
+  document.getElementById('buscaHistorico').value = '';
+  document.getElementById('filtroStatus').selectedIndex = 0;
+  filtrarHistorico();
+};
 
+window.exportarCSV = function() {
+  if (!obrasCache || obrasCache.length === 0) {
+    alert('Carregue o histórico antes de exportar.');
+    return;
   }
 
+  const cabecalho = ['Numero', 'Cliente', 'Endereco', 'Ambiente', 'Marceneiro', 'Status', 'Data', 'AssinadoPor', 'CPF'];
+  const linhas = obrasCache.map(o => [
+    o.numeroObra || '', o.cliente || '', o.endereco || '', o.ambiente || '', o.marceneiro || '', o.statusObra || '', o.data || '', o.nomeAssinante || '', o.cpfAssinante || ''
+  ]);
+
+  const csv = [cabecalho, ...linhas].map(linha => linha.map(campo => `"${String(campo).replace(/"/g, '""')}"`).join(';')).join('
+');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'relatorio-ch-obras.csv';
+  link.click();
+  URL.revokeObjectURL(url);
 };
-window.limparFiltrosHistorico = function() {
 
-  document.getElementById('buscaHistorico').value = '';
+window.gerarPDFDaObra = async function(id) {
+  const obra = obrasCache.find(o => o.id === id);
+  if (!obra) {
+    alert('Obra não encontrada para gerar PDF.');
+    return;
+  }
 
-  document.getElementById('filtroStatus').selectedIndex = 0;
-
-  filtrarHistorico();
-
-}; 
+  document.getElementById('cliente').value = obra.cliente || '';
+  document.getElementById('endereco').value = obra.endereco || '';
+  document.getElementById('ambiente').value = obra.ambiente || '';
+  document.getElementById('marceneiro').value = obra.marceneiro || '';
+  document.getElementById('statusObra').value = obra.statusObra || '';
+  document.getElementById('data').value = obra.data || '';
+  document.getElementById('nomeClienteAssinatura').value = obra.nomeAssinante || '';
+  document.getElementById('cpfCliente').value = obra.cpfAssinante || '';
+  document.getElementById('observacoes').value = obra.observacoes || '';
+  window.numeroObraAtualPDF = obra.numeroObra || null;
+  await gerarPDF();
+};
   </script>
+
 <div id="loadingOverlay" style="
 display:none;
 position:fixed;
@@ -1499,7 +1334,7 @@ border-radius:50%;
 animation:girar 1s linear infinite;
 margin-bottom:20px;"></div>
 
-Salvando obra...
+<div id="loadingTexto">Salvando obra...</div>
 
 </div>
 </body>
