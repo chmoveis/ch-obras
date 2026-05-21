@@ -557,16 +557,17 @@ Limpar Filtros
 </div>
 
   <script>
-    function pegarValor(id) {
-      function mostrarLoading() {
+function pegarValor(id) {
+  return document.getElementById(id).value;
+}
+
+function mostrarLoading() {
   document.getElementById('loadingOverlay').style.display = 'flex';
 }
 
 function esconderLoading() {
   document.getElementById('loadingOverlay').style.display = 'none';
 }
-      return document.getElementById(id).value;
-    }
 
     const canvas = document.getElementById('assinatura');
     const ctx = canvas.getContext('2d');
