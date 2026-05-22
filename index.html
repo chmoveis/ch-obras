@@ -1086,15 +1086,33 @@ const auth = getAuth(appFirebase);
 let obrasCache = [];
 
 window.fazerLogin = async function () {
-  const email = prompt("Digite seu e-mail:");
-  const senha = prompt("Digite sua senha:");
+
+  const email = document.getElementById('emailLogin').value;
+  const senha = document.getElementById('senhaLogin').value;
+
+  if (!email || !senha) {
+    alert('Digite e-mail e senha.');
+    return;
+  }
 
   try {
-    await signInWithEmailAndPassword(auth, email, senha);
-    alert("Login realizado com sucesso.");
-  } catch (error) {
-    alert("Erro no login: " + error.message);
+
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      senha
+    );
+
+    alert('Login realizado com sucesso.');
+
+    document.getElementById('telaLogin').style.display = 'none';
+
+  } catch (erro) {
+
+    alert('Erro no login: ' + erro.message);
+
   }
+
 };
 
 onAuthStateChanged(auth, (user) => {
