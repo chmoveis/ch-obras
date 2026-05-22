@@ -779,15 +779,15 @@ pdf.text(numeroObra, 170, 53, { align: 'center' });
   pdf.setFontSize(12);
   pdf.text('Dados da Obra', 15, 52);
   pdf.setFontSize(10);
-  pdf.text(`Cliente: ${cliente}`, 15, 55);
-  pdf.text(`Endereço: ${endereco}`, 15, 63);
-  pdf.text(`Ambiente: ${ambiente}`, 15, 71);
-  pdf.text(`Marceneiro: ${marceneiro}`, 15, 79);
-  pdf.text(`Status: ${statusObra}`, 15, 87);
-  pdf.text(`Data da instalação: ${data}`, 15, 95);
-  pdf.text(`Gerado em: ${dataGeracao}`, 15, 103);
-  pdf.text(`Assinado por: ${nomeAssinante}`, 15, 111);
-  pdf.text(`CPF: ${cpfAssinante}`, 15, 119);
+  pdf.text(`Cliente: ${cliente}`, 15, 63);
+  pdf.text(`Endereço: ${endereco}`, 15, 71);
+  pdf.text(`Ambiente: ${ambiente}`, 15, 79);
+  pdf.text(`Marceneiro: ${marceneiro}`, 15, 87);
+  pdf.text(`Status: ${statusObra}`, 15, 95);
+  pdf.text(`Data da instalação: ${data}`, 15, 103);
+  pdf.text(`Gerado em: ${dataGeracao}`, 15, 111);
+  pdf.text(`Assinado por: ${nomeAssinante}`, 15, 119);
+  pdf.text(`CPF: ${cpfAssinante}`, 15, 127);
 
   if (qrBase64) {
     pdf.addImage(qrBase64, 'PNG', 160, 62, 32, 32);
