@@ -1382,6 +1382,42 @@ window.gerarPDFDaObra = async function(id) {
   document.getElementById('nomeClienteAssinatura').value = obra.nomeAssinante || '';
   document.getElementById('cpfCliente').value = obra.cpfAssinante || '';
   document.getElementById('observacoes').value = obra.observacoes || '';
+  if (obra.assinaturaCliente) {
+
+  const imagem = new Image();
+
+  imagem.onload = function () {
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#ffffff';
+
+    ctx.fillRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    ctx.drawImage(
+      imagem,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    assinaturaFeita = true;
+  };
+
+  imagem.src = obra.assinaturaCliente;
+
+} else {
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  assinaturaFeita = false;
+}
   window.numeroObraAtualPDF = obra.numeroObra || null;
   await gerarPDF();
 };
