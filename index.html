@@ -823,7 +823,14 @@ if (assinaturaFeita) {
     const input = document.getElementById(id);
     if (input && input.files) fotos.push(...Array.from(input.files));
   });
+if (
+  window.fotosPDFHistorico &&
+  window.fotosPDFHistorico.length > 0
+) {
 
+  fotos.push(...window.fotosPDFHistorico);
+
+}
 if (fotos.length > 0) {
   pdf.addPage();
   pdf.setFontSize(14);
