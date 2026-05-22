@@ -669,7 +669,7 @@ function gerarNumeroObra() {
     : 1;
   localStorage.setItem('contadorObras', numeroSequencial);
   const numeroFormatado = String(numeroSequencial).padStart(4, '0');
-  return `OBRA-${anoAtual}-${numeroFormatado}`;
+  return 'OBRA-' + anoAtual + '-' + numeroFormatado;
 }
 
 function criarQRCodeBase64(texto) {
@@ -1120,7 +1120,7 @@ function renderizarHistorico(obras) {
   obras.forEach((obra) => {
     const qrContainer = document.getElementById(`qr-${obra.id}`);
     if (qrContainer && !qrContainer.hasChildNodes()) {
-      new QRCode(qrContainer, { text: obra.numeroObra || obra.id, width: 70, height: 70 });
+      new QRCode(qrContainer, { text: String(obra.numeroObra || obra.id), width: 70, height: 70 });
     }
   });
 
@@ -1148,7 +1148,7 @@ function atualizarDashboard(obras) {
   document.getElementById('taxaConclusao').innerText = 'Taxa de conclusão: ' + porcentagem + '%';
 
   const status = document.getElementById('statusConexao');
-  if (status) status.innerText = `Status: ${totalObras} obras carregadas no painel.`;
+  if (status) status.innerText = 'Status: ' + totalObras + ' obras carregadas no painel.';
 }
 
 window.filtrarHistorico = function() {
