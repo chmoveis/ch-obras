@@ -688,9 +688,42 @@ function criarQRCodeBase64(texto) {
 
 function lerArquivoComoDataURL(arquivo) {
   return new Promise((resolve, reject) => {
+
+    if (typeof arquivo === 'string') {
+      const img = new Image();
+
+      img.crossOrigin = 'anonymous';
+
+      img.onload = function() {
+        const canvasTemp = document.createElement('canvas');
+
+        canvasTemp.width = img.width;
+        canvasTemp.height = img.height;
+
+        const ctxTemp = canvasTemp.getContext('2d');
+
+        ctxTemp.drawImage(img, 0, 0);
+
+        resolve(canvasTemp.toDataURL('image/jpeg', 0.95));
+      };
+
+      img.onerror = function() {
+        reject('Erro ao carregar imagem da URL.');
+      };
+
+      img.src = arquivo;
+
+      return;
+    }
+
     const reader = new FileReader();
-    reader.onload = event => resolve(event.target.result);
+
+    reader.onload = function(event) {
+      resolve(event.target.result);
+    };
+
     reader.onerror = reject;
+
     reader.readAsDataURL(arquivo);
   });
 }
