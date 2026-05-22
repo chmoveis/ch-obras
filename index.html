@@ -1272,12 +1272,30 @@ window.exportarCSV = function() {
   }
 
   const cabecalho = ['Numero', 'Cliente', 'Endereco', 'Ambiente', 'Marceneiro', 'Status', 'Data', 'AssinadoPor', 'CPF'];
-  const linhas = obrasCache.map(o => [
-    o.numeroObra || '', o.cliente || '', o.endereco || '', o.ambiente || '', o.marceneiro || '', o.statusObra || '', o.data || '', o.nomeAssinante || '', o.cpfAssinante || ''
-  ]);
 
-  const csv = [cabecalho, ...linhas].map(linha => linha.map(campo => `"${String(campo).replace(/"/g, '""')}"`).join(';')).join('
+  const linhas = obrasCache.map(function(o) {
+    return [
+      o.numeroObra || '',
+      o.cliente || '',
+      o.endereco || '',
+      o.ambiente || '',
+      o.marceneiro || '',
+      o.statusObra || '',
+      o.data || '',
+      o.nomeAssinante || '',
+      o.cpfAssinante || ''
+    ];
+  });
+
+  const todasLinhas = [cabecalho].concat(linhas);
+
+  const csv = todasLinhas.map(function(linha) {
+    return linha.map(function(campo) {
+      return '"' + String(campo).replace(/"/g, '""') + '"';
+    }).join(';');
+  }).join('
 ');
+
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
