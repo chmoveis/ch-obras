@@ -790,7 +790,7 @@ pdf.text(numeroObra, 170, 53, { align: 'center' });
   pdf.text(`CPF: ${cpfAssinante}`, 15, 119);
 
   if (qrBase64) {
-    pdf.addImage(qrBase64, 'PNG', 160, 50, 32, 32);
+    pdf.addImage(qrBase64, 'PNG', 160, 62, 32, 32);
     pdf.setFontSize(8);
     pdf.text('QR Code da Obra', 160, 86);
   }
