@@ -1256,10 +1256,10 @@ try {
         'Usuário logado: ' + user.email;
     }
 
-    if (status) {
-      status.innerText =
-        'Status: usuário autenticado e Firebase conectado.';
-    }
+   if (usuarioTexto && user) {
+    usuarioTexto.innerText =
+        'Usuário logado: ' + user.email;
+}
 
   }
 
