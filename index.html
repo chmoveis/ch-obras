@@ -824,48 +824,41 @@ if (assinaturaFeita) {
     if (input && input.files) fotos.push(...Array.from(input.files));
   });
 
-  if (fotos.length > 0) {
-    pdf.addPage();
-    pdf.setFontSize(14);
-    pdf.text('Fotos da Obra', 15, 20);
-    let fx = 15;
-    let fy = 30;
+if (fotos.length > 0) {
+  pdf.addPage();
+  pdf.setFontSize(14);
+  pdf.text('Fotos da Obra', 15, 20);
 
-    for (let i = 0; i < Math.min(fotos.length, 6); i++) {
-      const img = await lerArquivoComoDataURL(fotos[i]);
-   pdf.setFontSize(10);
+  let fx = 15;
+  let fy = 30;
 
-pdf.text(
-  'Foto ' + (i + 1),
-  fx,
-  fy - 4
-);
+  for (let i = 0; i < Math.min(fotos.length, 6); i++) {
+    const img = await lerArquivoComoDataURL(fotos[i]);
 
-pdf.setDrawColor(180,180,180);
+    pdf.setFontSize(10);
+    pdf.text('Foto ' + (i + 1), fx, fy - 4);
 
-pdf.rect(
-  fx - 1,
-  fy - 1,
-  82,
-  57
-);
+    pdf.setDrawColor(180, 180, 180);
+    pdf.rect(fx - 1, fy - 1, 82, 57);
 
-pdf.addImage(
-  img,
-  'JPEG',
-  fx,
-  fy,
-  80,
-  55
-);
+    pdf.addImage(img, 'JPEG', fx, fy, 80, 55);
 
-  pdf.setProperties({
-    title: `Relatório ${numeroObra}`,
-    subject: 'Relatório de instalação CH Obras',
-    author: 'CH Móveis Sob Medida'
-  });
+    fx += 95;
 
-  pdf.save(`relatorio-ch-obras-${cliente}.pdf`);
+    if (fx > 110) {
+      fx = 15;
+      fy += 70;
+    }
+  }
+}
+
+pdf.setProperties({
+  title: 'Relatório ' + numeroObra,
+  subject: 'Relatório de instalação CH Obras',
+  author: 'CH Móveis Sob Medida'
+});
+
+pdf.save('relatorio-ch-obras-' + cliente + '.pdf');
 }
 
 async function salvarChecklist() {
