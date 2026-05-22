@@ -1505,6 +1505,10 @@ window.ocultarHistorico = function() {
 };
 
 window.excluirObra = async function(id) {
+  if (window.perfilUsuarioLogado !== 'admin') {
+  alert('Você não tem permissão para excluir obras.');
+  return;
+}
   const confirmar = confirm("Tem certeza que deseja excluir esta obra?");
   if (!confirmar) return;
 
