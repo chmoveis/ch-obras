@@ -1436,6 +1436,10 @@ window.gerarPDFDaObra = async function(id) {
   assinaturaFeita = false;
 }
   window.numeroObraAtualPDF = obra.numeroObra || null;
+  window.fotosPDFHistorico = Array.isArray(obra.fotosUrls)
+  ? obra.fotosUrls
+  : [];
+
   await gerarPDF();
 };
   </script>
