@@ -899,21 +899,16 @@ if (fotos.length > 0) {
     pdf.rect(fx - 1, fy - 1, 82, 57);
 
     pdf.addImage(img, 'JPEG', fx, fy, 80, 55);
-    fx += 95;
+fx += 95;
 
 if (fx > 110) {
-
   fx = 15;
-
   fy += 68;
 }
 
-if (fy > 215 && i < fotos.length - 1) {
-
+if (fy + 60 > 270 && i < fotos.length - 1) {
   pdf.addPage();
-
-  fy = 20;
-
+  fy = 30;
   fx = 15;
 }
 
