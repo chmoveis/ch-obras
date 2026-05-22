@@ -746,17 +746,34 @@ async function gerarPDF() {
   
   const qrBase64 = await criarQRCodeBase64(numeroObra);
 
-  pdf.setFillColor(10, 10, 10);
-  pdf.roundedRect(10, 8, 190, 26, 4, 4, 'F');
-  pdf.setTextColor(255, 255, 255);
-  pdf.setFontSize(18);
-  pdf.text('CH Obras', 105, 18, { align: 'center' });
-  pdf.setFontSize(10);
-  pdf.text('Relatório de Instalação - CH Móveis Sob Medida', 105, 26, { align: 'center' });
+// CABEÇALHO PREMIUM
+pdf.setFillColor(8, 8, 8);
+pdf.roundedRect(10, 8, 190, 34, 5, 5, 'F');
 
-  pdf.setTextColor(212, 160, 23);
-  pdf.setFontSize(13);
-  pdf.text(numeroObra, 150, 44);
+pdf.setDrawColor(212, 160, 23);
+pdf.setLineWidth(0.8);
+pdf.line(15, 40, 195, 40);
+
+pdf.setTextColor(255, 255, 255);
+pdf.setFontSize(20);
+pdf.text('CH Obras', 105, 20, { align: 'center' });
+
+pdf.setFontSize(10);
+pdf.text('Relatório Técnico de Instalação', 105, 28, { align: 'center' });
+
+pdf.setFontSize(9);
+pdf.text('CH Móveis Sob Medida', 105, 35, { align: 'center' });
+
+// NÚMERO DA OBRA
+pdf.setFillColor(255, 255, 255);
+pdf.roundedRect(145, 46, 50, 10, 2, 2, 'F');
+
+pdf.setDrawColor(212, 160, 23);
+pdf.roundedRect(145, 46, 50, 10, 2, 2, 'S');
+
+pdf.setTextColor(212, 160, 23);
+pdf.setFontSize(10);
+pdf.text(numeroObra, 170, 53, { align: 'center' });
 
   pdf.setTextColor(0, 0, 0);
   pdf.setFontSize(12);
