@@ -833,14 +833,31 @@ if (assinaturaFeita) {
 
     for (let i = 0; i < Math.min(fotos.length, 6); i++) {
       const img = await lerArquivoComoDataURL(fotos[i]);
-      pdf.addImage(img, 'JPEG', fx, fy, 80, 55);
-      fx += 95;
-      if (fx > 110) {
-        fx = 15;
-        fy += 70;
-      }
-    }
-  }
+   pdf.setFontSize(10);
+
+pdf.text(
+  'Foto ' + (i + 1),
+  fx,
+  fy - 4
+);
+
+pdf.setDrawColor(180,180,180);
+
+pdf.rect(
+  fx - 1,
+  fy - 1,
+  82,
+  57
+);
+
+pdf.addImage(
+  img,
+  'JPEG',
+  fx,
+  fy,
+  80,
+  55
+);
 
   pdf.setProperties({
     title: `Relatório ${numeroObra}`,
