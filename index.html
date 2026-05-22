@@ -600,7 +600,21 @@ Entrar
     <div id="avisoEdicao" style="display:none; background:#fff3cd; border:1px solid #d4a017; padding:12px; border-radius:10px; margin-top:20px; font-weight:bold; text-align:center;">
       Modo edição ativo
     </div>
-
+<div id="barraUsuario" style="
+display:none;
+background:#111;
+color:white;
+padding:12px;
+border-radius:14px;
+margin-top:20px;
+text-align:center;
+font-size:14px;
+">
+  <div id="usuarioLogadoTexto">Usuário logado</div>
+  <button type="button" onclick="logoutApp()" class="botao-secundario">
+    Sair do sistema
+  </button>
+</div>
     <button id="botaoSalvar" onclick="salvarChecklist()">Salvar Checklist</button>
     <button type="button" onclick="limparFormulario()" class="botao-secundario">Nova Obra / Limpar Formulário</button>
     <button onclick="gerarPDF()" class="botao-secundario">Gerar Relatório / PDF</button>
