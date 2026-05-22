@@ -708,37 +708,7 @@ async function gerarPDF() {
   const observacoes = pegarValor('observacoes') || 'Sem observações';
   const numeroObra = window.numeroObraAtualPDF || gerarNumeroObra();
   const dataGeracao = new Date().toLocaleString('pt-BR');
-  pdf.setFontSize(12);
-pdf.text('Assinatura do Cliente', 15, y);
-
-if (assinaturaFeita) {
-  const canvasAssinatura = document.createElement('canvas');
-  canvasAssinatura.width = canvas.width;
-  canvasAssinatura.height = canvas.height;
-
-  const ctxAssinatura = canvasAssinatura.getContext('2d');
-
-  ctxAssinatura.fillStyle = '#ffffff';
-  ctxAssinatura.fillRect(0, 0, canvasAssinatura.width, canvasAssinatura.height);
-  ctxAssinatura.drawImage(canvas, 0, 0);
-
-  const assinaturaBase64 = canvasAssinatura.toDataURL('image/jpeg', 1.0);
-
-  pdf.setDrawColor(180, 180, 180);
-  pdf.rect(15, y + 4, 80, 30);
-
-  pdf.addImage(
-    assinaturaBase64,
-    'JPEG',
-    15,
-    y + 4,
-    80,
-    30
-  );
-} else {
-  pdf.setFontSize(9);
-  pdf.text('Assinatura não registrada no momento da geração do PDF.', 15, y + 12);
-}
+  
   const qrBase64 = await criarQRCodeBase64(numeroObra);
 
   pdf.setFillColor(10, 10, 10);
@@ -797,9 +767,54 @@ if (assinaturaFeita) {
   pdf.text(observacoes, 15, y + 14, { maxWidth: 180 });
   y += 34;
 
-  pdf.setFontSize(12);
-  pdf.text('Assinatura do Cliente', 15, y);
-  pdf.addImage(assinatura, 'PNG', 15, y + 4, 80, 30);
+ pdf.setFontSize(12);
+pdf.text('Assinatura do Cliente', 15, y);
+
+if (assinaturaFeita) {
+
+  const canvasAssinatura = document.createElement('canvas');
+
+  canvasAssinatura.width = canvas.width;
+  canvasAssinatura.height = canvas.height;
+
+  const ctxAssinatura = canvasAssinatura.getContext('2d');
+
+  ctxAssinatura.fillStyle = '#ffffff';
+  ctxAssinatura.fillRect(
+    0,
+    0,
+    canvasAssinatura.width,
+    canvasAssinatura.height
+  );
+
+  ctxAssinatura.drawImage(canvas, 0, 0);
+
+  const assinaturaBase64 =
+    canvasAssinatura.toDataURL('image/jpeg', 1.0);
+
+  pdf.setDrawColor(180, 180, 180);
+
+  pdf.rect(15, y + 4, 80, 30);
+
+  pdf.addImage(
+    assinaturaBase64,
+    'JPEG',
+    15,
+    y + 4,
+    80,
+    30
+  );
+
+} else {
+
+  pdf.setFontSize(9);
+
+  pdf.text(
+    'Assinatura nao registrada.',
+    15,
+    y + 12
+  );
+}
 
   const fotos = [];
   ['fotoPiso', 'fotoAmbiente', 'fotoParede', 'fotoAvaria'].forEach(id => {
