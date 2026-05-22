@@ -1207,15 +1207,57 @@ window.fazerLogin = async function () {
 };
 
 onAuthStateChanged(auth, (user) => {
+
+  const status = document.getElementById('statusConexao');
+  const barraUsuario = document.getElementById('barraUsuario');
+  const usuarioTexto = document.getElementById('usuarioLogadoTexto');
+
   if (!user) {
-    setTimeout(() => {
-      window.fazerLogin();
-    }, 500);
+
+    document.getElementById('telaLogin').style.display = 'flex';
+
+    if (barraUsuario) {
+      barraUsuario.style.display = 'none';
+    }
+
   } else {
-    const status = document.getElementById('statusConexao');
-    if (status) status.innerText = 'Status: usuário autenticado e Firebase conectado.';
+
+    document.getElementById('telaLogin').style.display = 'none';
+
+    if (barraUsuario) {
+      barraUsuario.style.display = 'block';
+    }
+
+    if (usuarioTexto) {
+      usuarioTexto.innerText =
+        'Usuário logado: ' + user.email;
+    }
+
+    if (status) {
+      status.innerText =
+        'Status: usuário autenticado e Firebase conectado.';
+    }
+
   }
+
 });
+window.logoutApp = async function () {
+
+  try {
+
+    await signOut(auth);
+
+    alert('Logout realizado com sucesso.');
+
+    location.reload();
+
+  } catch (erro) {
+
+    alert('Erro ao sair: ' + erro.message);
+
+  }
+
+};    
 
 window.logoutApp = async function () {
   await signOut(auth);
