@@ -1206,7 +1206,7 @@ window.fazerLogin = async function () {
 
 };
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
 
   const status = document.getElementById('statusConexao');
   const barraUsuario = document.getElementById('barraUsuario');
