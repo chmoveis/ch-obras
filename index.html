@@ -1443,7 +1443,9 @@ function renderizarHistorico(obras) {
 
         <button class="botao-secundario" onclick="editarObra('${obra.id}')">Editar Obra</button>
         <button class="botao-secundario" onclick="gerarPDFDaObra('${obra.id}')">Gerar PDF desta Obra</button>
-        <button class="botao-perigo" onclick="excluirObra('${obra.id}')">Excluir Obra</button>
+        ${window.perfilUsuarioLogado === 'admin' ? `
+  <button class="botao-perigo" onclick="excluirObra('${obra.id}')">Excluir Obra</button>
+` : ''}
       </div>
     `;
   });
