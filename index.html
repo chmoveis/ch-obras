@@ -931,7 +931,38 @@ pdf.setProperties({
   subject: 'Relatório de instalação CH Obras',
   author: 'CH Móveis Sob Medida'
 });
+// RODAPÉ PROFISSIONAL
+const totalPaginas = pdf.getNumberOfPages();
 
+for (let i = 1; i <= totalPaginas; i++) {
+  pdf.setPage(i);
+
+  pdf.setDrawColor(212, 160, 23);
+  pdf.line(15, 285, 195, 285);
+
+  pdf.setFontSize(8);
+  pdf.setTextColor(100, 100, 100);
+
+  pdf.text(
+    'CH Obras - Documento gerado automaticamente',
+    15,
+    291
+  );
+
+  pdf.text(
+    'Obra: ' + numeroObra,
+    105,
+    291,
+    { align: 'center' }
+  );
+
+  pdf.text(
+    'Página ' + i + ' de ' + totalPaginas,
+    195,
+    291,
+    { align: 'right' }
+  );
+}
 pdf.save('relatorio-ch-obras-' + cliente + '.pdf');
 }
 
