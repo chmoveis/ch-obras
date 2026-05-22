@@ -1211,7 +1211,29 @@ onAuthStateChanged(auth, (user) => {
   const status = document.getElementById('statusConexao');
   const barraUsuario = document.getElementById('barraUsuario');
   const usuarioTexto = document.getElementById('usuarioLogadoTexto');
+let perfilUsuario = 'usuario';
 
+try {
+
+    const usuarioRef = doc(db, 'usuarios', user.email);
+
+    const usuarioSnap = await getDoc(usuarioRef);
+
+    if (usuarioSnap.exists()) {
+
+        const dadosUsuario = usuarioSnap.data();
+
+        perfilUsuario = dadosUsuario.perfil || 'usuario';
+
+        console.log('Perfil do usuário:', perfilUsuario);
+
+    }
+
+} catch (erro) {
+
+    console.log('Erro ao carregar perfil:', erro);
+
+}
   if (!user) {
 
     document.getElementById('telaLogin').style.display = 'flex';
