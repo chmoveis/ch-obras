@@ -889,27 +889,29 @@ if (fotos.length > 0) {
   let fx = 15;
   let fy = 30;
 
-  for (let i = 0; i < Math.min(fotos.length, 6); i++) {
-    const img = await lerArquivoComoDataURL(fotos[i]);
+ for (let i = 0; i < Math.min(fotos.length, 6); i++) {
+  const img = await lerArquivoComoDataURL(fotos[i]);
 
-    pdf.setFontSize(10);
-    pdf.text('Foto ' + (i + 1), fx, fy - 4);
+  if (fy + 60 > 250) {
+    pdf.addPage();
+    fy = 30;
+    fx = 15;
+  }
 
-    pdf.setDrawColor(180, 180, 180);
-    pdf.rect(fx - 1, fy - 1, 82, 57);
+  pdf.setFontSize(10);
+  pdf.text('Foto ' + (i + 1), fx, fy - 4);
 
-    pdf.addImage(img, 'JPEG', fx, fy, 80, 55);
-fx += 95;
+  pdf.setDrawColor(180, 180, 180);
+  pdf.rect(fx - 1, fy - 1, 82, 57);
 
-if (fx > 110) {
-  fx = 15;
-  fy += 68;
-}
+  pdf.addImage(img, 'JPEG', fx, fy, 80, 55);
 
-if (fy + 60 > 270 && i < fotos.length - 1) {
-  pdf.addPage();
-  fy = 30;
-  fx = 15;
+  fx += 95;
+
+  if (fx > 110) {
+    fx = 15;
+    fy += 68;
+  }
 }
 
     fx += 95;
