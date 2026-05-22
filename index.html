@@ -958,9 +958,13 @@ for (let i = 1; i <= totalPaginas; i++) {
     165,
     295,
     { align: 'right' }
-  );
+);
+
 }
-pdf.save('relatorio-ch-obras-' + cliente + '.pdf');
+
+pdf.save(`relatorio-ch-obras-${cliente}.pdf`);
+
+}
 
 
 async function salvarChecklist() {
