@@ -623,6 +623,7 @@ function iniciarAssinatura(evento) {
   const p = posicao(evento);
   ctx.beginPath();
   ctx.moveTo(p.x, p.y);
+  
 }
 
 function desenharAssinatura(evento) {
@@ -631,6 +632,7 @@ function desenharAssinatura(evento) {
   const p = posicao(evento);
   ctx.lineTo(p.x, p.y);
   ctx.stroke();
+  assinaturaFeita = true;
 }
 
 function pararAssinatura() {
