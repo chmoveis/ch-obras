@@ -1373,9 +1373,20 @@ window.mostrarHistorico = async function() {
    let obrasOrdenadas;
 
 if (window.perfilUsuarioLogado === 'admin') {
-  obrasOrdenadas = query(collection(db, "obras"), orderBy("criadoEmServidor", "desc"));
+
+  obrasOrdenadas = query(
+    collection(db, "obras"),
+    orderBy("criadoEmServidor", "desc")
+  );
+
 } else {
-  obrasOrdenadas = query(collection(db, "obras"), orderBy("criadoEmServidor", "desc"));
+
+  obrasOrdenadas = query(
+    collection(db, "obras"),
+    where("emailUsuario", "==", window.usuarioEmailLogado),
+    orderBy("criadoEmServidor", "desc")
+  );
+
 }
 
 const querySnapshot = await getDocs(obrasOrdenadas);
