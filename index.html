@@ -1233,8 +1233,9 @@ try {
 
         perfilUsuario = dadosUsuario.perfil || 'usuario';
 
-        console.log('Perfil do usuário:', perfilUsuario);
-window.perfilUsuarioLogado = perfilUsuario;
+       console.log('Perfil do usuário:', perfilUsuario);
+       window.perfilUsuarioLogado = perfilUsuario;
+       window.usuarioEmailLogado = user.email;
     }
 
 } catch (erro) {
