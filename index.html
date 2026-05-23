@@ -1370,8 +1370,15 @@ window.mostrarHistorico = async function() {
   document.getElementById('dashboardResumo').style.display = 'block';
 
   try {
-    const obrasOrdenadas = query(collection(db, "obras"), orderBy("criadoEmServidor", "desc"));
-    const querySnapshot = await getDocs(obrasOrdenadas);
+   let obrasOrdenadas;
+
+if (window.perfilUsuarioLogado === 'admin') {
+  obrasOrdenadas = query(collection(db, "obras"), orderBy("criadoEmServidor", "desc"));
+} else {
+  obrasOrdenadas = query(collection(db, "obras"), orderBy("criadoEmServidor", "desc"));
+}
+
+const querySnapshot = await getDocs(obrasOrdenadas);
     obrasCache = [];
 
     querySnapshot.forEach((docItem) => {
