@@ -319,6 +319,81 @@ button.botao-excluir:hover,
   box-shadow: 0 6px 18px rgba(0,0,0,0.10);
 }
 
+.dashboard-profissional {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(17,17,17,0.96), rgba(58,58,58,0.92));
+  color: #ffffff;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.24);
+  border: 1px solid rgba(212,160,23,0.45);
+}
+
+.dashboard-profissional h2 {
+  color: #ffffff;
+  border-bottom: 2px solid #d4a017;
+  margin-top: 0;
+}
+
+.dashboard-subtitulo {
+  color: #f3f3f3;
+  font-size: 13px;
+  margin-top: -6px;
+  margin-bottom: 14px;
+}
+
+.cards-resumo.dashboard-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.dashboard-profissional .card-resumo {
+  background: rgba(255,255,255,0.96);
+  color: #111;
+  border-left: 6px solid #d4a017;
+}
+
+.dashboard-profissional .card-resumo p {
+  color: #111;
+}
+
+.dashboard-barra {
+  margin-top: 14px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 999px;
+  overflow: hidden;
+  height: 14px;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+.dashboard-barra-preenchida {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #d4a017, #f5cf5c);
+  border-radius: 999px;
+  transition: width 0.35s ease;
+}
+
+.dashboard-info {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.10);
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.perfil-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(212,160,23,0.18);
+  color: #ffd76b;
+  font-weight: bold;
+  border: 1px solid rgba(212,160,23,0.45);
+}
+
 canvas {
   width: 100%;
   height: 180px;
@@ -627,7 +702,7 @@ Nova Obra / Limpar Formulário
     <button onclick="gerarPDF()" class="botao-secundario">Gerar Relatório / PDF</button>
     <button onclick="mostrarHistorico()">Ver Histórico de Obras</button>
     <button type="button" onclick="ocultarHistorico()" class="botao-secundario">Ocultar Histórico</button>
-    <button type="button" onclick="exportarCSV()" class="botao-secundario">Exportar Relatório CSV</button>
+    <button type="button" onclick="exportarCSV()" class="botao-secundario" id="btnExportarCSV">Exportar Relatório CSV</button>
     <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="botao-secundario">Voltar ao Topo</button>
 
     <div class="area-visualizar">
@@ -640,24 +715,31 @@ Nova Obra / Limpar Formulário
     </div>
 
     <div class="resultado" id="dashboardResumo">
-      <h2>Resumo das Obras</h2>
-      <p id="ultimaAtualizacao" style="font-size:12px; color:#666; margin-top:-10px;">Última atualização: --</p>  
+      <div class="dashboard-profissional">
+        <h2>Dashboard Profissional</h2>
+        <p class="dashboard-subtitulo">Visão executiva das obras cadastradas no CH Obras</p>
+        <p id="ultimaAtualizacao" style="font-size:12px; color:#f3f3f3; margin-top:-4px;">Última atualização: --</p>
 
-      <div class="cards-resumo">
-        <div class="card-resumo"><h3>📋 Total</h3><p id="totalObras">0</p></div>
-        <div class="card-resumo"><h3>🔵 A iniciar</h3><p id="obrasIniciar">0</p></div>
-        <div class="card-resumo"><h3>🟡 Em andamento</h3><p id="obrasAndamento">0</p></div>
-        <div class="card-resumo"><h3>🟣 Aguardando cliente</h3><p id="obrasCliente">0</p></div>
-        <div class="card-resumo"><h3>🔴 Com pendência</h3><p id="obrasPendentes">0</p></div>
-        <div class="card-resumo"><h3>🟢 Concluídas</h3><p id="obrasConcluidas">0</p></div>
-      </div>
+        <div class="cards-resumo dashboard-grid">
+          <div class="card-resumo"><h3>📋 Total de obras</h3><p id="totalObras">0</p></div>
+          <div class="card-resumo"><h3>🟢 Concluídas</h3><p id="obrasConcluidas">0</p></div>
+          <div class="card-resumo"><h3>🟡 Em andamento</h3><p id="obrasAndamento">0</p></div>
+          <div class="card-resumo"><h3>🔴 Pendências</h3><p id="obrasPendentes">0</p></div>
+          <div class="card-resumo"><h3>🔵 A iniciar</h3><p id="obrasIniciar">0</p></div>
+          <div class="card-resumo"><h3>🟣 Aguardando cliente</h3><p id="obrasCliente">0</p></div>
+        </div>
 
-      <p id="taxaConclusao" style="text-align:center; font-weight:bold; margin-top:15px;">Taxa de conclusão: 0%</p>
+        <p id="taxaConclusao" style="text-align:center; font-weight:bold; margin-top:15px;">Taxa de conclusão: 0%</p>
+        <div class="dashboard-barra">
+          <div id="barraConclusao" class="dashboard-barra-preenchida"></div>
+        </div>
 
-      <div class="painel-admin">
-        <h2>Painel Administrativo</h2>
-        <p><strong>Uso:</strong> acompanhamento de obras, edição, exclusão, busca, filtro, fotos, QR Code e exportação.</p>
-        <p id="statusConexao" style="font-size:13px; color:#666;">Status: aguardando carregamento.</p>
+        <div class="dashboard-info">
+          <strong>Painel Administrativo</strong><br>
+          Acompanhamento de obras, edição, exclusão por perfil, busca inteligente, filtro por status, fotos, QR Code, PDF e exportação.
+          <br><span id="perfilPainel" class="perfil-badge">Perfil: aguardando login</span>
+          <p id="statusConexao" style="font-size:13px; color:#f5f5f5; margin-bottom:0;">Status: aguardando carregamento.</p>
+        </div>
       </div>
 
       <div class="resultado" id="historico">
@@ -1222,81 +1304,88 @@ onAuthStateChanged(auth, async (user) => {
   const status = document.getElementById('statusConexao');
   const barraUsuario = document.getElementById('barraUsuario');
   const usuarioTexto = document.getElementById('usuarioLogadoTexto');
-let perfilUsuario = 'usuario';
+  const perfilPainel = document.getElementById('perfilPainel');
+  const btnLimpar = document.getElementById('btnLimparFormulario');
+  const btnExportar = document.getElementById('btnExportarCSV');
 
-try {
+  window.perfilUsuarioLogado = 'usuario';
+  window.usuarioEmailLogado = '';
 
+  if (!user) {
+    document.getElementById('telaLogin').style.display = 'flex';
+
+    if (barraUsuario) barraUsuario.style.display = 'none';
+    if (perfilPainel) perfilPainel.innerText = 'Perfil: aguardando login';
+    if (status) status.innerText = 'Status: aguardando autenticação.';
+
+    return;
+  }
+
+  window.usuarioEmailLogado = user.email || '';
+
+  let perfilUsuario = 'usuario';
+  let usuarioAtivo = true;
+
+  try {
     const usuarioRef = doc(db, 'usuarios', user.email);
-
     const usuarioSnap = await getDoc(usuarioRef);
 
     if (usuarioSnap.exists()) {
-
-        const dadosUsuario = usuarioSnap.data();
-
-        perfilUsuario = dadosUsuario.perfil || 'usuario';
-
-       console.log('Perfil do usuário:', perfilUsuario);
-       window.perfilUsuarioLogado = perfilUsuario;
-       window.usuarioEmailLogado = user.email;
+      const dadosUsuario = usuarioSnap.data();
+      perfilUsuario = dadosUsuario.perfil || 'usuario';
+      usuarioAtivo = dadosUsuario.ativo !== false;
     }
 
-} catch (erro) {
+    console.log('Perfil do usuário:', perfilUsuario);
 
+  } catch (erro) {
     console.log('Erro ao carregar perfil:', erro);
+  }
 
-}
-  if (!user) {
+  if (!usuarioAtivo) {
+    alert('Usuário inativo. Fale com o administrador.');
+    await signOut(auth);
+    location.reload();
+    return;
+  }
 
-    document.getElementById('telaLogin').style.display = 'flex';
+  window.perfilUsuarioLogado = perfilUsuario;
 
-    if (barraUsuario) {
-      barraUsuario.style.display = 'none';
-    }
+  document.getElementById('telaLogin').style.display = 'none';
 
+  if (barraUsuario) barraUsuario.style.display = 'block';
+
+  if (usuarioTexto) {
+    usuarioTexto.innerText = 'Usuário logado: ' + user.email + ' | Perfil: ' + perfilUsuario;
+  }
+
+  if (perfilPainel) {
+    perfilPainel.innerText = 'Perfil: ' + perfilUsuario;
+  }
+
+  if (status) {
+    status.innerText = 'Status: usuário autenticado e Firebase conectado.';
+  }
+
+  if (perfilUsuario === 'marceneiro') {
+    if (btnLimpar) btnLimpar.style.display = 'none';
+    if (btnExportar) btnExportar.style.display = 'none';
   } else {
-
-    document.getElementById('telaLogin').style.display = 'none';
-
-    if (barraUsuario) {
-      barraUsuario.style.display = 'block';
-    }
-
-    if (usuarioTexto) {
-      usuarioTexto.innerText =
-        'Usuário logado: ' + user.email;
-    }
-
-   if (usuarioTexto && user) {
-    usuarioTexto.innerText =
-        'Usuário logado: ' + user.email;
-}
-
+    if (btnLimpar) btnLimpar.style.display = 'block';
+    if (btnExportar) btnExportar.style.display = 'block';
   }
 
 });
 window.logoutApp = async function () {
 
   try {
-
     await signOut(auth);
-
     alert('Logout realizado com sucesso.');
-
     location.reload();
-
   } catch (erro) {
-
     alert('Erro ao sair: ' + erro.message);
-
   }
 
-};    
-
-window.logoutApp = async function () {
-  await signOut(auth);
-  alert("Logout realizado.");
-  location.reload();
 };
 
 window.enviarFotosParaStorage = async function(inputIds, nomePasta) {
@@ -1510,6 +1599,16 @@ function atualizarDashboard(obras) {
 
   const porcentagem = totalObras > 0 ? Math.round((obrasConcluidas / totalObras) * 100) : 0;
   document.getElementById('taxaConclusao').innerText = 'Taxa de conclusão: ' + porcentagem + '%';
+
+  const barraConclusao = document.getElementById('barraConclusao');
+  if (barraConclusao) {
+    barraConclusao.style.width = porcentagem + '%';
+  }
+
+  const perfilPainel = document.getElementById('perfilPainel');
+  if (perfilPainel) {
+    perfilPainel.innerText = 'Perfil: ' + (window.perfilUsuarioLogado || 'usuario');
+  }
 
   const status = document.getElementById('statusConexao');
   if (status) status.innerText = 'Status: ' + totalObras + ' obras carregadas no painel.';
