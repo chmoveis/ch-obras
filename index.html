@@ -1552,18 +1552,21 @@ function renderizarHistorico(obras) {
         <strong>Marceneiro:</strong> ${obra.marceneiro || ''}<br>
         <strong>Assinado por:</strong> ${obra.nomeAssinante || 'Não informado'}<br>
         <strong>CPF:</strong> ${obra.cpfAssinante || 'Não informado'}<br>
-        <strong>Status:</strong>
-        <span class="
-        <strong>Prioridade:</strong>
-
-<span class="
-${obra.prioridadeObra === 'Urgente' ? 'status status-pendencia' : ''}
-${obra.prioridadeObra === 'Alta' ? 'status status-cliente' : ''}
-${obra.prioridadeObra === 'Média' ? 'status status-iniciar' : ''}
-${obra.prioridadeObra === 'Baixa' ? 'status status-concluida' : ''}
-">
-${obra.prioridadeObra || 'Média'}
-</span><br>
+       <strong>Status:</strong>
+<span class="${
+obra.statusObra === 'Finalizada' ? 'status status-concluida' :
+obra.statusObra === 'Em produção' ? 'status status-producao' :
+obra.statusObra === 'Em montagem' ? 'status status-montagem' :
+obra.statusObra === 'Em medição' ? 'status status-medicao' :
+obra.statusObra === 'Em conferência' ? 'status status-conferencia' :
+obra.statusObra === 'Com pendência' ? 'status status-pendencia' :
+obra.statusObra === 'A iniciar' ? 'status status-iniciar' :
+obra.statusObra === 'Aguardando cliente' ? 'status status-cliente' :
+obra.statusObra === 'Cancelada' ? 'status status-cancelada' :
+''
+}">
+${obra.statusObra || 'Não informado'}
+</span><br> 
           ${obra.statusObra === 'Finalizada' ? 'status status-concluida' : ''}
           ${obra.statusObra === 'Em produção' ? 'status status-producao' : ''}
           ${obra.statusObra === 'Com pendência' ? 'status status-pendencia' : ''}
