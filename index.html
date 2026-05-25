@@ -1662,7 +1662,32 @@ ${obra.prioridadeObra || 'Média'}
 <div class="${obra.statusObra === 'Finalizada' ? 'timeline-etapa ativa' : 'timeline-etapa'}">
 🟢 Finalizada
 </div>
+<div class="barra-progresso-container">
+<div class="barra-progresso-fill"
+style="width:${
+obra.statusObra === 'A iniciar' ? '10%' :
+obra.statusObra === 'Em medição' ? '25%' :
+obra.statusObra === 'Em produção' ? '50%' :
+obra.statusObra === 'Em montagem' ? '75%' :
+obra.statusObra === 'Em conferência' ? '90%' :
+obra.statusObra === 'Finalizada' ? '100%' :
+'5%'
+};">
+</div>
+</div>
 
+<div class="texto-progresso">
+${
+obra.statusObra === 'A iniciar' ? '10%' :
+obra.statusObra === 'Em medição' ? '25%' :
+obra.statusObra === 'Em produção' ? '50%' :
+obra.statusObra === 'Em montagem' ? '75%' :
+obra.statusObra === 'Em conferência' ? '90%' :
+obra.statusObra === 'Finalizada' ? '100%' :
+'5%'
+}
+concluído
+</div>
 </div>
         <div class="qr-box">
           <div id="qr-${obra.id}"></div>
