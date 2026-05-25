@@ -1615,7 +1615,33 @@ obra.prioridadeObra === 'Baixa' ? 'status status-concluida' :
 ${obra.prioridadeObra || 'Média'}
 </span><br>
         <strong>Observações:</strong> ${obra.observacoes || 'Sem observações'}<br>
+<div class="timeline-obra">
 
+<div class="${obra.statusObra === 'A iniciar' ? 'timeline-etapa ativa' : 'timeline-etapa'}">
+🟡 A iniciar
+</div>
+
+<div class="${obra.statusObra === 'Em medição' ? 'timeline-etapa ativa' : 'timeline-etapa'}">
+🔵 Medição
+</div>
+
+<div class="${obra.statusObra === 'Em produção' ? 'timeline-etapa ativa' : 'timeline-etapa'}">
+🟣 Produção
+</div>
+
+<div class="${obra.statusObra === 'Em montagem' ? 'timeline-etapa ativa' : 'timeline-etapa'}">
+🔧 Montagem
+</div>
+
+<div class="${obra.statusObra === 'Em conferência' ? 'timeline-etapa ativa' : 'timeline-etapa'}">
+📋 Conferência
+</div>
+
+<div class="${obra.statusObra === 'Finalizada' ? 'timeline-etapa ativa' : 'timeline-etapa'}">
+🟢 Finalizada
+</div>
+
+</div>
         <div class="qr-box">
           <div id="qr-${obra.id}"></div>
           <div><strong>QR Code da Obra</strong><br><small>${obra.numeroObra || ''}</small></div>
