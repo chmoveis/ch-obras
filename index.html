@@ -1503,13 +1503,30 @@ onAuthStateChanged(auth, async (user) => {
     status.innerText = 'Status: usuário autenticado e Firebase conectado.';
   }
 
-  if (perfilUsuario === 'marceneiro') {
-    if (btnLimpar) btnLimpar.style.display = 'none';
-    if (btnExportar) btnExportar.style.display = 'none';
-  } else {
-    if (btnLimpar) btnLimpar.style.display = 'block';
-    if (btnExportar) btnExportar.style.display = 'block';
-  }
+if (perfilUsuario === 'admin') {
+  if (btnLimpar) btnLimpar.style.display = 'block';
+  if (btnExportar) btnExportar.style.display = 'block';
+}
+
+if (perfilUsuario === 'marceneiro') {
+  if (btnLimpar) btnLimpar.style.display = 'none';
+  if (btnExportar) btnExportar.style.display = 'none';
+}
+
+if (perfilUsuario === 'montagem') {
+  if (btnLimpar) btnLimpar.style.display = 'none';
+  if (btnExportar) btnExportar.style.display = 'none';
+}
+
+if (perfilUsuario === 'conferencia') {
+  if (btnLimpar) btnLimpar.style.display = 'none';
+  if (btnExportar) btnExportar.style.display = 'none';
+}
+
+if (perfilUsuario === 'visualizacao') {
+  if (btnLimpar) btnLimpar.style.display = 'none';
+  if (btnExportar) btnExportar.style.display = 'none';
+}
 
 });
 window.logoutApp = async function () {
