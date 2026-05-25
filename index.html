@@ -207,6 +207,12 @@ button.botao-excluir:hover,
 .status-pendencia { background: #fde2e2; color: #b71c1c; }
 .status-iniciar { background: #e3f2fd; color: #0d47a1; }
 .status-cliente { background: #fff0d6; color: #a65c00; }
+.status-medicao { background: #dbeafe; color: #1d4ed8; }
+.status-producao { background: #ede9fe; color: #6d28d9; }
+.status-montagem { background: #cffafe; color: #0e7490; }
+.status-conferencia { background: #ede0d4; color: #6d4c41; }
+.status-finalizada { background: #dcfce7; color: #166534; }
+.status-cancelada { background: #e5e7eb; color: #374151; }
 
 .resultado {
   display: none;
@@ -277,7 +283,6 @@ button.botao-excluir:hover,
 .borda-andamento { border-left: 8px solid #d4a017 !important; }
 .borda-pendencia { border-left: 8px solid #b71c1c !important; }
 .borda-iniciar { border-left: 8px solid #0d47a1 !important; }
-.borda-cliente { border-left: 8px solid #d97706 !important; }
 .borda-cliente { border-left: 8px solid #d97706 !important; }
 
 .borda-iniciar{
@@ -353,12 +358,6 @@ color:white;
 opacity:1;
 box-shadow:0 2px 10px rgba(0,0,0,0.2);
 }
-.timeline-etapa.ativa{
-background:linear-gradient(135deg,#111,#444);
-color:white;
-opacity:1;
-box-shadow:0 2px 10px rgba(0,0,0,0.2);
-}
 
 .barra-progresso-container{
 width:100%;
@@ -383,7 +382,17 @@ margin-top:6px;
 color:#444;
 }
 
-.qr-box{    
+.linha-data-etapa{
+margin-top:6px;
+padding:8px 10px;
+background:#f5f5f5;
+border-radius:10px;
+font-size:12px;
+font-weight:600;
+color:#444;
+border-left:4px solid #d4a017;
+}
+
 .qr-box {
   margin-top: 12px;
   padding: 12px;
@@ -669,7 +678,6 @@ Entrar
 </select>
 
 <label for="data">Data da instalação</label>
-    <label for="data">Data da instalação</label>
     <input type="date" id="data" />
 
     <h2>2. Checklist Antes de Iniciar</h2>
@@ -824,8 +832,8 @@ Nova Obra / Limpar Formulário
 
         <div class="cards-resumo dashboard-grid">
           <div class="card-resumo"><h3>📋 Total de obras</h3><p id="totalObras">0</p></div>
-          <div class="card-resumo"><h3>🟢 Concluídas</h3><p id="obrasConcluidas">0</p></div>
-          <div class="card-resumo"><h3>🟡 Em andamento</h3><p id="obrasAndamento">0</p></div>
+          <div class="card-resumo"><h3>🟢 Finalizadas</h3><p id="obrasConcluidas">0</p></div>
+          <div class="card-resumo"><h3>🟣 Em produção</h3><p id="obrasAndamento">0</p></div>
           <div class="card-resumo"><h3>🔴 Pendências</h3><p id="obrasPendentes">0</p></div>
           <div class="card-resumo"><h3>🔵 A iniciar</h3><p id="obrasIniciar">0</p></div>
           <div class="card-resumo"><h3>🟣 Aguardando cliente</h3><p id="obrasCliente">0</p></div>
@@ -852,10 +860,14 @@ Nova Obra / Limpar Formulário
         <select id="filtroStatus" onchange="filtrarHistorico()">
           <option value="">Todos os status</option>
           <option value="A iniciar">A iniciar</option>
-          <option value="Em andamento">Em andamento</option>
-          <option value="Concluída">Concluída</option>
-          <option value="Com pendência">Com pendência</option>
+          <option value="Em medição">Em medição</option>
+          <option value="Em produção">Em produção</option>
+          <option value="Em montagem">Em montagem</option>
+          <option value="Em conferência">Em conferência</option>
           <option value="Aguardando cliente">Aguardando cliente</option>
+          <option value="Finalizada">Finalizada</option>
+          <option value="Com pendência">Com pendência</option>
+          <option value="Cancelada">Cancelada</option>
         </select>
 
         <button type="button" onclick="limparFiltrosHistorico()" class="botao-secundario">Limpar Filtros</button>
@@ -1285,12 +1297,12 @@ async function salvarChecklist() {
     marceneiro,
     statusObra,
     dataMedicao: statusObra === 'Em medição' ? new Date().toLocaleString('pt-BR') : '',
-dataProducao: statusObra === 'Em produção' ? new Date().toLocaleString('pt-BR') : '',
-dataMontagem: statusObra === 'Em montagem' ? new Date().toLocaleString('pt-BR') : '',
-dataConferencia: statusObra === 'Em conferência' ? new Date().toLocaleString('pt-BR') : '',
-dataFinalizacao: statusObra === 'Finalizada' ? new Date().toLocaleString('pt-BR') : '',
-   prioridadeObra: pegarValor('prioridadeObra') || 'Média', 
-data,
+    dataProducao: statusObra === 'Em produção' ? new Date().toLocaleString('pt-BR') : '',
+    dataMontagem: statusObra === 'Em montagem' ? new Date().toLocaleString('pt-BR') : '',
+    dataConferencia: statusObra === 'Em conferência' ? new Date().toLocaleString('pt-BR') : '',
+    dataFinalizacao: statusObra === 'Finalizada' ? new Date().toLocaleString('pt-BR') : '',
+    prioridadeObra: pegarValor('prioridadeObra') || 'Média',
+    data,
 emailUsuario: window.usuarioEmailLogado || '',
 perfilUsuario: window.perfilUsuarioLogado || '',
 nomeAssinante,
@@ -1608,6 +1620,64 @@ const querySnapshot = await getDocs(obrasOrdenadas);
   }
 };
 
+
+function normalizarStatusObra(status) {
+  if (status === 'Em andamento') return 'Em produção';
+  if (status === 'Concluída') return 'Finalizada';
+  return status || '';
+}
+
+function classeStatus(status) {
+  const s = normalizarStatusObra(status);
+  if (s === 'Finalizada') return 'status status-finalizada';
+  if (s === 'Em produção') return 'status status-producao';
+  if (s === 'Em montagem') return 'status status-montagem';
+  if (s === 'Em medição') return 'status status-medicao';
+  if (s === 'Em conferência') return 'status status-conferencia';
+  if (s === 'Com pendência') return 'status status-pendencia';
+  if (s === 'A iniciar') return 'status status-iniciar';
+  if (s === 'Aguardando cliente') return 'status status-cliente';
+  if (s === 'Cancelada') return 'status status-cancelada';
+  return 'status';
+}
+
+function classeBorda(status) {
+  const s = normalizarStatusObra(status);
+  if (s === 'Finalizada') return 'borda-finalizada';
+  if (s === 'Em produção') return 'borda-producao';
+  if (s === 'Em montagem') return 'borda-montagem';
+  if (s === 'Em medição') return 'borda-medicao';
+  if (s === 'Em conferência') return 'borda-conferencia';
+  if (s === 'Com pendência') return 'borda-pendencia';
+  if (s === 'A iniciar') return 'borda-iniciar';
+  if (s === 'Aguardando cliente') return 'borda-cliente';
+  if (s === 'Cancelada') return 'borda-cancelada';
+  return '';
+}
+
+function classePrioridade(prioridade) {
+  if (prioridade === 'Urgente') return 'status status-pendencia';
+  if (prioridade === 'Alta') return 'status status-cliente';
+  if (prioridade === 'Média') return 'status status-iniciar';
+  if (prioridade === 'Baixa') return 'status status-concluida';
+  return 'status status-iniciar';
+}
+
+function progressoObra(status) {
+  const s = normalizarStatusObra(status);
+  if (s === 'A iniciar') return '10%';
+  if (s === 'Em medição') return '25%';
+  if (s === 'Em produção') return '50%';
+  if (s === 'Em montagem') return '75%';
+  if (s === 'Em conferência') return '90%';
+  if (s === 'Finalizada') return '100%';
+  return '5%';
+}
+
+function etapaClasse(statusAtual, etapa) {
+  return normalizarStatusObra(statusAtual) === etapa ? 'timeline-etapa ativa' : 'timeline-etapa';
+}
+
 function renderizarHistorico(obras) {
   const lista = document.getElementById('listaHistorico');
 
@@ -1620,23 +1690,14 @@ function renderizarHistorico(obras) {
   let html = '';
 
   obras.forEach((obra) => {
+    const statusCard = normalizarStatusObra(obra.statusObra);
+    const prioridadeCard = obra.prioridadeObra || 'Média';
+    const progresso = progressoObra(statusCard);
     const fotos = Array.isArray(obra.fotosUrls) ? obra.fotosUrls : (obra.fotoPisoUrl ? [obra.fotoPisoUrl] : []);
-    const termoBusca = `${obra.numeroObra || ''} ${obra.cliente || ''} ${obra.endereco || ''} ${obra.ambiente || ''} ${obra.marceneiro || ''} ${obra.statusObra || ''} ${obra.cpfAssinante || ''}`.toLowerCase();
+    const termoBusca = `${obra.numeroObra || ''} ${obra.cliente || ''} ${obra.endereco || ''} ${obra.ambiente || ''} ${obra.marceneiro || ''} ${statusCard || ''} ${prioridadeCard || ''} ${obra.cpfAssinante || ''}`.toLowerCase();
 
     html += `
-      <div class="item-relatorio
-        ${obra.statusObra === 'Finalizada' ? 'borda-concluida' : ''}
-        ${obra.statusObra === 'Em produção' ? 'borda-producao' : ''}
-        ${obra.statusObra === 'Com pendência' ? 'borda-pendencia' : ''}
-        ${obra.statusObra === 'A iniciar' ? 'borda-iniciar' : ''}
-        ${obra.statusObra === 'Em medição' ? 'borda-medicao' : ''}
-        ${obra.statusObra === 'Em produção' ? 'borda-producao' : ''}
-        ${obra.statusObra === 'Em montagem' ? 'borda-montagem' : ''}
-        ${obra.statusObra === 'Em conferência' ? 'borda-conferencia' : ''}
-        ${obra.statusObra === 'Finalizada' ? 'borda-finalizada' : ''}
-        ${obra.statusObra === 'Cancelada' ? 'borda-cancelada' : ''}
-        ${obra.statusObra === 'Aguardando cliente' ? 'borda-cliente' : ''}
-      " data-busca="${termoBusca}" data-status="${obra.statusObra || ''}">
+      <div class="item-relatorio ${classeBorda(statusCard)}" data-busca="${termoBusca}" data-status="${statusCard || ''}">
         <strong style="font-size:18px; color:#d4a017;">${obra.numeroObra || 'SEM NÚMERO'}</strong><br><br>
 
         <strong>Cliente:</strong> ${obra.cliente || ''}<br>
@@ -1646,120 +1707,37 @@ function renderizarHistorico(obras) {
         <strong>Marceneiro:</strong> ${obra.marceneiro || ''}<br>
         <strong>Assinado por:</strong> ${obra.nomeAssinante || 'Não informado'}<br>
         <strong>CPF:</strong> ${obra.cpfAssinante || 'Não informado'}<br>
-       <strong>Status:</strong>
-<span class="${
-obra.statusObra === 'Finalizada' ? 'status status-concluida' :
-obra.statusObra === 'Em produção' ? 'status status-producao' :
-obra.statusObra === 'Em montagem' ? 'status status-montagem' :
-obra.statusObra === 'Em medição' ? 'status status-medicao' :
-obra.statusObra === 'Em conferência' ? 'status status-conferencia' :
-obra.statusObra === 'Com pendência' ? 'status status-pendencia' :
-obra.statusObra === 'A iniciar' ? 'status status-iniciar' :
-obra.statusObra === 'Aguardando cliente' ? 'status status-cliente' :
-obra.statusObra === 'Cancelada' ? 'status status-cancelada' :
-''
-}">
-${obra.statusObra || 'Não informado'}
-</span><br> 
-      
-<strong>Prioridade:</strong>
-<span class="${
-obra.prioridadeObra === 'Urgente' ? 'status status-pendencia' :
-obra.prioridadeObra === 'Alta' ? 'status status-cliente' :
-obra.prioridadeObra === 'Média' ? 'status status-iniciar' :
-obra.prioridadeObra === 'Baixa' ? 'status status-concluida' :
-''
-}">
-${obra.prioridadeObra || 'Média'}
-</span><br>
+
+        <strong>Status:</strong>
+        <span class="${classeStatus(statusCard)}">${statusCard || 'Não informado'}</span><br>
+
+        <strong>Prioridade:</strong>
+        <span class="${classePrioridade(prioridadeCard)}">${prioridadeCard}</span><br>
+
         <strong>Observações:</strong> ${obra.observacoes || 'Sem observações'}<br>
-       <strong>Observações:</strong> ${obra.observacoes || 'Sem observações'}<br>
 
-${obra.dataMedicao ? `
-<div class="linha-data-etapa">
-🔵 Medição: ${obra.dataMedicao}
-</div>
-` : ''}
+        ${obra.dataMedicao ? `<div class="linha-data-etapa">🔵 Medição: ${obra.dataMedicao}</div>` : ''}
+        ${obra.dataProducao ? `<div class="linha-data-etapa">🟣 Produção: ${obra.dataProducao}</div>` : ''}
+        ${obra.dataMontagem ? `<div class="linha-data-etapa">🔧 Montagem: ${obra.dataMontagem}</div>` : ''}
+        ${obra.dataConferencia ? `<div class="linha-data-etapa">📋 Conferência: ${obra.dataConferencia}</div>` : ''}
+        ${obra.dataFinalizacao ? `<div class="linha-data-etapa">🟢 Finalização: ${obra.dataFinalizacao}</div>` : ''}
 
-${obra.dataProducao ? `
-<div class="linha-data-etapa">
-🟣 Produção: ${obra.dataProducao}
-</div>
-` : ''}
+        <div class="timeline-obra">
+          <div class="${etapaClasse(statusCard, 'A iniciar')}">🟡 A iniciar</div>
+          <div class="${etapaClasse(statusCard, 'Em medição')}">🔵 Medição</div>
+          <div class="${etapaClasse(statusCard, 'Em produção')}">🟣 Produção</div>
+          <div class="${etapaClasse(statusCard, 'Em montagem')}">🔧 Montagem</div>
+          <div class="${etapaClasse(statusCard, 'Em conferência')}">📋 Conferência</div>
+          <div class="${etapaClasse(statusCard, 'Finalizada')}">🟢 Finalizada</div>
+        </div>
 
-${obra.dataMontagem ? `
-<div class="linha-data-etapa">
-🔧 Montagem: ${obra.dataMontagem}
-</div>
-` : ''}
+        <div class="barra-progresso-container">
+          <div class="barra-progresso-fill" style="width:${progresso};"></div>
+        </div>
 
-${obra.dataConferencia ? `
-<div class="linha-data-etapa">
-📋 Conferência: ${obra.dataConferencia}
-</div>
-` : ''}
+        <div class="texto-progresso">${progresso} concluído</div>
 
-${obra.dataFinalizacao ? `
-<div class="linha-data-etapa">
-🟢 Finalização: ${obra.dataFinalizacao}
-</div>
-` : ''}
-<div class="timeline-obra">
-
-<div class="${obra.statusObra === 'A iniciar' ? 'timeline-etapa ativa' : 'timeline-etapa'}">
-🟡 A iniciar
-</div>
-
-<div class="${obra.statusObra === 'Em medição' ? 'timeline-etapa ativa' : 'timeline-etapa'}">
-🔵 Medição
-</div>
-
-<div class="${obra.statusObra === 'Em produção' ? 'timeline-etapa ativa' : 'timeline-etapa'}">
-🟣 Produção
-</div>
-
-<div class="${obra.statusObra === 'Em montagem' ? 'timeline-etapa ativa' : 'timeline-etapa'}">
-🔧 Montagem
-</div>
-
-<div class="${obra.statusObra === 'Em conferência' ? 'timeline-etapa ativa' : 'timeline-etapa'}">
-📋 Conferência
-</div>
-
-<div class="${obra.statusObra === 'Finalizada' ? 'timeline-etapa ativa' : 'timeline-etapa'}">
-🟢 Finalizada
-</div>
-
-</div>
-
-<div class="barra-progresso-container">
-<div class="barra-progresso-fill"
-style="width:${
-obra.statusObra === 'A iniciar' ? '10%' :
-obra.statusObra === 'Em medição' ? '25%' :
-obra.statusObra === 'Em produção' ? '50%' :
-obra.statusObra === 'Em montagem' ? '75%' :
-obra.statusObra === 'Em conferência' ? '90%' :
-obra.statusObra === 'Finalizada' ? '100%' :
-'5%'
-}"
-></div>
-</div>
-
-<div class="texto-progresso">
-${
-
-obra.statusObra === 'A iniciar' ? '10%' :
-obra.statusObra === 'Em medição' ? '25%' :
-obra.statusObra === 'Em produção' ? '50%' :
-obra.statusObra === 'Em montagem' ? '75%' :
-obra.statusObra === 'Em conferência' ? '90%' :
-obra.statusObra === 'Finalizada' ? '100%' :
-'5%'
-
-} concluído
-</div>
- <div class="qr-box">
+        <div class="qr-box">
           <div id="qr-${obra.id}"></div>
           <div><strong>QR Code da Obra</strong><br><small>${obra.numeroObra || ''}</small></div>
         </div>
@@ -1779,8 +1757,8 @@ obra.statusObra === 'Finalizada' ? '100%' :
         <button class="botao-secundario" onclick="editarObra('${obra.id}')">Editar Obra</button>
         <button class="botao-secundario" onclick="gerarPDFDaObra('${obra.id}')">Gerar PDF desta Obra</button>
         ${window.perfilUsuarioLogado === 'admin' ? `
-       <button class="botao-perigo" onclick="excluirObra('${obra.id}')">Excluir Obra</button>
-       ` : ''}
+          <button class="botao-perigo" onclick="excluirObra('${obra.id}')">Excluir Obra</button>
+        ` : ''}
       </div>
     `;
   });
@@ -1798,13 +1776,14 @@ obra.statusObra === 'Finalizada' ? '100%' :
   filtrarHistorico();
 }
 
+
 function atualizarDashboard(obras) {
   const totalObras = obras.length;
-  const obrasAndamento = obras.filter(o => o.statusObra === 'Em produção').length;
-  const obrasConcluidas = obras.filter(o => o.statusObra === 'Finalizada').length;
-  const obrasPendentes = obras.filter(o => o.statusObra === 'Com pendência').length;
-  const obrasIniciar = obras.filter(o => o.statusObra === 'A iniciar').length;
-  const obrasCliente = obras.filter(o => o.statusObra === 'Aguardando cliente').length;
+  const obrasAndamento = obras.filter(o => normalizarStatusObra(o.statusObra) === 'Em produção').length;
+  const obrasConcluidas = obras.filter(o => normalizarStatusObra(o.statusObra) === 'Finalizada').length;
+  const obrasPendentes = obras.filter(o => normalizarStatusObra(o.statusObra) === 'Com pendência').length;
+  const obrasIniciar = obras.filter(o => normalizarStatusObra(o.statusObra) === 'A iniciar').length;
+  const obrasCliente = obras.filter(o => normalizarStatusObra(o.statusObra) === 'Aguardando cliente').length;
 
   document.getElementById('ultimaAtualizacao').innerText = 'Última atualização: ' + new Date().toLocaleString('pt-BR');
   document.getElementById('totalObras').innerText = totalObras;
@@ -1830,6 +1809,7 @@ function atualizarDashboard(obras) {
   const status = document.getElementById('statusConexao');
   if (status) status.innerText = 'Status: ' + totalObras + ' obras carregadas no painel.';
 }
+
 
 window.filtrarHistorico = function() {
   const texto = document.getElementById('buscaHistorico').value.toLowerCase().trim();
