@@ -147,6 +147,67 @@
       border-bottom: 1px solid #ddd;
     }
 
+
+    .modulo-requisicao {
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #ffffff, #f7f3e8);
+      border: 1px solid rgba(212,160,23,0.45);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
+
+    .modulo-requisicao h2 {
+      margin-top: 0;
+      border-bottom: 2px solid #d4a017;
+    }
+
+    .requisicao-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .requisicao-grid label {
+      margin-top: 12px;
+    }
+
+    .card-requisicao {
+      padding: 14px;
+      margin-top: 12px;
+      border-radius: 14px;
+      background: #ffffff;
+      border-left: 6px solid #d4a017;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+      line-height: 1.45;
+    }
+
+    .badge-urgencia {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .badge-status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      background: #e3f2fd;
+      color: #0d47a1;
+    }
+
+    @media (max-width: 520px) {
+      .requisicao-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     canvas {
       width: 100%;
       height: 180px;
@@ -218,6 +279,81 @@
     </div>
 
     <div class="usuario-logado" id="usuarioLogado"></div>
+
+
+    <div class="modulo-requisicao" id="moduloRequisicaoProdutos">
+      <h2>0. Requisição de Produtos / Materiais</h2>
+      <p style="font-size:14px; color:#555; margin-top:-6px;">
+        Use este módulo para solicitar materiais, ferragens, acessórios, limpeza, manutenção ou itens necessários para a obra.
+      </p>
+
+      <label for="reqObraCliente">Cliente / Obra vinculada</label>
+      <input type="text" id="reqObraCliente" placeholder="Exemplo: Cliente João - Cozinha" />
+
+      <label for="reqProduto">Produto ou material solicitado</label>
+      <input type="text" id="reqProduto" placeholder="Exemplo: Dobradiça, MDF, parafuso, silicone, fita de borda" />
+
+      <div class="requisicao-grid">
+        <div>
+          <label for="reqCategoria">Categoria</label>
+          <select id="reqCategoria">
+            <option value="">Selecione</option>
+            <option>Ferragens</option>
+            <option>MDF / Madeira</option>
+            <option>Fita de borda</option>
+            <option>Parafusos e fixação</option>
+            <option>Colas / Silicone / Químicos</option>
+            <option>Ferramentas</option>
+            <option>Limpeza</option>
+            <option>Manutenção</option>
+            <option>Outro</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="reqUrgencia">Urgência</label>
+          <select id="reqUrgencia">
+            <option value="Normal">Normal</option>
+            <option value="Alta">Alta</option>
+            <option value="Urgente">Urgente</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="requisicao-grid">
+        <div>
+          <label for="reqQuantidade">Quantidade</label>
+          <input type="number" id="reqQuantidade" min="1" step="1" placeholder="Exemplo: 10" />
+        </div>
+
+        <div>
+          <label for="reqUnidade">Unidade</label>
+          <select id="reqUnidade">
+            <option>unidade</option>
+            <option>par</option>
+            <option>metro</option>
+            <option>m²</option>
+            <option>chapa</option>
+            <option>caixa</option>
+            <option>pacote</option>
+            <option>litro</option>
+            <option>kg</option>
+          </select>
+        </div>
+      </div>
+
+      <label for="reqJustificativa">Justificativa / observação</label>
+      <textarea id="reqJustificativa" placeholder="Explique por que o item é necessário e onde será usado."></textarea>
+
+      <button type="button" onclick="salvarRequisicaoProduto()">Enviar Requisição de Produto</button>
+      <button type="button" onclick="mostrarRequisicoesProdutos()" class="botao-secundario">Ver Requisições de Produtos</button>
+
+      <div class="resultado" id="resultadoRequisicoes" style="display:none;">
+        <h2>Requisições de Produtos</h2>
+        <div id="listaRequisicoesProdutos"></div>
+      </div>
+    </div>
+
 
     <h2>1. Dados da Obra</h2>
 
@@ -505,7 +641,8 @@
         fotoAmbiente: nomeArquivo('fotoAmbiente'),
         fotoParede: nomeArquivo('fotoParede'),
         fotoAvaria: nomeArquivo('fotoAvaria'),
-        criadoEm: new Date().toLocaleString('pt-BR')
+        criadoEm: new Date().toLocaleString('pt-BR'),
+        emailUsuario: window.usuarioEmailLogado || ''
       };
 
       localStorage.setItem('ultimoChecklistCHObras', JSON.stringify(dadosObra));
@@ -581,12 +718,14 @@
       const boxUsuario = document.getElementById('usuarioLogado');
 
       if (!user) {
+        window.usuarioEmailLogado = '';
         boxUsuario.style.display = 'none';
         setTimeout(() => {
           window.fazerLogin();
         }, 500);
       } else {
         boxUsuario.style.display = 'block';
+        window.usuarioEmailLogado = user.email || '';
         boxUsuario.innerHTML = 'Usuário logado: <strong>' + user.email + '</strong>';
       }
     });
@@ -610,6 +749,96 @@
         alert("Erro ao salvar na nuvem. Verifique login e permissões.");
       }
     };
+
+
+    window.salvarRequisicaoProduto = async function() {
+      const obraCliente = document.getElementById('reqObraCliente').value.trim();
+      const produto = document.getElementById('reqProduto').value.trim();
+      const categoria = document.getElementById('reqCategoria').value;
+      const urgencia = document.getElementById('reqUrgencia').value;
+      const quantidade = document.getElementById('reqQuantidade').value;
+      const unidade = document.getElementById('reqUnidade').value;
+      const justificativa = document.getElementById('reqJustificativa').value.trim();
+
+      if (!obraCliente || !produto || !categoria || !quantidade) {
+        alert('Preencha obra/cliente, produto, categoria e quantidade antes de enviar.');
+        return;
+      }
+
+      const dadosRequisicao = {
+        obraCliente: obraCliente,
+        produto: produto,
+        categoria: categoria,
+        urgencia: urgencia,
+        quantidade: Number(quantidade),
+        unidade: unidade,
+        justificativa: justificativa || 'Sem justificativa informada',
+        status: 'Solicitado',
+        solicitanteEmail: window.usuarioEmailLogado || '',
+        criadoEm: new Date().toLocaleString('pt-BR'),
+        criadoEmServidor: serverTimestamp()
+      };
+
+      try {
+        await addDoc(collection(db, "requisicoesProdutos"), dadosRequisicao);
+
+        document.getElementById('reqProduto').value = '';
+        document.getElementById('reqCategoria').value = '';
+        document.getElementById('reqUrgencia').value = 'Normal';
+        document.getElementById('reqQuantidade').value = '';
+        document.getElementById('reqUnidade').value = 'unidade';
+        document.getElementById('reqJustificativa').value = '';
+
+        alert('Requisição enviada com sucesso.');
+        mostrarRequisicoesProdutos();
+      } catch (erro) {
+        console.error('Erro ao salvar requisição:', erro);
+        alert('Erro ao enviar requisição. Verifique login, internet e permissões do Firebase.');
+      }
+    };
+
+    window.mostrarRequisicoesProdutos = async function() {
+      const resultado = document.getElementById('resultadoRequisicoes');
+      const lista = document.getElementById('listaRequisicoesProdutos');
+
+      resultado.style.display = 'block';
+      lista.innerHTML = '<p>Carregando requisições...</p>';
+
+      try {
+        const querySnapshot = await getDocs(collection(db, "requisicoesProdutos"));
+
+        if (querySnapshot.empty) {
+          lista.innerHTML = '<p>Nenhuma requisição encontrada.</p>';
+          return;
+        }
+
+        let html = '';
+
+        querySnapshot.forEach((documento) => {
+          const req = documento.data();
+
+          html += `
+            <div class="card-requisicao">
+              <strong>Produto:</strong> ${req.produto || 'Não informado'}<br>
+              <strong>Obra/Cliente:</strong> ${req.obraCliente || 'Não informado'}<br>
+              <strong>Categoria:</strong> ${req.categoria || 'Não informado'}<br>
+              <strong>Quantidade:</strong> ${req.quantidade || '0'} ${req.unidade || ''}<br>
+              <strong>Urgência:</strong> <span class="badge-urgencia">${req.urgencia || 'Normal'}</span><br>
+              <strong>Status:</strong> <span class="badge-status">${req.status || 'Solicitado'}</span><br>
+              <strong>Solicitante:</strong> ${req.solicitanteEmail || 'Não informado'}<br>
+              <strong>Criado em:</strong> ${req.criadoEm || 'Não informado'}<br>
+              <strong>Justificativa:</strong> ${req.justificativa || 'Sem justificativa'}
+            </div>
+          `;
+        });
+
+        lista.innerHTML = html;
+      } catch (erro) {
+        console.error('Erro ao carregar requisições:', erro);
+        lista.innerHTML = '<p>Erro ao carregar requisições. Verifique login, Firebase ou permissões.</p>';
+      }
+    };
+
 
 window.mostrarHistorico = async function() {
   const lista = document.getElementById('listaHistorico');
