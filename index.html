@@ -970,7 +970,7 @@ async function gerarPDF() {
 
   if (statusObra === 'Finalizada') {
     pdf.setFillColor(34, 197, 94);
-  } else if (statusObra === 'Em andamento') {
+  } else if (statusObra === 'Em produção') {
     pdf.setFillColor(234, 179, 8);
   } else if (statusObra === 'Com pendência') {
     pdf.setFillColor(239, 68, 68);
@@ -1518,7 +1518,7 @@ function renderizarHistorico(obras) {
     html += `
       <div class="item-relatorio
         ${obra.statusObra === 'Finalizada' ? 'borda-concluida' : ''}
-        ${obra.statusObra === 'Em andamento' ? 'borda-andamento' : ''}
+        ${obra.statusObra === 'Em andamento' ? 'Em produção' : ''}
         ${obra.statusObra === 'Com pendência' ? 'borda-pendencia' : ''}
         ${obra.statusObra === 'A iniciar' ? 'borda-iniciar' : ''}
         ${obra.statusObra === 'Aguardando cliente' ? 'borda-cliente' : ''}
@@ -1535,7 +1535,7 @@ function renderizarHistorico(obras) {
         <strong>Status:</strong>
         <span class="
           ${obra.statusObra === 'Finalizada' ? 'status status-concluida' : ''}
-          ${obra.statusObra === 'Em andamento' ? 'status status-andamento' : ''}
+          ${obra.statusObra === 'Em produção' ? 'status status-andamento' : ''}
           ${obra.statusObra === 'Com pendência' ? 'status status-pendencia' : ''}
           ${obra.statusObra === 'A iniciar' ? 'status status-iniciar' : ''}
           ${obra.statusObra === 'Aguardando cliente' ? 'status status-cliente' : ''}
@@ -1583,7 +1583,7 @@ function renderizarHistorico(obras) {
 
 function atualizarDashboard(obras) {
   const totalObras = obras.length;
-  const obrasAndamento = obras.filter(o => o.statusObra === 'Em andamento').length;
+  const obrasAndamento = obras.filter(o => o.statusObra === 'Em produção').length;
   const obrasConcluidas = obras.filter(o => o.statusObra === 'Finalizada').length;
   const obrasPendentes = obras.filter(o => o.statusObra === 'Com pendência').length;
   const obrasIniciar = obras.filter(o => o.statusObra === 'A iniciar').length;
