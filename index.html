@@ -1521,6 +1521,12 @@ function renderizarHistorico(obras) {
         ${obra.statusObra === 'Em andamento' ? 'Em produção' : ''}
         ${obra.statusObra === 'Com pendência' ? 'borda-pendencia' : ''}
         ${obra.statusObra === 'A iniciar' ? 'borda-iniciar' : ''}
+        ${obra.statusObra === 'Em medição' ? 'borda-medicao' : ''}
+        ${obra.statusObra === 'Em produção' ? 'borda-producao' : ''}
+        ${obra.statusObra === 'Em montagem' ? 'borda-montagem' : ''}
+        ${obra.statusObra === 'Em conferência' ? 'borda-conferencia' : ''}
+        ${obra.statusObra === 'Finalizada' ? 'borda-finalizada' : ''}
+        ${obra.statusObra === 'Cancelada' ? 'borda-cancelada' : ''}
         ${obra.statusObra === 'Aguardando cliente' ? 'borda-cliente' : ''}
       " data-busca="${termoBusca}" data-status="${obra.statusObra || ''}">
         <strong style="font-size:18px; color:#d4a017;">${obra.numeroObra || 'SEM NÚMERO'}</strong><br><br>
