@@ -1578,7 +1578,17 @@ ${obra.statusObra === 'Em conferência' ? 'status status-conferencia' : ''}
 ${obra.statusObra === 'Finalizada' ? 'status status-finalizada' : ''}
 ${obra.statusObra === 'Cancelada' ? 'status status-cancelada' : ''}
 ${obra.statusObra === 'Aguardando cliente' ? 'status status-cliente' : ''}
-">${obra.statusObra || 'Não informado'}</span><br>  
+">${obra.statusObra || 'Não informado'}</span><br>
+<strong>Prioridade:</strong>
+<span class="${
+obra.prioridadeObra === 'Urgente' ? 'status status-pendencia' :
+obra.prioridadeObra === 'Alta' ? 'status status-cliente' :
+obra.prioridadeObra === 'Média' ? 'status status-iniciar' :
+obra.prioridadeObra === 'Baixa' ? 'status status-concluida' :
+''
+}">
+${obra.prioridadeObra || 'Média'}
+</span><br>
         <strong>Observações:</strong> ${obra.observacoes || 'Sem observações'}<br>
 
         <div class="qr-box">
