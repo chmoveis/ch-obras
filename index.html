@@ -1408,7 +1408,23 @@ window.fazerLogin = async function () {
     );
 
     alert('Login realizado com sucesso.');
+const emailUsuario = auth.currentUser.email;
 
+window.emailUsuarioLogado = emailUsuario;
+
+if (emailUsuario === 'financeirochmoveis@gmail.com') {
+    window.perfilUsuarioLogado = 'admin';
+} else if (emailUsuario.includes('marceneiro')) {
+    window.perfilUsuarioLogado = 'marceneiro';
+} else if (emailUsuario.includes('montagem')) {
+    window.perfilUsuarioLogado = 'montagem';
+} else if (emailUsuario.includes('conferencia')) {
+    window.perfilUsuarioLogado = 'conferencia';
+} else {
+    window.perfilUsuarioLogado = 'visualizacao';
+}
+
+console.log('Perfil do usuário:', window.perfilUsuarioLogado);
     document.getElementById('telaLogin').style.display = 'none';
 
   } catch (erro) {
