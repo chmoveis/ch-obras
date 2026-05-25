@@ -1673,7 +1673,40 @@ obra.prioridadeObra === 'Baixa' ? 'status status-concluida' :
 ${obra.prioridadeObra || 'Média'}
 </span><br>
         <strong>Observações:</strong> ${obra.observacoes || 'Sem observações'}<br>
-<div class="timeline-obra">
+       <strong>Observações:</strong> ${obra.observacoes || 'Sem observações'}<br>
+
+${obra.dataMedicao ? `
+<div class="linha-data-etapa">
+🔵 Medição: ${obra.dataMedicao}
+</div>
+` : ''}
+
+${obra.dataProducao ? `
+<div class="linha-data-etapa">
+🟣 Produção: ${obra.dataProducao}
+</div>
+` : ''}
+
+${obra.dataMontagem ? `
+<div class="linha-data-etapa">
+🔧 Montagem: ${obra.dataMontagem}
+</div>
+` : ''}
+
+${obra.dataConferencia ? `
+<div class="linha-data-etapa">
+📋 Conferência: ${obra.dataConferencia}
+</div>
+` : ''}
+
+${obra.dataFinalizacao ? `
+<div class="linha-data-etapa">
+🟢 Finalização: ${obra.dataFinalizacao}
+</div>
+` : ''}
+
+<div class="timeline-obra"> 
+
 
 <div class="${obra.statusObra === 'A iniciar' ? 'timeline-etapa ativa' : 'timeline-etapa'}">
 🟡 A iniciar
