@@ -1518,7 +1518,7 @@ function renderizarHistorico(obras) {
     html += `
       <div class="item-relatorio
         ${obra.statusObra === 'Finalizada' ? 'borda-concluida' : ''}
-        ${obra.statusObra === 'Em andamento' ? 'Em produção' : ''}
+        ${obra.statusObra === 'Em produção' ? 'borda-producao' : ''}
         ${obra.statusObra === 'Com pendência' ? 'borda-pendencia' : ''}
         ${obra.statusObra === 'A iniciar' ? 'borda-iniciar' : ''}
         ${obra.statusObra === 'Em medição' ? 'borda-medicao' : ''}
@@ -1541,7 +1541,7 @@ function renderizarHistorico(obras) {
         <strong>Status:</strong>
         <span class="
           ${obra.statusObra === 'Finalizada' ? 'status status-concluida' : ''}
-          ${obra.statusObra === 'Em produção' ? 'status status-andamento' : ''}
+          ${obra.statusObra === 'Em produção' ? 'status status-producao' : ''}
           ${obra.statusObra === 'Com pendência' ? 'status status-pendencia' : ''}
           ${obra.statusObra === 'A iniciar' ? 'status status-iniciar' : ''}
           ${obra.statusObra === 'Em medição' ? 'status status-medicao' : ''}
