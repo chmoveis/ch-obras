@@ -1600,7 +1600,21 @@ window.mostrarHistorico = async function() {
     alert('Erro: seção de histórico não encontrada.');
     return;
   }
+window.filtrarObras = function() {
+  const texto = document.getElementById('buscaObra')?.value.toLowerCase().trim() || '';
+  const status = document.getElementById('filtroStatus')?.value || '';
+  const cards = document.querySelectorAll('.item-relatorio');
 
+  cards.forEach((card) => {
+    const conteudo = card.innerText.toLowerCase();
+    const statusCard = card.getAttribute('data-status') || '';
+
+    const passaTexto = !texto || conteudo.includes(texto);
+    const passaStatus = !status || statusCard === status;
+
+    card.style.display = (passaTexto && passaStatus) ? 'block' : 'none';
+  });
+};
   lista.innerHTML = '<p>Carregando obras...</p>';
   historicoDiv.style.display = 'block';
   document.getElementById('dashboardResumo').style.display = 'block';
