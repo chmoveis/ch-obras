@@ -4,545 +4,356 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="App%20CH%20Obras/manifest.json">
+  <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
   <style>
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background:
-    linear-gradient(rgba(255,255,255,0.96), rgba(255,255,255,0.96)),
-    url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop');
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center;
-  color: #111;
-  overflow-x: hidden;
-}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #222;
+    }
 
-.app {
-  max-width: 520px;
-  margin: 20px auto;
-  min-height: 100vh;
-  background: rgba(255,255,255,0.82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 24px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
-  padding: 24px;
-  box-sizing: border-box;
-}
+   .app {
+      max-width: 520px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: #ffffff;
+      padding: 20px;
+      box-sizing: border-box;
+    }
 
-.cabecalho {
-  text-align: center;
-  margin-bottom: 25px;
-  padding: 24px 20px;
-  background: linear-gradient(135deg, #050505 0%, #161616 38%, #4a4a4a 72%, #d8d8d8 100%);
-  color: white;
-  border-radius: 18px;
-  border: 1px solid #7a7a7a;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.35);
-}
+    .cabecalho {
+      text-align: center;
+      margin-bottom: 25px;
+      padding: 24px 20px;
+      background: linear-gradient(135deg, #050505 0%, #161616 38%, #4a4a4a 72%, #d8d8d8 100%);
+      color: white;
+      border-radius: 14px;
+      border: 1px solid #7a7a7a;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+    }
 
-.cabecalho h1 {
-  margin: 0;
-  font-size: 28px;
-  letter-spacing: 0.5px;
-  color: #ffffff;
-  text-shadow: 0 2px 5px rgba(0,0,0,0.55);
-}
+    .cabecalho h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.55);
+    }
 
-.logo {
-  display: block;
-  width: 85px;
-  max-width: 65%;
-  height: auto;
-  margin: 0 auto 14px auto;
-  background: #ffffff;
-  padding: 4px;
-  border-radius: 10px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.45);
-  object-fit: contain;
-}
+    .logo {
+      width: 120px;
+      margin-bottom: 15px;
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
 
-.cabecalho p {
-  margin: 8px 0 0;
-  font-size: 14px;
-  color: #f5f5f5;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-}
+    .cabecalho p {
+      margin: 8px 0 0;
+      font-size: 14px;
+      color: #f5f5f5;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    }
 
-h2 {
-  border-bottom: 2px solid #d4a017;
-  padding-bottom: 8px;
-  margin-top: 30px;
-  font-size: 19px;
-}
+    h2 {
+      border-bottom: 2px solid #d4a017;
+      padding-bottom: 8px;
+      margin-top: 30px;
+    }
 
-label {
-  display: block;
-  margin-top: 15px;
-  font-weight: bold;
-}
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
 
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 16px;
-  margin-top: 6px;
-  border-radius: 16px;
-  border: 1px solid rgba(0,0,0,0.08);
-  background: rgba(255,255,255,0.92);
-  box-shadow:
-    inset 0 1px 2px rgba(0,0,0,0.04),
-    0 2px 10px rgba(0,0,0,0.04);
-  font-size: 16px;
-  transition: all 0.25s ease;
-  box-sizing: border-box;
-}
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+      background: white;
+    }
 
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  border: 1px solid #d4a017;
-  box-shadow:
-    0 0 0 4px rgba(212,160,23,0.15),
-    0 6px 20px rgba(0,0,0,0.08);
-  transform: translateY(-1px);
-}
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
 
-textarea {
-  resize: vertical;
-  min-height: 80px;
-}
+    .pergunta {
+      margin-top: 15px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #fafafa;
+    }
 
-.pergunta {
-  margin-top: 15px;
-  padding: 14px;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 16px;
-  background: rgba(255,255,255,0.72);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-}
+    .pergunta label {
+      margin-top: 0;
+    }
 
-.pergunta label {
-  margin-top: 0;
-}
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+      background: linear-gradient(135deg, #000000, #4d4d4d);
+      color: white;
+      border: 1px solid #8a8a8a;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    }
 
-button {
-  width: 100%;
-  padding: 16px;
-  border: none;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #050505 0%, #1f1f1f 45%, #555555 100%);
-  color: white;
-  font-size: 17px;
-  font-weight: bold;
-  cursor: pointer;
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.25s ease,
-    opacity 0.25s ease;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.25);
-  margin-top: 14px;
-}
+    button:hover {
+      background: linear-gradient(135deg, #1a1a1a, #707070);
+    }
 
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.32);
-  opacity: 0.96;
-}
+    .botao-secundario {
+      background: #333333;
+    }
 
-button:active {
-  transform: scale(0.98);
-}
+    .botao-secundario:hover {
+      background: #111111;
+    }
 
-.botao-secundario {
-  background: linear-gradient(135deg, #111111, #333333);
-}
+    .resultado {
+      display: none;
+      margin-top: 25px;
+      padding: 15px;
+      background: #eef7ee;
+      border: 1px solid #9ccc9c;
+      border-radius: 10px;
+    }
 
-.botao-secundario:hover {
-  background: linear-gradient(135deg, #222222, #555555);
-}
+    .resultado h2 {
+      margin-top: 0;
+      border-bottom: none;
+      padding-bottom: 0;
+      font-size: 20px;
+    }
 
-button.botao-excluir,
-.botao-perigo {
-  display: block !important;
-  width: 100% !important;
-  margin: 18px auto 0 auto !important;
-  padding: 14px !important;
-  background: linear-gradient(135deg, #c62828, #8e0000) !important;
-  color: #ffffff !important;
-  border: 1px solid #ffb3b3 !important;
-  border-radius: 12px !important;
-  font-size: 16px !important;
-  font-weight: bold !important;
-  cursor: pointer !important;
-  text-align: center !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.35) !important;
-}
+    .item-relatorio {
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
 
-button.botao-excluir:hover,
-.botao-perigo:hover {
-  background: linear-gradient(135deg, #8e0000, #5c0000) !important;
-}
 
-.status {
-  display: inline-block;
-  padding: 6px 10px;
-  border-radius: 20px;
-  font-weight: bold;
-  font-size: 13px;
-  margin-top: 4px;
-}
+    .modulo-requisicao {
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #ffffff, #f7f3e8);
+      border: 1px solid rgba(212,160,23,0.45);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
 
-.status-concluida { background: #d9f7df; color: #1b7f34; }
-.status-andamento { background: #fff3cd; color: #856404; }
-.status-pendencia { background: #fde2e2; color: #b71c1c; }
-.status-iniciar { background: #e3f2fd; color: #0d47a1; }
-.status-cliente { background: #fff0d6; color: #a65c00; }
+    .modulo-requisicao h2 {
+      margin-top: 0;
+      border-bottom: 2px solid #d4a017;
+    }
 
-.resultado {
-  display: none;
-  margin-top: 25px;
-  padding: 15px;
-  background: rgba(238,247,238,0.88);
-  border: 1px solid #9ccc9c;
-  border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-}
+    .requisicao-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
 
-.resultado h2 {
-  margin-top: 0;
-  border-bottom: none;
-  padding-bottom: 0;
-  font-size: 20px;
-}
+    .requisicao-grid label {
+      margin-top: 12px;
+    }
 
-.cards-resumo {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 15px;
-}
+    .card-requisicao {
+      padding: 14px;
+      margin-top: 12px;
+      border-radius: 14px;
+      background: #ffffff;
+      border-left: 6px solid #d4a017;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+      line-height: 1.45;
+    }
 
-.card-resumo {
-  background: #ffffff;
-  border-left: 6px solid #d4a017;
-  border-radius: 14px;
-  padding: 14px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+    .badge-urgencia {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      background: #fff3cd;
+      color: #856404;
+    }
 
-.card-resumo:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(0,0,0,0.16);
-}
+    .badge-status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      background: #e3f2fd;
+      color: #0d47a1;
+    }
 
-.card-resumo h3 {
-  margin: 0 0 8px 0;
-  font-size: 14px;
-}
+    @media (max-width: 520px) {
+      .requisicao-grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
-.card-resumo p {
-  margin: 0;
-  font-size: 26px;
-  font-weight: bold;
-}
+    canvas {
+      width: 100%;
+      height: 180px;
+      border: 2px dashed #d4a017;
+      border-radius: 10px;
+      background: white;
+      margin-top: 10px;
+      touch-action: none;
+    }
 
-.item-relatorio {
-  background: rgba(255,255,255,0.96);
-  padding: 18px;
-  margin-bottom: 18px;
-  border-radius: 18px;
-  border-left: 6px solid #d4a017;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
-}
+    .aviso-assinatura {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 0;
+    }
 
-.item-relatorio:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(0,0,0,0.16);
-}
+    .assinatura-relatorio {
+      max-width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
 
-.borda-concluida { border-left: 8px solid #1b7f34 !important; }
-.borda-andamento { border-left: 8px solid #d4a017 !important; }
-.borda-pendencia { border-left: 8px solid #b71c1c !important; }
-.borda-iniciar { border-left: 8px solid #0d47a1 !important; }
-.borda-cliente { border-left: 8px solid #d97706 !important; }
+    .usuario-logado {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      background: #f7f7f7;
+      border-radius: 8px;
+      font-size: 14px;
+      text-align: center;
+    }
 
-.galeria-fotos {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 12px;
-}
+    @media print {
+      body {
+        background: white;
+      }
 
-.galeria-fotos img {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 12px;
-  border: 2px solid #e5e5e5;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
+      .app {
+        max-width: 100%;
+        padding: 10px;
+      }
 
-.qr-box {
-  margin-top: 12px;
-  padding: 12px;
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 14px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
+      button, input[type="file"], .usuario-logado {
+        display: none;
+      }
 
-.qr-box small {
-  color: #666;
-}
+      .cabecalho {
+        background: linear-gradient(135deg, #050505 0%, #161616 38%, #4a4a4a 72%, #d8d8d8 100%) !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
 
-.painel-admin {
-  background: rgba(255,255,255,0.94);
-  border: 1px solid rgba(212,160,23,0.35);
-  border-radius: 18px;
-  padding: 16px;
-  margin-top: 20px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
-}
-
-.dashboard-profissional {
-  margin-top: 18px;
-  padding: 18px;
-  border-radius: 22px;
-  background: linear-gradient(135deg, rgba(17,17,17,0.96), rgba(58,58,58,0.92));
-  color: #ffffff;
-  box-shadow: 0 10px 28px rgba(0,0,0,0.24);
-  border: 1px solid rgba(212,160,23,0.45);
-}
-
-.dashboard-profissional h2 {
-  color: #ffffff;
-  border-bottom: 2px solid #d4a017;
-  margin-top: 0;
-}
-
-.dashboard-subtitulo {
-  color: #f3f3f3;
-  font-size: 13px;
-  margin-top: -6px;
-  margin-bottom: 14px;
-}
-
-.cards-resumo.dashboard-grid {
-  grid-template-columns: 1fr 1fr;
-}
-
-.dashboard-profissional .card-resumo {
-  background: rgba(255,255,255,0.96);
-  color: #111;
-  border-left: 6px solid #d4a017;
-}
-
-.dashboard-profissional .card-resumo p {
-  color: #111;
-}
-
-.dashboard-barra {
-  margin-top: 14px;
-  background: rgba(255,255,255,0.15);
-  border-radius: 999px;
-  overflow: hidden;
-  height: 14px;
-  border: 1px solid rgba(255,255,255,0.18);
-}
-
-.dashboard-barra-preenchida {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #d4a017, #f5cf5c);
-  border-radius: 999px;
-  transition: width 0.35s ease;
-}
-
-.dashboard-info {
-  margin-top: 14px;
-  padding: 14px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.10);
-  color: #ffffff;
-  font-size: 14px;
-  line-height: 1.45;
-}
-
-.perfil-badge {
-  display: inline-block;
-  margin-top: 8px;
-  padding: 7px 12px;
-  border-radius: 999px;
-  background: rgba(212,160,23,0.18);
-  color: #ffd76b;
-  font-weight: bold;
-  border: 1px solid rgba(212,160,23,0.45);
-}
-
-canvas {
-  width: 100%;
-  height: 180px;
-  border: 2px dashed #d4a017;
-  border-radius: 14px;
-  background: white;
-  margin-top: 10px;
-  touch-action: none;
-}
-
-.aviso-assinatura {
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 0;
-}
-
-.assinatura-relatorio {
-  max-width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-top: 8px;
-}
-
-.area-visualizar {
-  text-align: center;
-  margin-top: 20px;
-}
-
-@keyframes girar {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@media print {
-  body { background: white; }
-
-  .app {
-    max-width: 100%;
-    padding: 10px;
-    box-shadow: none;
-    border-radius: 0;
-    background: white;
-  }
-
-  button, input[type="file"], .area-visualizar {
-    display: none;
-  }
-
-  .cabecalho {
-    background: linear-gradient(135deg, #050505 0%, #161616 38%, #4a4a4a 72%, #d8d8d8 100%) !important;
-    color: white !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  .resultado {
-    display: block !important;
-    border: 1px solid #999;
-  }
-}
-</style>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> 
- <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+      .resultado {
+        display: block !important;
+        border: 1px solid #999;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <div id="telaLogin" style="
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#111;
-z-index:99999;
-display:flex;
-justify-content:center;
-align-items:center;
-">
-
-<div style="
-width:90%;
-max-width:400px;
-background:#1e1e1e;
-padding:30px;
-border-radius:20px;
-box-shadow:0 0 30px rgba(0,0,0,0.5);
-">
-
-<h1 style="
-color:#d4a017;
-text-align:center;
-margin-bottom:30px;
-">
-CH Obras
-</h1>
-
-<input
-id="emailLogin"
-type="email"
-placeholder="E-mail"
-style="
-width:100%;
-padding:15px;
-margin-bottom:15px;
-border:none;
-border-radius:12px;
-font-size:16px;
-"
-/>
-
-<input
-id="senhaLogin"
-type="password"
-placeholder="Senha"
-style="
-width:100%;
-padding:15px;
-margin-bottom:20px;
-border:none;
-border-radius:12px;
-font-size:16px;
-"
-/>
-
-<button
-onclick="fazerLogin()"
-style="
-width:100%;
-padding:15px;
-border:none;
-border-radius:12px;
-background:#d4a017;
-color:black;
-font-size:18px;
-font-weight:bold;
-cursor:pointer;
-"
->
-Entrar
-</button>
-
-</div>
-</div>
   <div class="app">
     <div class="cabecalho">
-      <img src="logotipo novo atual.jpg" alt="CH Móveis" class="logo" />
+      <img src="logotipo novo atual.jpeg" alt="CH Móveis" class="logo" />
       <h1>CH Obras</h1>
       <p>Checklist de Instalação - CH Móveis Sob Medida</p>
     </div>
+
+    <div class="usuario-logado" id="usuarioLogado"></div>
+
+
+    <div class="modulo-requisicao" id="moduloRequisicaoProdutos">
+      <h2>0. Requisição de Produtos / Materiais</h2>
+      <p style="font-size:14px; color:#555; margin-top:-6px;">
+        Use este módulo para solicitar materiais, ferragens, acessórios, limpeza, manutenção ou itens necessários para a obra.
+      </p>
+
+      <label for="reqObraCliente">Cliente / Obra vinculada</label>
+      <input type="text" id="reqObraCliente" placeholder="Exemplo: Cliente João - Cozinha" />
+
+      <label for="reqProduto">Produto ou material solicitado</label>
+      <input type="text" id="reqProduto" placeholder="Exemplo: Dobradiça, MDF, parafuso, silicone, fita de borda" />
+
+      <div class="requisicao-grid">
+        <div>
+          <label for="reqCategoria">Categoria</label>
+          <select id="reqCategoria">
+            <option value="">Selecione</option>
+            <option>Ferragens</option>
+            <option>MDF / Madeira</option>
+            <option>Fita de borda</option>
+            <option>Parafusos e fixação</option>
+            <option>Colas / Silicone / Químicos</option>
+            <option>Ferramentas</option>
+            <option>Limpeza</option>
+            <option>Manutenção</option>
+            <option>Outro</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="reqUrgencia">Urgência</label>
+          <select id="reqUrgencia">
+            <option value="Normal">Normal</option>
+            <option value="Alta">Alta</option>
+            <option value="Urgente">Urgente</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="requisicao-grid">
+        <div>
+          <label for="reqQuantidade">Quantidade</label>
+          <input type="number" id="reqQuantidade" min="1" step="1" placeholder="Exemplo: 10" />
+        </div>
+
+        <div>
+          <label for="reqUnidade">Unidade</label>
+          <select id="reqUnidade">
+            <option>unidade</option>
+            <option>par</option>
+            <option>metro</option>
+            <option>m²</option>
+            <option>chapa</option>
+            <option>caixa</option>
+            <option>pacote</option>
+            <option>litro</option>
+            <option>kg</option>
+          </select>
+        </div>
+      </div>
+
+      <label for="reqJustificativa">Justificativa / observação</label>
+      <textarea id="reqJustificativa" placeholder="Explique por que o item é necessário e onde será usado."></textarea>
+
+      <button type="button" onclick="salvarRequisicaoProduto()">Enviar Requisição de Produto</button>
+      <button type="button" onclick="mostrarRequisicoesProdutos()" class="botao-secundario">Ver Requisições de Produtos</button>
+
+      <div class="resultado" id="resultadoRequisicoes" style="display:none;">
+        <h2>Requisições de Produtos</h2>
+        <div id="listaRequisicoesProdutos"></div>
+      </div>
+    </div>
+
 
     <h2>1. Dados da Obra</h2>
 
@@ -560,6 +371,7 @@ Entrar
 
     <label for="statusObra">Status da obra</label>
     <select id="statusObra">
+      <option value="">Selecione o status</option>
       <option value="A iniciar">🟡 A iniciar</option>
       <option value="Em andamento">🔵 Em andamento</option>
       <option value="Concluída">🟢 Concluída</option>
@@ -635,23 +447,23 @@ Entrar
     <h2>3. Fotos Obrigatórias</h2>
 
     <div class="pergunta">
-      <label for="fotoPiso">Fotos do piso antes da instalação</label>
-      <input type="file" id="fotoPiso" accept="image/*" multiple />
+      <label for="fotoPiso">Foto do piso antes da instalação</label>
+      <input type="file" id="fotoPiso" accept="image/*" />
     </div>
 
     <div class="pergunta">
-      <label for="fotoAmbiente">Fotos gerais do ambiente</label>
-      <input type="file" id="fotoAmbiente" accept="image/*" multiple />
+      <label for="fotoAmbiente">Foto geral do ambiente</label>
+      <input type="file" id="fotoAmbiente" accept="image/*" />
     </div>
 
     <div class="pergunta">
-      <label for="fotoParede">Fotos das paredes/local de fixação</label>
-      <input type="file" id="fotoParede" accept="image/*" multiple />
+      <label for="fotoParede">Foto das paredes/local de fixação</label>
+      <input type="file" id="fotoParede" accept="image/*" />
     </div>
 
     <div class="pergunta">
-      <label for="fotoAvaria">Fotos de risco ou avaria, se houver</label>
-      <input type="file" id="fotoAvaria" accept="image/*" multiple />
+      <label for="fotoAvaria">Foto de risco ou avaria, se houver</label>
+      <input type="file" id="fotoAvaria" accept="image/*" />
     </div>
 
     <label for="observacoes">Observações iniciais</label>
@@ -672,547 +484,182 @@ Entrar
       <p class="aviso-assinatura">O cliente deve assinar dentro do quadro acima.</p>
     </div>
 
-    <div id="avisoEdicao" style="display:none; background:#fff3cd; border:1px solid #d4a017; padding:12px; border-radius:10px; margin-top:20px; font-weight:bold; text-align:center;">
-      Modo edição ativo
-    </div>
-<div id="barraUsuario" style="
-display:none;
-background:#111;
-color:white;
-padding:12px;
-border-radius:14px;
-margin-top:20px;
-text-align:center;
-font-size:14px;
-">
-  <div id="usuarioLogadoTexto">Usuário logado</div>
-  <button type="button" onclick="logoutApp()" class="botao-secundario">
-    Sair do sistema
-  </button>
-</div>
-    <button id="botaoSalvar" onclick="salvarChecklist()">Salvar Checklist</button>
-    <button 
-type="button"
-onclick="limparFormulario()"
-class="botao-secundario"
-id="btnLimparFormulario"
->
-Nova Obra / Limpar Formulário
-</button>
+    <button onclick="salvarChecklist()">Salvar Checklist</button>
     <button onclick="gerarPDF()" class="botao-secundario">Gerar Relatório / PDF</button>
-    <button onclick="mostrarHistorico()">Ver Histórico de Obras</button>
-    <button type="button" onclick="ocultarHistorico()" class="botao-secundario">Ocultar Histórico</button>
-    <button type="button" onclick="exportarCSV()" class="botao-secundario" id="btnExportarCSV">Exportar Relatório CSV</button>
-    <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="botao-secundario">Voltar ao Topo</button>
-
-    <div class="area-visualizar">
-      <button onclick="window.open('https://chmoveis.github.io/ch-obras/', '_blank')">Visualizar App</button>
-    </div>
+    <button onclick="mostrarHistorico()" class="botao-secundario">Ver Histórico de Obras</button>
+    <button onclick="logoutApp()" class="botao-secundario">Sair do Sistema</button>
 
     <div class="resultado" id="resultado">
       <h2>Checklist salvo com sucesso!</h2>
       <div id="relatorio"></div>
     </div>
 
-    <div class="resultado" id="dashboardResumo">
-      <div class="dashboard-profissional">
-        <h2>Dashboard Profissional</h2>
-        <p class="dashboard-subtitulo">Visão executiva das obras cadastradas no CH Obras</p>
-        <p id="ultimaAtualizacao" style="font-size:12px; color:#f3f3f3; margin-top:-4px;">Última atualização: --</p>
-
-        <div class="cards-resumo dashboard-grid">
-          <div class="card-resumo"><h3>📋 Total de obras</h3><p id="totalObras">0</p></div>
-          <div class="card-resumo"><h3>🟢 Concluídas</h3><p id="obrasConcluidas">0</p></div>
-          <div class="card-resumo"><h3>🟡 Em andamento</h3><p id="obrasAndamento">0</p></div>
-          <div class="card-resumo"><h3>🔴 Pendências</h3><p id="obrasPendentes">0</p></div>
-          <div class="card-resumo"><h3>🔵 A iniciar</h3><p id="obrasIniciar">0</p></div>
-          <div class="card-resumo"><h3>🟣 Aguardando cliente</h3><p id="obrasCliente">0</p></div>
-        </div>
-
-        <p id="taxaConclusao" style="text-align:center; font-weight:bold; margin-top:15px;">Taxa de conclusão: 0%</p>
-        <div class="dashboard-barra">
-          <div id="barraConclusao" class="dashboard-barra-preenchida"></div>
-        </div>
-
-        <div class="dashboard-info">
-          <strong>Painel Administrativo</strong><br>
-          Acompanhamento de obras, edição, exclusão por perfil, busca inteligente, filtro por status, fotos, QR Code, PDF e exportação.
-          <br><span id="perfilPainel" class="perfil-badge">Perfil: aguardando login</span>
-          <p id="statusConexao" style="font-size:13px; color:#f5f5f5; margin-bottom:0;">Status: aguardando carregamento.</p>
-        </div>
-      </div>
-
-      <div class="resultado" id="historico">
-        <h2>Histórico de Obras</h2>
-
-        <input type="text" id="buscaHistorico" placeholder="Busca inteligente: cliente, endereço, marceneiro, número da obra, ambiente ou CPF" oninput="filtrarHistorico()" />
-
-        <select id="filtroStatus" onchange="filtrarHistorico()">
-          <option value="">Todos os status</option>
-          <option value="A iniciar">A iniciar</option>
-          <option value="Em andamento">Em andamento</option>
-          <option value="Concluída">Concluída</option>
-          <option value="Com pendência">Com pendência</option>
-          <option value="Aguardando cliente">Aguardando cliente</option>
-        </select>
-
-        <button type="button" onclick="limparFiltrosHistorico()" class="botao-secundario">Limpar Filtros</button>
-        <div id="listaHistorico"></div>
-      </div>
+    <div class="resultado" id="historico">
+      <h2>Histórico de Obras</h2>
+      <div id="listaHistorico"></div>
     </div>
   </div>
 
   <script>
-function pegarValor(id) {
-  return document.getElementById(id).value;
-}
-
-function mostrarLoading(texto = 'Salvando obra...') {
-  const overlay = document.getElementById('loadingOverlay');
-  const textoLoading = document.getElementById('loadingTexto');
-  if (textoLoading) textoLoading.innerText = texto;
-  overlay.style.display = 'flex';
-}
-
-function esconderLoading() {
-  document.getElementById('loadingOverlay').style.display = 'none';
-}
-
-const canvas = document.getElementById('assinatura');
-const ctx = canvas.getContext('2d');
-let desenhando = false;
-let assinaturaFeita = false;
-
-ctx.lineWidth = 3;
-ctx.lineCap = 'round';
-ctx.strokeStyle = '#000000';
-
-function posicao(evento) {
-  const rect = canvas.getBoundingClientRect();
-  const toque = evento.touches ? evento.touches[0] : evento;
-  return {
-    x: (toque.clientX - rect.left) * (canvas.width / rect.width),
-    y: (toque.clientY - rect.top) * (canvas.height / rect.height)
-  };
-}
-
-function iniciarAssinatura(evento) {
-  evento.preventDefault();
-  desenhando = true;
-  assinaturaFeita = true;
-  const p = posicao(evento);
-  ctx.beginPath();
-  ctx.moveTo(p.x, p.y);
-  
-}
-
-function desenharAssinatura(evento) {
-  if (!desenhando) return;
-  evento.preventDefault();
-  const p = posicao(evento);
-  ctx.lineTo(p.x, p.y);
-  ctx.stroke();
-  assinaturaFeita = true;
-}
-
-function pararAssinatura() {
-  desenhando = false;
-}
-
-function limparAssinatura() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  assinaturaFeita = false;
-}
-
-canvas.addEventListener('mousedown', iniciarAssinatura);
-canvas.addEventListener('mousemove', desenharAssinatura);
-canvas.addEventListener('mouseup', pararAssinatura);
-canvas.addEventListener('mouseleave', pararAssinatura);
-canvas.addEventListener('touchstart', iniciarAssinatura);
-canvas.addEventListener('touchmove', desenharAssinatura);
-canvas.addEventListener('touchend', pararAssinatura);
-
-function nomesArquivos(id) {
-  const input = document.getElementById(id);
-  if (!input || !input.files || input.files.length === 0) return 'Nenhuma foto selecionada';
-  return Array.from(input.files).map(file => file.name).join(', ');
-}
-
-function salvarNoHistorico(dados) {
-  const historicoAtual = JSON.parse(localStorage.getItem('historicoCHObras')) || [];
-  historicoAtual.push(dados);
-  localStorage.setItem('historicoCHObras', JSON.stringify(historicoAtual));
-}
-
-function gerarNumeroObra() {
-  const anoAtual = new Date().getFullYear();
-  const numeroSequencial = localStorage.getItem('contadorObras')
-    ? parseInt(localStorage.getItem('contadorObras')) + 1
-    : 1;
-  localStorage.setItem('contadorObras', numeroSequencial);
-  const numeroFormatado = String(numeroSequencial).padStart(4, '0');
-  return 'OBRA-' + anoAtual + '-' + numeroFormatado;
-}
-
-function criarQRCodeBase64(texto) {
-  return new Promise((resolve) => {
-    const qrDiv = document.createElement('div');
-    new QRCode(qrDiv, { text: texto, width: 120, height: 120 });
-    setTimeout(() => {
-      const canvasQr = qrDiv.querySelector('canvas');
-      if (canvasQr) resolve(canvasQr.toDataURL('image/png'));
-      else resolve('');
-    }, 300);
-  });
-}
-
-function lerArquivoComoDataURL(arquivo) {
-  return new Promise((resolve, reject) => {
-
-    if (typeof arquivo === 'string') {
-      const img = new Image();
-
-      img.crossOrigin = 'anonymous';
-
-      img.onload = function() {
-        const canvasTemp = document.createElement('canvas');
-
-        canvasTemp.width = img.width;
-        canvasTemp.height = img.height;
-
-        const ctxTemp = canvasTemp.getContext('2d');
-
-        ctxTemp.drawImage(img, 0, 0);
-
-        resolve(canvasTemp.toDataURL('image/jpeg', 0.95));
-      };
-
-      img.onerror = function() {
-        reject('Erro ao carregar imagem da URL.');
-      };
-
-      img.src = arquivo;
-
-      return;
+    function pegarValor(id) {
+      return document.getElementById(id).value;
     }
 
-    const reader = new FileReader();
+    const canvas = document.getElementById('assinatura');
+    const ctx = canvas.getContext('2d');
+    let desenhando = false;
+    let assinaturaFeita = false;
 
-    reader.onload = function(event) {
-      resolve(event.target.result);
-    };
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#000000';
 
-    reader.onerror = reject;
-
-    reader.readAsDataURL(arquivo);
-  });
-}
-
-async function gerarPDF() {
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF('p', 'mm', 'a4');
-
-  const cliente = pegarValor('cliente') || 'Não informado';
-  const endereco = pegarValor('endereco') || 'Não informado';
-  const ambiente = pegarValor('ambiente') || 'Não informado';
-  const marceneiro = pegarValor('marceneiro') || 'Não informado';
-  const statusObra = pegarValor('statusObra') || 'Não informado';
-  const data = pegarValor('data') || 'Não informada';
-  const nomeAssinante = pegarValor('nomeClienteAssinatura') || cliente;
-  const cpfAssinante = pegarValor('cpfCliente') || 'Não informado';
-  const observacoes = pegarValor('observacoes') || 'Sem observações';
-  const numeroObra = window.numeroObraAtualPDF || gerarNumeroObra();
-  const dataGeracao = new Date().toLocaleString('pt-BR');
-
-  const qrBase64 = await criarQRCodeBase64(numeroObra);
-
-  // CABEÇALHO PREMIUM
-  pdf.setFillColor(8, 8, 8);
-  pdf.roundedRect(10, 8, 190, 34, 5, 5, 'F');
-
-  pdf.setDrawColor(212, 160, 23);
-  pdf.setLineWidth(0.8);
-  pdf.line(15, 40, 195, 40);
-
-  pdf.setTextColor(255, 255, 255);
-  pdf.setFontSize(20);
-  pdf.text('CH Obras', 105, 20, { align: 'center' });
-
-  pdf.setFontSize(10);
-  pdf.text('Relatório Técnico de Instalação', 105, 28, { align: 'center' });
-
-  pdf.setFontSize(9);
-  pdf.text('CH Móveis Sob Medida', 105, 35, { align: 'center' });
-
-  // NÚMERO DA OBRA
-  pdf.setFillColor(255, 255, 255);
-  pdf.roundedRect(145, 46, 50, 10, 2, 2, 'F');
-
-  pdf.setDrawColor(212, 160, 23);
-  pdf.roundedRect(145, 46, 50, 10, 2, 2, 'S');
-
-  pdf.setTextColor(212, 160, 23);
-  pdf.setFontSize(10);
-  pdf.text(numeroObra, 170, 53, { align: 'center' });
-
-  // DADOS DA OBRA
-  pdf.setTextColor(0, 0, 0);
-  pdf.setFontSize(12);
-  pdf.text('Dados da Obra', 15, 52);
-
-  pdf.setFontSize(10);
-  pdf.text(`Cliente: ${cliente}`, 15, 63);
-  pdf.text(`Endereço: ${endereco}`, 15, 71);
-  pdf.text(`Ambiente: ${ambiente}`, 15, 79);
-  pdf.text(`Marceneiro: ${marceneiro}`, 15, 87);
-
-  pdf.text('Status:', 15, 95);
-
-  if (statusObra === 'Concluída') {
-    pdf.setFillColor(34, 197, 94);
-  } else if (statusObra === 'Em andamento') {
-    pdf.setFillColor(234, 179, 8);
-  } else if (statusObra === 'Com pendência') {
-    pdf.setFillColor(239, 68, 68);
-  } else if (statusObra === 'A iniciar') {
-    pdf.setFillColor(59, 130, 246);
-  } else if (statusObra === 'Aguardando cliente') {
-    pdf.setFillColor(168, 85, 247);
-  } else {
-    pdf.setFillColor(120, 120, 120);
-  }
-
-  pdf.roundedRect(33, 89, 50, 8, 2, 2, 'F');
-  pdf.setTextColor(255, 255, 255);
-  pdf.setFontSize(8);
-  pdf.text(statusObra, 58, 95, { align: 'center' });
-  pdf.setTextColor(0, 0, 0);
-  pdf.setFontSize(10);
-
-  pdf.text(`Data da instalação: ${data}`, 15, 103);
-  pdf.text(`Gerado em: ${dataGeracao}`, 15, 111);
-  pdf.text(`Assinado por: ${nomeAssinante}`, 15, 119);
-  pdf.text(`CPF: ${cpfAssinante}`, 15, 127);
-
-  if (qrBase64) {
-    pdf.addImage(qrBase64, 'PNG', 160, 62, 32, 32);
-    pdf.setFontSize(8);
-    pdf.text('QR Code da Obra', 160, 98);
-  }
-
-  // CHECKLIST
-  pdf.setFontSize(12);
-  pdf.text('Checklist Técnico', 15, 140);
-  pdf.setFontSize(10);
-
-  let y = 150;
-
-  const checklist = [
-    ['Piso é de madeira?', pegarValor('pisoMadeira')],
-    ['Risco ou avaria no piso?', pegarValor('riscoPiso')],
-    ['Paredes prontas?', pegarValor('paredePronta')],
-    ['Parte elétrica pronta?', pegarValor('eletricaPronta')],
-    ['Local limpo e liberado?', pegarValor('localLimpo')],
-    ['Medidas conferidas?', pegarValor('medidasConferidas')]
-  ];
-
-  checklist.forEach(function(item) {
-    pdf.text(`${item[0]} ${item[1] || 'Não informado'}`, 15, y);
-    y += 8;
-  });
-
-  pdf.setFontSize(12);
-  pdf.text('Observações', 15, y + 5);
-
-  pdf.setFontSize(10);
-  pdf.text(observacoes, 15, y + 14, { maxWidth: 180 });
-
-  y += 34;
-
-  // ASSINATURA
-  pdf.setFontSize(12);
-  pdf.text('Assinatura do Cliente', 15, y);
-
-  if (assinaturaFeita) {
-    const canvasAssinatura = document.createElement('canvas');
-
-    canvasAssinatura.width = canvas.width;
-    canvasAssinatura.height = canvas.height;
-
-    const ctxAssinatura = canvasAssinatura.getContext('2d');
-
-    ctxAssinatura.fillStyle = '#ffffff';
-    ctxAssinatura.fillRect(0, 0, canvasAssinatura.width, canvasAssinatura.height);
-    ctxAssinatura.drawImage(canvas, 0, 0);
-
-    const assinaturaBase64 = canvasAssinatura.toDataURL('image/jpeg', 1.0);
-
-    pdf.setDrawColor(180, 180, 180);
-    pdf.rect(15, y + 4, 80, 30);
-
-    pdf.addImage(assinaturaBase64, 'JPEG', 15, y + 4, 80, 30);
-  } else {
-    pdf.setFontSize(9);
-    pdf.text('Assinatura nao registrada.', 15, y + 12);
-  }
-
-  // FOTOS
-  const fotos = [];
-
-  ['fotoPiso', 'fotoAmbiente', 'fotoParede', 'fotoAvaria'].forEach(function(id) {
-    const input = document.getElementById(id);
-
-    if (input && input.files) {
-      fotos.push(...Array.from(input.files));
+    function posicao(evento) {
+      const rect = canvas.getBoundingClientRect();
+      const toque = evento.touches ? evento.touches[0] : evento;
+      return {
+        x: (toque.clientX - rect.left) * (canvas.width / rect.width),
+        y: (toque.clientY - rect.top) * (canvas.height / rect.height)
+      };
     }
-  });
 
-  if (window.fotosPDFHistorico && window.fotosPDFHistorico.length > 0) {
-    fotos.push(...window.fotosPDFHistorico);
-  }
+    function iniciarAssinatura(evento) {
+      evento.preventDefault();
+      desenhando = true;
+      assinaturaFeita = true;
+      const p = posicao(evento);
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+    }
 
-  if (fotos.length > 0) {
-    pdf.addPage();
-    pdf.setFontSize(14);
-    pdf.setTextColor(0, 0, 0);
-    pdf.text('Fotos da Obra', 15, 20);
+    function desenharAssinatura(evento) {
+      if (!desenhando) return;
+      evento.preventDefault();
+      const p = posicao(evento);
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+    }
 
-    let fx = 15;
-    let fy = 35;
+    function pararAssinatura() {
+      desenhando = false;
+    }
 
-    const fotoLargura = 80;
-    const fotoAltura = 55;
-    const espacamentoX = 95;
-    const espacamentoY = 72;
-    const limiteRodape = 260;
+    function limparAssinatura() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      assinaturaFeita = false;
+    }
 
-    for (let i = 0; i < Math.min(fotos.length, 6); i++) {
-      const img = await lerArquivoComoDataURL(fotos[i]);
+    canvas.addEventListener('mousedown', iniciarAssinatura);
+    canvas.addEventListener('mousemove', desenharAssinatura);
+    canvas.addEventListener('mouseup', pararAssinatura);
+    canvas.addEventListener('mouseleave', pararAssinatura);
 
-      if (fy + fotoAltura > limiteRodape) {
-        pdf.addPage();
-        pdf.setFontSize(14);
-        pdf.setTextColor(0, 0, 0);
-        pdf.text('Fotos da Obra', 15, 20);
-        fx = 15;
-        fy = 35;
+    canvas.addEventListener('touchstart', iniciarAssinatura);
+    canvas.addEventListener('touchmove', desenharAssinatura);
+    canvas.addEventListener('touchend', pararAssinatura);
+
+    function nomeArquivo(id) {
+      const arquivo = document.getElementById(id).files[0];
+      return arquivo ? arquivo.name : 'Nenhuma foto selecionada';
+    }
+
+    function gerarPDF() {
+      const resultado = document.getElementById('resultado');
+
+      if (resultado.style.display !== 'block') {
+        alert('Primeiro clique em Salvar Checklist. Depois gere o relatório.');
+        return;
       }
 
-      pdf.setFontSize(10);
-      pdf.text('Foto ' + (i + 1), fx, fy - 4);
+      window.print();
+    }
 
-      pdf.setDrawColor(180, 180, 180);
-      pdf.rect(fx - 1, fy - 1, fotoLargura + 2, fotoAltura + 2);
+    function salvarChecklist() {
+      const cliente = pegarValor('cliente');
+      const endereco = pegarValor('endereco');
+      const ambiente = pegarValor('ambiente');
+      const marceneiro = pegarValor('marceneiro');
+      const statusObra = pegarValor('statusObra');
+      const data = pegarValor('data');
+      const observacoes = pegarValor('observacoes');
+      const nomeAssinatura = pegarValor('nomeClienteAssinatura') || cliente;
+      const cpfCliente = pegarValor('cpfCliente') || 'Não informado';
 
-      pdf.addImage(img, 'JPEG', fx, fy, fotoLargura, fotoAltura);
+      if (!cliente || !endereco || !ambiente || !marceneiro || !statusObra || !data) {
+        alert('Preencha todos os dados da obra, incluindo o status, antes de salvar.');
+        return;
+      }
 
-      if (fx === 15) {
-        fx = 15 + espacamentoX;
+      if (!assinaturaFeita) {
+        alert('O cliente precisa assinar antes de salvar o checklist.');
+        return;
+      }
+
+      const imagemAssinatura = canvas.toDataURL('image/png');
+
+      const checklist = [
+        ['Cliente', cliente],
+        ['Endereço', endereco],
+        ['Ambiente', ambiente],
+        ['Marceneiro responsável', marceneiro],
+        ['Status da obra', statusObra],
+        ['Data da instalação', data],
+        ['O piso é de madeira?', pegarValor('pisoMadeira')],
+        ['Existe risco ou avaria no piso?', pegarValor('riscoPiso')],
+        ['As paredes estão prontas?', pegarValor('paredePronta')],
+        ['A parte elétrica está pronta?', pegarValor('eletricaPronta')],
+        ['O local está limpo e liberado?', pegarValor('localLimpo')],
+        ['As medidas foram conferidas?', pegarValor('medidasConferidas')],
+        ['Foto do piso antes da instalação', nomeArquivo('fotoPiso')],
+        ['Foto geral do ambiente', nomeArquivo('fotoAmbiente')],
+        ['Foto das paredes/local de fixação', nomeArquivo('fotoParede')],
+        ['Foto de risco ou avaria', nomeArquivo('fotoAvaria')],
+        ['Observações', observacoes || 'Sem observações'],
+        ['Nome de quem assinou', nomeAssinatura],
+        ['CPF do cliente', cpfCliente]
+      ];
+
+      let html = '';
+      checklist.forEach(function(item) {
+        html += '<div class="item-relatorio"><strong>' + item[0] + ':</strong> ' + (item[1] || 'Não informado') + '</div>';
+      });
+
+      html += '<div class="item-relatorio"><strong>Assinatura do cliente:</strong><br><img class="assinatura-relatorio" src="' + imagemAssinatura + '" alt="Assinatura do cliente"></div>';
+
+      const dadosObra = {
+        cliente: cliente,
+        endereco: endereco,
+        ambiente: ambiente,
+        marceneiro: marceneiro,
+        statusObra: statusObra,
+        data: data,
+        observacoes: observacoes || '',
+        nomeAssinatura: nomeAssinatura,
+        cpfCliente: cpfCliente,
+        assinatura: imagemAssinatura,
+        fotoPiso: nomeArquivo('fotoPiso'),
+        fotoAmbiente: nomeArquivo('fotoAmbiente'),
+        fotoParede: nomeArquivo('fotoParede'),
+        fotoAvaria: nomeArquivo('fotoAvaria'),
+        criadoEm: new Date().toLocaleString('pt-BR'),
+        emailUsuario: window.usuarioEmailLogado || ''
+      };
+
+      localStorage.setItem('ultimoChecklistCHObras', JSON.stringify(dadosObra));
+
+      if (window.salvarObraNaNuvem) {
+        window.salvarObraNaNuvem(dadosObra);
       } else {
-        fx = 15;
-        fy += espacamentoY;
+        alert('Checklist salvo localmente. Firebase ainda não carregou.');
       }
+
+      document.getElementById('relatorio').innerHTML = html;
+      document.getElementById('resultado').style.display = 'block';
+      document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
     }
-  }
+  </script>
 
-  pdf.setProperties({
-    title: 'Relatório ' + numeroObra,
-    subject: 'Relatório de instalação CH Obras',
-    author: 'CH Móveis Sob Medida'
-  });
-
-  // RODAPÉ PROFISSIONAL
-  const totalPaginas = pdf.getNumberOfPages();
-
-  for (let i = 1; i <= totalPaginas; i++) {
-    pdf.setPage(i);
-
-    pdf.setDrawColor(212, 160, 23);
-    pdf.line(15, 282, 195, 282);
-
-    pdf.setFontSize(8);
-    pdf.setTextColor(100, 100, 100);
-
-    pdf.text('CH Obras - Documento gerado automaticamente', 15, 289);
-
-    pdf.text('Obra: ' + numeroObra, 105, 289, { align: 'center' });
-
-    pdf.text('Página ' + i + ' de ' + totalPaginas, 195, 289, { align: 'right' });
-  }
-
-  pdf.save(`relatorio-ch-obras-${cliente}.pdf`);
-}
-
-async function salvarChecklist() {
-  mostrarLoading('Salvando obra...');
-
-  const cliente = pegarValor('cliente');
-  const nomeAssinante = pegarValor('nomeClienteAssinatura') || cliente;
-  const cpfAssinante = pegarValor('cpfCliente') || 'Não informado';
-  const data = pegarValor('data');
-  const endereco = pegarValor('endereco');
-  const ambiente = pegarValor('ambiente');
-  const marceneiro = pegarValor('marceneiro');
-  const statusObra = pegarValor('statusObra');
-
-  if (!cliente || !endereco || !ambiente || !marceneiro || !statusObra || !data) {
-    esconderLoading();
-    alert('Preencha todos os dados da obra, incluindo o status, antes de salvar.');
-    return;
-  }
-
-  if (!assinaturaFeita && !window.idObraEditando) {
-    esconderLoading();
-    alert('O cliente precisa assinar antes de salvar o checklist.');
-    return;
-  }
-
-  const numeroObra = window.idObraEditando && window.numeroObraEditando ? window.numeroObraEditando : gerarNumeroObra();
-  window.numeroObraAtualPDF = numeroObra;
-
-  const imagemAssinatura = canvas.toDataURL('image/png');
-
-  const fotosUrls = await enviarFotosParaStorage(['fotoPiso', 'fotoAmbiente', 'fotoParede', 'fotoAvaria'], 'obras');
-  const fotoPisoUrl = fotosUrls.length > 0 ? fotosUrls[0] : '';
-
-  const dadosObra = {
-    numeroObra,
-    cliente,
-    endereco,
-    ambiente,
-    marceneiro,
-    statusObra,
-data,
-emailUsuario: window.usuarioEmailLogado || '',
-perfilUsuario: window.perfilUsuarioLogado || '',
-nomeAssinante,
-    cpfAssinante,
-    observacoes: pegarValor('observacoes') || 'Sem observações',
-    assinaturaCliente: imagemAssinatura,
-    fotoPisoUrl,
-    fotosUrls,
-    nomesFotos: [nomesArquivos('fotoPiso'), nomesArquivos('fotoAmbiente'), nomesArquivos('fotoParede'), nomesArquivos('fotoAvaria')].join(' | '),
-    atualizadoLocalmenteEm: new Date().toLocaleString('pt-BR')
-  };
-
-  salvarNoHistorico({ ...dadosObra, criadoEm: new Date().toLocaleString('pt-BR') });
-  await salvarObraNaNuvem(dadosObra);
-
-  let html = `<div class="item-relatorio"><strong>Número da Obra:</strong> ${numeroObra}</div>`;
-  Object.entries(dadosObra).forEach(([chave, valor]) => {
-    if (!['assinaturaCliente', 'fotosUrls'].includes(chave)) {
-      html += `<div class="item-relatorio"><strong>${chave}:</strong> ${valor || 'Não informado'}</div>`;
-    }
-  });
-  html += `<div class="item-relatorio"><strong>Assinatura do cliente:</strong><br><img class="assinatura-relatorio" src="${imagemAssinatura}" alt="Assinatura do cliente"></div>`;
-
-  document.getElementById('relatorio').innerHTML = html;
-  document.getElementById('resultado').style.display = 'block';
-  document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
-}
-  
-
-
+  <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then(function() {
@@ -1223,645 +670,222 @@ nomeAssinante,
         });
     }
   </script>
+
   <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDoc,
-  updateDoc,
-  getDocs,
-  query,
-  orderBy,
-  where,
-  deleteDoc,
-  doc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-storage.js";    
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBn_WkU9o_7St6UTL9WXVnRoqXxCkj4UXo",
-  authDomain: "ch-obras.firebaseapp.com",
-  projectId: "ch-obras",
-  storageBucket: "ch-obras.firebasestorage.app",
-  messagingSenderId: "803401819775",
-  appId: "1:803401819775:web:39426cb59349b5599a814a"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyBn_WkU9o_7St6UTL9WXVnRoqXxCkj4UXo",
+      authDomain: "ch-obras.firebaseapp.com",
+      projectId: "ch-obras",
+      storageBucket: "ch-obras.appspot.com",
+      messagingSenderId: "803401819775",
+      appId: "1:803401819775:web:39426cb59349b5599a814a"
+    };
 
-const appFirebase = initializeApp(firebaseConfig);
-const db = getFirestore(appFirebase);
-const storage = getStorage(appFirebase);
-const auth = getAuth(appFirebase);
-let obrasCache = [];
+    const appFirebase = initializeApp(firebaseConfig);
+    const db = getFirestore(appFirebase);
+    const auth = getAuth(appFirebase);
 
-window.fazerLogin = async function () {
+    window.fazerLogin = async function () {
+      const email = prompt("Digite seu e-mail:");
+      const senha = prompt("Digite sua senha:");
 
-  const email = document.getElementById('emailLogin').value;
-  const senha = document.getElementById('senhaLogin').value;
+      try {
+        await signInWithEmailAndPassword(auth, email, senha);
+        alert("Login realizado com sucesso.");
+      } catch (error) {
+        alert("Erro no login: " + error.message);
+      }
+    };
 
-  if (!email || !senha) {
-    alert('Digite e-mail e senha.');
-    return;
-  }
+    onAuthStateChanged(auth, (user) => {
+      const boxUsuario = document.getElementById('usuarioLogado');
 
-  try {
-
-    await signInWithEmailAndPassword(
-      auth,
-      email,
-      senha
-    );
-
-    alert('Login realizado com sucesso.');
-
-    document.getElementById('telaLogin').style.display = 'none';
-
-  } catch (erro) {
-
-    alert('Erro no login: ' + erro.message);
-
-  }
-
-};
-
-onAuthStateChanged(auth, async (user) => {
-
-  const status = document.getElementById('statusConexao');
-  const barraUsuario = document.getElementById('barraUsuario');
-  const usuarioTexto = document.getElementById('usuarioLogadoTexto');
-  const perfilPainel = document.getElementById('perfilPainel');
-  const btnLimpar = document.getElementById('btnLimparFormulario');
-  const btnExportar = document.getElementById('btnExportarCSV');
-
-  window.perfilUsuarioLogado = 'usuario';
-  window.usuarioEmailLogado = '';
-
-  if (!user) {
-    document.getElementById('telaLogin').style.display = 'flex';
-
-    if (barraUsuario) barraUsuario.style.display = 'none';
-    if (perfilPainel) perfilPainel.innerText = 'Perfil: aguardando login';
-    if (status) status.innerText = 'Status: aguardando autenticação.';
-
-    return;
-  }
-
-  window.usuarioEmailLogado = user.email || '';
-
-  let perfilUsuario = 'usuario';
-  let usuarioAtivo = true;
-
-  try {
-    const usuarioRef = doc(db, 'usuarios', user.email);
-    const usuarioSnap = await getDoc(usuarioRef);
-
-    if (usuarioSnap.exists()) {
-      const dadosUsuario = usuarioSnap.data();
-      perfilUsuario = dadosUsuario.perfil || 'usuario';
-      usuarioAtivo = dadosUsuario.ativo !== false;
-    }
-
-    console.log('Perfil do usuário:', perfilUsuario);
-
-  } catch (erro) {
-    console.log('Erro ao carregar perfil:', erro);
-  }
-
-  if (!usuarioAtivo) {
-    alert('Usuário inativo. Fale com o administrador.');
-    await signOut(auth);
-    location.reload();
-    return;
-  }
-
-  window.perfilUsuarioLogado = perfilUsuario;
-
-  document.getElementById('telaLogin').style.display = 'none';
-
-  if (barraUsuario) barraUsuario.style.display = 'block';
-
-  if (usuarioTexto) {
-    usuarioTexto.innerText = 'Usuário logado: ' + user.email + ' | Perfil: ' + perfilUsuario;
-  }
-
-  if (perfilPainel) {
-    perfilPainel.innerText = 'Perfil: ' + perfilUsuario;
-  }
-
-  if (status) {
-    status.innerText = 'Status: usuário autenticado e Firebase conectado.';
-  }
-
-  if (perfilUsuario === 'marceneiro') {
-    if (btnLimpar) btnLimpar.style.display = 'none';
-    if (btnExportar) btnExportar.style.display = 'none';
-  } else {
-    if (btnLimpar) btnLimpar.style.display = 'block';
-    if (btnExportar) btnExportar.style.display = 'block';
-  }
-
-});
-window.logoutApp = async function () {
-
-  try {
-    await signOut(auth);
-    alert('Logout realizado com sucesso.');
-    location.reload();
-  } catch (erro) {
-    alert('Erro ao sair: ' + erro.message);
-  }
-
-};
-
-window.enviarFotosParaStorage = async function(inputIds, nomePasta) {
-  const urls = [];
-
-  for (const inputId of inputIds) {
-    const input = document.getElementById(inputId);
-
-    if (!input || !input.files || input.files.length === 0) continue;
-
-    for (const arquivo of Array.from(input.files)) {
-      const nomeArquivo = Date.now() + '-' + Math.random().toString(36).slice(2) + '-' + arquivo.name;
-      const caminho = nomePasta + '/' + nomeArquivo;
-      const referenciaArquivo = ref(storage, caminho);
-      await uploadBytes(referenciaArquivo, arquivo);
-      const urlDownload = await getDownloadURL(referenciaArquivo);
-      urls.push(urlDownload);
-    }
-  }
-
-  return urls;
-};
-
-window.enviarFotoParaStorage = async function(inputId, nomePasta) {
-  const urls = await window.enviarFotosParaStorage([inputId], nomePasta);
-  return urls[0] || '';
-};
-
-window.salvarObraNaNuvem = async function(dadosObra) {
-  try {
-    if (window.idObraEditando) {
-      await updateDoc(
-        doc(db, "obras", window.idObraEditando),
-        {
-          ...dadosObra,
-          atualizadoEmServidor: serverTimestamp()
-        }
-      );
-
-      alert("Obra atualizada com sucesso.");
-      window.idObraEditando = null;
-      window.numeroObraEditando = null;
-      document.getElementById('avisoEdicao').style.display = 'none';
-      document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';
-    } else {
-      await addDoc(collection(db, "obras"), {
-        ...dadosObra,
-        criadoEmServidor: serverTimestamp()
-      });
-
-      alert("Checklist salvo na nuvem com sucesso.");
-    }
-
-    esconderLoading();
-    mostrarHistorico();
-  } catch (erro) {
-    console.error(erro);
-    esconderLoading();
-    alert("Erro ao salvar obra.");
-  }
-};
-
-window.mostrarHistorico = async function() {
-  const historicoDiv = document.getElementById('historico');
-  const lista = document.getElementById('listaHistorico');
-
-  if (!historicoDiv || !lista) {
-    alert('Erro: seção de histórico não encontrada.');
-    return;
-  }
-
-  lista.innerHTML = '<p>Carregando obras...</p>';
-  historicoDiv.style.display = 'block';
-  document.getElementById('dashboardResumo').style.display = 'block';
-
-  try {
-   let obrasOrdenadas;
-
-if (window.perfilUsuarioLogado === 'admin') {
-
-  obrasOrdenadas = query(
-    collection(db, "obras"),
-    orderBy("criadoEmServidor", "desc")
-  );
-
-} else {
-
-  obrasOrdenadas = query(
-    collection(db, "obras"),
-    where("emailUsuario", "==", window.usuarioEmailLogado),
-    orderBy("criadoEmServidor", "desc")
-  );
-
-}
-
-const querySnapshot = await getDocs(obrasOrdenadas);
-    obrasCache = [];
-
-    querySnapshot.forEach((docItem) => {
-      obrasCache.push({ id: docItem.id, ...docItem.data() });
+      if (!user) {
+        window.usuarioEmailLogado = '';
+        boxUsuario.style.display = 'none';
+        setTimeout(() => {
+          window.fazerLogin();
+        }, 500);
+      } else {
+        boxUsuario.style.display = 'block';
+        window.usuarioEmailLogado = user.email || '';
+        boxUsuario.innerHTML = 'Usuário logado: <strong>' + user.email + '</strong>';
+      }
     });
 
-    localStorage.setItem('obrasCacheCHObras', JSON.stringify(obrasCache));
-    renderizarHistorico(obrasCache);
-  } catch (erro) {
-    console.error(erro);
-    const cache = JSON.parse(localStorage.getItem('obrasCacheCHObras')) || [];
-    obrasCache = cache;
-    renderizarHistorico(cache);
-    const status = document.getElementById('statusConexao');
-    if (status) status.innerText = 'Status: usando cache local/offline.';
-  }
-};
+    window.logoutApp = async function () {
+      await signOut(auth);
+      alert("Logout realizado.");
+      location.reload();
+    };
 
-function renderizarHistorico(obras) {
+    window.salvarObraNaNuvem = async function(dadosObra) {
+      try {
+        await addDoc(collection(db, "obras"), {
+          ...dadosObra,
+          criadoEmServidor: serverTimestamp()
+        });
+
+        alert("Checklist salvo na nuvem com sucesso.");
+      } catch (erro) {
+        console.error("Erro ao salvar na nuvem:", erro);
+        alert("Erro ao salvar na nuvem. Verifique login e permissões.");
+      }
+    };
+
+
+    window.salvarRequisicaoProduto = async function() {
+      const obraCliente = document.getElementById('reqObraCliente').value.trim();
+      const produto = document.getElementById('reqProduto').value.trim();
+      const categoria = document.getElementById('reqCategoria').value;
+      const urgencia = document.getElementById('reqUrgencia').value;
+      const quantidade = document.getElementById('reqQuantidade').value;
+      const unidade = document.getElementById('reqUnidade').value;
+      const justificativa = document.getElementById('reqJustificativa').value.trim();
+
+      if (!obraCliente || !produto || !categoria || !quantidade) {
+        alert('Preencha obra/cliente, produto, categoria e quantidade antes de enviar.');
+        return;
+      }
+
+      const dadosRequisicao = {
+        obraCliente: obraCliente,
+        produto: produto,
+        categoria: categoria,
+        urgencia: urgencia,
+        quantidade: Number(quantidade),
+        unidade: unidade,
+        justificativa: justificativa || 'Sem justificativa informada',
+        status: 'Solicitado',
+        solicitanteEmail: window.usuarioEmailLogado || '',
+        criadoEm: new Date().toLocaleString('pt-BR'),
+        criadoEmServidor: serverTimestamp()
+      };
+
+      try {
+        await addDoc(collection(db, "requisicoesProdutos"), dadosRequisicao);
+
+        document.getElementById('reqProduto').value = '';
+        document.getElementById('reqCategoria').value = '';
+        document.getElementById('reqUrgencia').value = 'Normal';
+        document.getElementById('reqQuantidade').value = '';
+        document.getElementById('reqUnidade').value = 'unidade';
+        document.getElementById('reqJustificativa').value = '';
+
+        alert('Requisição enviada com sucesso.');
+        mostrarRequisicoesProdutos();
+      } catch (erro) {
+        console.error('Erro ao salvar requisição:', erro);
+        alert('Erro ao enviar requisição. Verifique login, internet e permissões do Firebase.');
+      }
+    };
+
+    window.mostrarRequisicoesProdutos = async function() {
+      const resultado = document.getElementById('resultadoRequisicoes');
+      const lista = document.getElementById('listaRequisicoesProdutos');
+
+      resultado.style.display = 'block';
+      lista.innerHTML = '<p>Carregando requisições...</p>';
+
+      try {
+        const querySnapshot = await getDocs(collection(db, "requisicoesProdutos"));
+
+        if (querySnapshot.empty) {
+          lista.innerHTML = '<p>Nenhuma requisição encontrada.</p>';
+          return;
+        }
+
+        let html = '';
+
+        querySnapshot.forEach((documento) => {
+          const req = documento.data();
+
+          html += `
+            <div class="card-requisicao">
+              <strong>Produto:</strong> ${req.produto || 'Não informado'}<br>
+              <strong>Obra/Cliente:</strong> ${req.obraCliente || 'Não informado'}<br>
+              <strong>Categoria:</strong> ${req.categoria || 'Não informado'}<br>
+              <strong>Quantidade:</strong> ${req.quantidade || '0'} ${req.unidade || ''}<br>
+              <strong>Urgência:</strong> <span class="badge-urgencia">${req.urgencia || 'Normal'}</span><br>
+              <strong>Status:</strong> <span class="badge-status">${req.status || 'Solicitado'}</span><br>
+              <strong>Solicitante:</strong> ${req.solicitanteEmail || 'Não informado'}<br>
+              <strong>Criado em:</strong> ${req.criadoEm || 'Não informado'}<br>
+              <strong>Justificativa:</strong> ${req.justificativa || 'Sem justificativa'}
+            </div>
+          `;
+        });
+
+        lista.innerHTML = html;
+      } catch (erro) {
+        console.error('Erro ao carregar requisições:', erro);
+        lista.innerHTML = '<p>Erro ao carregar requisições. Verifique login, Firebase ou permissões.</p>';
+      }
+    };
+
+
+window.mostrarHistorico = async function() {
   const lista = document.getElementById('listaHistorico');
+  const historico = document.getElementById('historico');
 
-  if (!obras || obras.length === 0) {
-    lista.innerHTML = '<p>Nenhuma obra encontrada.</p>';
-    atualizarDashboard([]);
-    return;
-  }
-
-  let html = '';
-
-  obras.forEach((obra) => {
-    const fotos = Array.isArray(obra.fotosUrls) ? obra.fotosUrls : (obra.fotoPisoUrl ? [obra.fotoPisoUrl] : []);
-    const termoBusca = `${obra.numeroObra || ''} ${obra.cliente || ''} ${obra.endereco || ''} ${obra.ambiente || ''} ${obra.marceneiro || ''} ${obra.statusObra || ''} ${obra.cpfAssinante || ''}`.toLowerCase();
-
-    html += `
-      <div class="item-relatorio
-        ${obra.statusObra === 'Concluída' ? 'borda-concluida' : ''}
-        ${obra.statusObra === 'Em andamento' ? 'borda-andamento' : ''}
-        ${obra.statusObra === 'Com pendência' ? 'borda-pendencia' : ''}
-        ${obra.statusObra === 'A iniciar' ? 'borda-iniciar' : ''}
-        ${obra.statusObra === 'Aguardando cliente' ? 'borda-cliente' : ''}
-      " data-busca="${termoBusca}" data-status="${obra.statusObra || ''}">
-        <strong style="font-size:18px; color:#d4a017;">${obra.numeroObra || 'SEM NÚMERO'}</strong><br><br>
-
-        <strong>Cliente:</strong> ${obra.cliente || ''}<br>
-        <strong>Endereço:</strong> ${obra.endereco || ''}<br>
-        <strong>Ambiente:</strong> ${obra.ambiente || ''}<br>
-        <strong>Data:</strong> ${obra.data || ''}<br>
-        <strong>Marceneiro:</strong> ${obra.marceneiro || ''}<br>
-        <strong>Assinado por:</strong> ${obra.nomeAssinante || 'Não informado'}<br>
-        <strong>CPF:</strong> ${obra.cpfAssinante || 'Não informado'}<br>
-        <strong>Status:</strong>
-        <span class="
-          ${obra.statusObra === 'Concluída' ? 'status status-concluida' : ''}
-          ${obra.statusObra === 'Em andamento' ? 'status status-andamento' : ''}
-          ${obra.statusObra === 'Com pendência' ? 'status status-pendencia' : ''}
-          ${obra.statusObra === 'A iniciar' ? 'status status-iniciar' : ''}
-          ${obra.statusObra === 'Aguardando cliente' ? 'status status-cliente' : ''}
-        ">${obra.statusObra || 'Não informado'}</span><br>
-        <strong>Observações:</strong> ${obra.observacoes || 'Sem observações'}<br>
-
-        <div class="qr-box">
-          <div id="qr-${obra.id}"></div>
-          <div><strong>QR Code da Obra</strong><br><small>${obra.numeroObra || ''}</small></div>
-        </div>
-
-        ${obra.assinaturaCliente ? `
-          <br><strong>Assinatura do Cliente:</strong><br>
-          <img src="${obra.assinaturaCliente}" style="width:100%; max-width:300px; background:white; border:2px solid #ccc; border-radius:10px; margin-top:10px;">
-        ` : ''}
-
-        ${fotos.length > 0 ? `
-          <br><strong>Galeria de Fotos:</strong>
-          <div class="galeria-fotos">
-            ${fotos.map(url => `<img src="${url}" alt="Foto da obra">`).join('')}
-          </div>
-        ` : ''}
-
-        <button class="botao-secundario" onclick="editarObra('${obra.id}')">Editar Obra</button>
-        <button class="botao-secundario" onclick="gerarPDFDaObra('${obra.id}')">Gerar PDF desta Obra</button>
-        ${window.perfilUsuarioLogado === 'admin' ? `
-       <button class="botao-perigo" onclick="excluirObra('${obra.id}')">Excluir Obra</button>
-       ` : ''}
-      </div>
-    `;
-  });
-
-  lista.innerHTML = html;
-
-  obras.forEach((obra) => {
-    const qrContainer = document.getElementById(`qr-${obra.id}`);
-    if (qrContainer && !qrContainer.hasChildNodes()) {
-      new QRCode(qrContainer, { text: String(obra.numeroObra || obra.id), width: 70, height: 70 });
-    }
-  });
-
-  atualizarDashboard(obras);
-  filtrarHistorico();
-}
-
-function atualizarDashboard(obras) {
-  const totalObras = obras.length;
-  const obrasAndamento = obras.filter(o => o.statusObra === 'Em andamento').length;
-  const obrasConcluidas = obras.filter(o => o.statusObra === 'Concluída').length;
-  const obrasPendentes = obras.filter(o => o.statusObra === 'Com pendência').length;
-  const obrasIniciar = obras.filter(o => o.statusObra === 'A iniciar').length;
-  const obrasCliente = obras.filter(o => o.statusObra === 'Aguardando cliente').length;
-
-  document.getElementById('ultimaAtualizacao').innerText = 'Última atualização: ' + new Date().toLocaleString('pt-BR');
-  document.getElementById('totalObras').innerText = totalObras;
-  document.getElementById('obrasAndamento').innerText = obrasAndamento;
-  document.getElementById('obrasConcluidas').innerText = obrasConcluidas;
-  document.getElementById('obrasPendentes').innerText = obrasPendentes;
-  document.getElementById('obrasIniciar').innerText = obrasIniciar;
-  document.getElementById('obrasCliente').innerText = obrasCliente;
-
-  const porcentagem = totalObras > 0 ? Math.round((obrasConcluidas / totalObras) * 100) : 0;
-  document.getElementById('taxaConclusao').innerText = 'Taxa de conclusão: ' + porcentagem + '%';
-
-  const barraConclusao = document.getElementById('barraConclusao');
-  if (barraConclusao) {
-    barraConclusao.style.width = porcentagem + '%';
-  }
-
-  const perfilPainel = document.getElementById('perfilPainel');
-  if (perfilPainel) {
-    perfilPainel.innerText = 'Perfil: ' + (window.perfilUsuarioLogado || 'usuario');
-  }
-
-  const status = document.getElementById('statusConexao');
-  if (status) status.innerText = 'Status: ' + totalObras + ' obras carregadas no painel.';
-}
-
-window.filtrarHistorico = function() {
-  const texto = document.getElementById('buscaHistorico').value.toLowerCase().trim();
-  const statusFiltro = document.getElementById('filtroStatus').value;
-  const termos = texto.split(' ').filter(Boolean);
-  const itens = document.querySelectorAll('.item-relatorio');
-
-  itens.forEach((item) => {
-    const busca = item.dataset.busca || item.innerText.toLowerCase();
-    const status = item.dataset.status || '';
-    const passaTexto = termos.length === 0 || termos.every(t => busca.includes(t));
-    const passaStatus = !statusFiltro || status === statusFiltro;
-    item.style.display = (passaTexto && passaStatus) ? 'block' : 'none';
-  });
-};
-
-window.ocultarHistorico = function() {
-  document.getElementById('historico').style.display = 'none';
-  document.getElementById('dashboardResumo').style.display = 'none';
-};
-
-window.excluirObra = async function(id) {
-  if (window.perfilUsuarioLogado !== 'admin') {
-  alert('Você não tem permissão para excluir obras.');
-  return;
-}
-  const confirmar = confirm("Tem certeza que deseja excluir esta obra?");
-  if (!confirmar) return;
+  historico.style.display = 'block';
+  lista.innerHTML = '<p>Carregando histórico da nuvem...</p>';
+  historico.scrollIntoView({ behavior: 'smooth' });
 
   try {
-    mostrarLoading('Excluindo obra...');
-    await deleteDoc(doc(db, "obras", id));
-    esconderLoading();
-    alert('Obra excluída com sucesso.');
-    mostrarHistorico();
-  } catch (erro) {
-    console.error(erro);
-    esconderLoading();
-    alert('Erro ao excluir obra.');
-  }
-};
+    const querySnapshot = await getDocs(collection(db, "obras"));
 
-window.limparFormulario = function() {
-  document.getElementById('cliente').value = '';
-  document.getElementById('endereco').value = '';
-  document.getElementById('ambiente').value = '';
-  document.getElementById('marceneiro').value = '';
-  document.getElementById('statusObra').selectedIndex = 0;
-  document.getElementById('data').value = '';
-  document.getElementById('observacoes').value = '';
-  document.getElementById('nomeClienteAssinatura').value = '';
-  document.getElementById('cpfCliente').value = '';
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  assinaturaFeita = false;
-
-  ['pisoMadeira', 'riscoPiso', 'paredePronta', 'eletricaPronta', 'localLimpo', 'medidasConferidas'].forEach(id => document.getElementById(id).selectedIndex = 0);
-  ['fotoPiso', 'fotoAmbiente', 'fotoParede', 'fotoAvaria'].forEach(id => document.getElementById(id).value = '');
-
-  document.getElementById('relatorio').innerHTML = '';
-  document.getElementById('resultado').style.display = 'none';
-  window.idObraEditando = null;
-  window.numeroObraEditando = null;
-  document.getElementById('avisoEdicao').style.display = 'none';
-  document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';
-  alert('Formulário limpo para nova obra.');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-};
-
-window.editarObra = async function(id) {
-  if (!id) {
-    alert('Obra não encontrada.');
-    return;
-  }
-
-  try {
-    let obraEncontrada = obrasCache.find(o => o.id === id);
-
-    if (!obraEncontrada) {
-      const querySnapshot = await getDocs(collection(db, "obras"));
-      querySnapshot.forEach((docItem) => {
-        if (docItem.id === id) obraEncontrada = { id: docItem.id, ...docItem.data() };
-      });
-    }
-
-    if (!obraEncontrada) {
-      alert('Obra não encontrada.');
+    if (querySnapshot.empty) {
+      lista.innerHTML = '<p>Nenhuma obra encontrada no Firebase.</p>';
       return;
     }
 
-    const obra = obraEncontrada;
-    document.getElementById('cliente').value = obra.cliente || '';
-    document.getElementById('endereco').value = obra.endereco || '';
-    document.getElementById('ambiente').value = obra.ambiente || '';
-    document.getElementById('marceneiro').value = obra.marceneiro || '';
-    document.getElementById('statusObra').value = obra.statusObra || '';
-    document.getElementById('data').value = obra.data || '';
-    document.getElementById('nomeClienteAssinatura').value = obra.nomeAssinante || '';
-    document.getElementById('cpfCliente').value = obra.cpfAssinante || '';
-    document.getElementById('observacoes').value = obra.observacoes || '';
+    let html = '';
+    let contador = 1;
 
-    window.idObraEditando = id;
-    window.numeroObraEditando = obra.numeroObra || null;
-    document.getElementById('avisoEdicao').style.display = 'block';
-    document.getElementById('botaoSalvar').innerText = 'Atualizar Obra';
+    querySnapshot.forEach((documento) => {
+      const obra = documento.data();
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    alert('Obra carregada para edição.');
-  } catch (erro) {
-    console.error(erro);
-    alert('Erro ao carregar obra.');
-  }
-};
+      html += `
+        <div class="item-relatorio">
+          <strong>Obra ${contador}</strong><br>
+          <strong>Cliente:</strong> ${obra.cliente || 'Não informado'}<br>
+          <strong>Endereço:</strong> ${obra.endereco || 'Não informado'}<br>
+          <strong>Ambiente:</strong> ${obra.ambiente || 'Não informado'}<br>
+          <strong>Marceneiro:</strong> ${obra.marceneiro || 'Não informado'}<br>
+          <strong>Status:</strong> ${obra.statusObra || 'Não informado'}<br>
+          <strong>Data:</strong> ${obra.data || 'Não informada'}<br>
+          <strong>Criado em:</strong> ${obra.criadoEm || 'Não informado'}
+        </div>
+      `;
 
-window.limparFiltrosHistorico = function() {
-  document.getElementById('buscaHistorico').value = '';
-  document.getElementById('filtroStatus').selectedIndex = 0;
-  filtrarHistorico();
-};
-
-window.exportarCSV = function() {
-  if (!obrasCache || obrasCache.length === 0) {
-    alert('Carregue o histórico antes de exportar.');
-    return;
-  }
-
-  const cabecalho = ['Numero', 'Cliente', 'Endereco', 'Ambiente', 'Marceneiro', 'Status', 'Data', 'AssinadoPor', 'CPF'];
-
-  const linhas = obrasCache.map(function(o) {
-    return [
-      o.numeroObra || '',
-      o.cliente || '',
-      o.endereco || '',
-      o.ambiente || '',
-      o.marceneiro || '',
-      o.statusObra || '',
-      o.data || '',
-      o.nomeAssinante || '',
-      o.cpfAssinante || ''
-    ];
-  });
-
-  const todasLinhas = [cabecalho].concat(linhas);
-
-  const csv = todasLinhas.map(function(linha) {
-    return linha.map(function(campo) {
-      return '"' + String(campo).replace(/"/g, '""') + '"';
-    }).join(';');
-  }).join('\n');
-
-  const blob = new Blob([csv], {
-    type: 'text/csv;charset=utf-8;'
-  });
-
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-
-  link.href = url;
-  link.download = 'relatorio-ch-obras.csv';
-  link.click();
-
-  URL.revokeObjectURL(url);
-};
-
-window.gerarPDFDaObra = async function(id) {
-  const obra = obrasCache.find(function(o) {
-    return o.id === id;
-  });
-
-  if (!obra) {
-    alert('Obra não encontrada para gerar PDF.');
-    return;
-  }
-
-  document.getElementById('cliente').value = obra.cliente || '';
-  document.getElementById('endereco').value = obra.endereco || '';
-  document.getElementById('ambiente').value = obra.ambiente || '';
-  document.getElementById('marceneiro').value = obra.marceneiro || '';
-  document.getElementById('statusObra').value = obra.statusObra || '';
-  document.getElementById('data').value = obra.data || '';
-  document.getElementById('nomeClienteAssinatura').value = obra.nomeAssinante || '';
-  document.getElementById('cpfCliente').value = obra.cpfAssinante || '';
-  document.getElementById('observacoes').value = obra.observacoes || '';
-
-  if (obra.assinaturaCliente) {
-    await new Promise(function(resolve) {
-      const imagem = new Image();
-
-      imagem.onload = function() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.drawImage(imagem, 0, 0, canvas.width, canvas.height);
-
-        assinaturaFeita = true;
-        resolve();
-      };
-
-      imagem.onerror = function() {
-        assinaturaFeita = false;
-        resolve();
-      };
-
-      imagem.src = obra.assinaturaCliente;
+      contador++;
     });
-  } else {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    assinaturaFeita = false;
+
+    lista.innerHTML = html;
+
+  } catch (erro) {
+    console.error("Erro ao carregar histórico:", erro);
+    lista.innerHTML = '<p>Erro ao carregar histórico. Verifique login, Firebase ou permissões.</p>';
+    alert("Erro ao carregar histórico: " + erro.message);
   }
-
-  window.numeroObraAtualPDF = obra.numeroObra || null;
-
-  window.fotosPDFHistorico = Array.isArray(obra.fotosUrls)
-    ? obra.fotosUrls
-    : [];
-
-  await gerarPDF();
 };
-  </script>
-
-<div id="loadingOverlay" style="
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.65);
-z-index:9999;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-color:white;
-font-size:20px;
-font-weight:bold;
-">
-
-<div style="
-width:60px;
-height:60px;
-border:6px solid #ffffff33;
-border-top:6px solid #d4a017;
-border-radius:50%;
-animation:girar 1s linear infinite;
-margin-bottom:20px;"></div>
-
-<div id="loadingTexto">Salvando obra...</div>
-
-</div>
+ </script>
 </body>
 </html>
