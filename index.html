@@ -938,6 +938,30 @@ Nova Obra / Limpar Formulário
         <button type="button" onclick="carregarRequisicoesMateriais()" class="botao-secundario">Atualizar Lista</button>
         <button type="button" onclick="ocultarMateriais()" class="botao-secundario">Ocultar Materiais</button>
 
+        <h2>Filtros de Materiais</h2>
+
+        <input type="text" id="buscaMateriais" placeholder="Buscar por obra, cliente, ambiente ou material" oninput="filtrarMateriais()" />
+
+        <label for="filtroStatusMaterial">Status</label>
+        <select id="filtroStatusMaterial" onchange="filtrarMateriais()">
+          <option value="">Todos</option>
+          <option value="Solicitado">Solicitado</option>
+          <option value="Aprovado">Aprovado</option>
+          <option value="Comprado">Comprado</option>
+          <option value="Entregue">Entregue</option>
+          <option value="Cancelado">Cancelado</option>
+        </select>
+
+        <label for="filtroUrgenciaMaterial">Urgência</label>
+        <select id="filtroUrgenciaMaterial" onchange="filtrarMateriais()">
+          <option value="">Todas</option>
+          <option value="Normal">Normal</option>
+          <option value="Alta">Alta</option>
+          <option value="Urgente">Urgente</option>
+        </select>
+
+        <button type="button" onclick="limparFiltrosMateriais()" class="botao-secundario">Limpar Filtros de Materiais</button>
+
         <div id="listaMateriais"></div>
       </div>
     </div>
@@ -1471,6 +1495,7 @@ const storage = getStorage(appFirebase);
 const auth = getAuth(appFirebase);
 let obrasCache = [];
 let obrasMateriaisCache = [];
+let requisicoesMateriaisCache = [];
 
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
@@ -2293,41 +2318,74 @@ window.carregarRequisicoesMateriais = async function() {
     );
 
     const querySnapshot = await getDocs(materiaisQuery);
-    const requisicoes = [];
+    requisicoesMateriaisCache = [];
 
     querySnapshot.forEach((docItem) => {
-      requisicoes.push({ id: docItem.id, ...docItem.data() });
+      requisicoesMateriaisCache.push({ id: docItem.id, ...docItem.data() });
     });
 
-    if (requisicoes.length === 0) {
-      listaMateriais.innerHTML = '<p>Nenhuma requisicao encontrada.</p>';
-      return;
-    }
-
-    listaMateriais.innerHTML = requisicoes.map((item) => `
-      <div class="item-relatorio">
-        <strong style="font-size:16px; color:#d4a017;">${item.numeroObra || 'Obra sem numero'}</strong><br><br>
-        <strong>Cliente:</strong> ${item.cliente || 'Não informado'}<br>
-        <strong>Ambiente:</strong> ${item.ambiente || 'Não informado'}<br>
-        <strong>Material:</strong> ${item.material || 'Não informado'}<br>
-        <strong>Quantidade:</strong> ${item.quantidade || 0} ${item.unidade || ''}<br>
-        <strong>Urgência:</strong> ${item.urgencia || 'Normal'}<br>
-        <strong>Status:</strong> <span class="${classeStatusMaterial(item.status)}">${item.status || 'Solicitado'}</span><br>
-        <strong>Solicitado por:</strong> ${item.usuarioEmail || 'Não informado'}<br>
-        <strong>Data:</strong> ${item.criadoLocalmenteEm || 'Não informada'}<br>
-        <strong>Observação:</strong> ${item.observacao || 'Sem observação'}<br>
-        ${window.perfilUsuarioLogado === 'admin' ? `
-          <button type="button" class="botao-secundario" onclick="alterarStatusMaterial('${item.id}', 'Aprovado')">Aprovar</button>
-          <button type="button" class="botao-secundario" onclick="alterarStatusMaterial('${item.id}', 'Comprado')">Marcar Comprado</button>
-          <button type="button" class="botao-secundario" onclick="alterarStatusMaterial('${item.id}', 'Entregue')">Marcar Entregue</button>
-          <button type="button" class="botao-perigo" onclick="alterarStatusMaterial('${item.id}', 'Cancelado')">Cancelar</button>
-        ` : ''}
-      </div>
-    `).join('');
+    renderizarMateriais(requisicoesMateriaisCache);
   } catch (erro) {
     console.error('Erro ao carregar requisicoes de materiais:', erro);
     listaMateriais.innerHTML = '<p>Erro ao carregar requisicoes.</p>';
   }
+};
+
+function renderizarMateriais(requisicoes) {
+  const listaMateriais = document.getElementById('listaMateriais');
+  if (!listaMateriais) return;
+
+  if (!requisicoes || requisicoes.length === 0) {
+    listaMateriais.innerHTML = '<p>Nenhuma requisicao encontrada.</p>';
+    return;
+  }
+
+  listaMateriais.innerHTML = requisicoes.map((item) => `
+    <div class="item-relatorio">
+      <strong style="font-size:16px; color:#d4a017;">${item.numeroObra || 'Obra sem numero'}</strong><br><br>
+      <strong>Cliente:</strong> ${item.cliente || 'Não informado'}<br>
+      <strong>Ambiente:</strong> ${item.ambiente || 'Não informado'}<br>
+      <strong>Material:</strong> ${item.material || 'Não informado'}<br>
+      <strong>Quantidade:</strong> ${item.quantidade || 0} ${item.unidade || ''}<br>
+      <strong>Urgência:</strong> ${item.urgencia || 'Normal'}<br>
+      <strong>Status:</strong> <span class="${classeStatusMaterial(item.status)}">${item.status || 'Solicitado'}</span><br>
+      <strong>Solicitado por:</strong> ${item.usuarioEmail || 'Não informado'}<br>
+      <strong>Data:</strong> ${item.criadoLocalmenteEm || 'Não informada'}<br>
+      <strong>Observação:</strong> ${item.observacao || 'Sem observação'}<br>
+      ${window.perfilUsuarioLogado === 'admin' ? `
+        <button type="button" class="botao-secundario" onclick="alterarStatusMaterial('${item.id}', 'Aprovado')">Aprovar</button>
+        <button type="button" class="botao-secundario" onclick="alterarStatusMaterial('${item.id}', 'Comprado')">Marcar Comprado</button>
+        <button type="button" class="botao-secundario" onclick="alterarStatusMaterial('${item.id}', 'Entregue')">Marcar Entregue</button>
+        <button type="button" class="botao-perigo" onclick="alterarStatusMaterial('${item.id}', 'Cancelado')">Cancelar</button>
+      ` : ''}
+    </div>
+  `).join('');
+}
+
+window.filtrarMateriais = function() {
+  const texto = document.getElementById('buscaMateriais').value.toLowerCase().trim();
+  const statusFiltro = document.getElementById('filtroStatusMaterial').value;
+  const urgenciaFiltro = document.getElementById('filtroUrgenciaMaterial').value;
+  const termos = texto.split(' ').filter(Boolean);
+
+  const filtradas = requisicoesMateriaisCache.filter((item) => {
+    const busca = `${item.numeroObra || ''} ${item.cliente || ''} ${item.ambiente || ''} ${item.material || ''}`.toLowerCase();
+    const status = item.status || 'Solicitado';
+    const urgencia = item.urgencia || 'Normal';
+    const passaTexto = termos.length === 0 || termos.every((termo) => busca.includes(termo));
+    const passaStatus = !statusFiltro || status === statusFiltro;
+    const passaUrgencia = !urgenciaFiltro || urgencia === urgenciaFiltro;
+    return passaTexto && passaStatus && passaUrgencia;
+  });
+
+  renderizarMateriais(filtradas);
+};
+
+window.limparFiltrosMateriais = function() {
+  document.getElementById('buscaMateriais').value = '';
+  document.getElementById('filtroStatusMaterial').selectedIndex = 0;
+  document.getElementById('filtroUrgenciaMaterial').selectedIndex = 0;
+  renderizarMateriais(requisicoesMateriaisCache);
 };
 
 function classeStatusMaterial(status) {
