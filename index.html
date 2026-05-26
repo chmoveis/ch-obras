@@ -907,6 +907,24 @@ Nova Obra / Limpar Formulário
 
       <div class="resultado" id="historicoOperacional">
         <h2>Histórico Operacional</h2>
+        <input type="text" id="buscaLogsOperacionais" placeholder="Buscar por obra, cliente, usuário ou status" oninput="filtrarLogsOperacionais()" />
+
+        <label for="filtroAcaoLog">Ação</label>
+        <select id="filtroAcaoLog" onchange="filtrarLogsOperacionais()">
+          <option value="">Todas</option>
+          <option value="criacao">Criação</option>
+          <option value="atualizacao">Atualização</option>
+          <option value="requisicao_material">Requisição de material</option>
+        </select>
+
+        <label for="filtroStatusAlteradoLog">Status alterado</label>
+        <select id="filtroStatusAlteradoLog" onchange="filtrarLogsOperacionais()">
+          <option value="">Todos</option>
+          <option value="sim">Somente com mudança</option>
+          <option value="nao">Somente sem mudança</option>
+        </select>
+
+        <button type="button" onclick="limparFiltrosLogsOperacionais()" class="botao-secundario">Limpar Filtros de Logs</button>
         <button type="button" onclick="ocultarLogsOperacionais()" class="botao-secundario">Ocultar Histórico Operacional</button>
         <div id="listaLogsOperacionais"></div>
       </div>
@@ -1595,6 +1613,7 @@ const auth = getAuth(appFirebase);
 let obrasCache = [];
 let obrasMateriaisCache = [];
 let requisicoesMateriaisCache = [];
+let logsOperacionaisCache = [];
 
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
@@ -2298,34 +2317,68 @@ window.mostrarLogsOperacionais = async function() {
     );
 
     const querySnapshot = await getDocs(logsQuery);
-    const logs = [];
+    logsOperacionaisCache = [];
 
     querySnapshot.forEach((docItem) => {
-      logs.push({ id: docItem.id, ...docItem.data() });
+      logsOperacionaisCache.push({ id: docItem.id, ...docItem.data() });
     });
 
-    if (logs.length === 0) {
-      listaLogs.innerHTML = '<p>Nenhum log operacional encontrado.</p>';
-      return;
-    }
-
-    listaLogs.innerHTML = logs.map((log) => `
-      <div class="item-relatorio">
-        <strong style="font-size:16px; color:#d4a017;">${log.numeroObra || 'Obra sem numero'}</strong><br><br>
-        <strong>Ação:</strong> ${log.acao || 'Não informada'}<br>
-        <strong>Cliente:</strong> ${log.cliente || 'Não informado'}<br>
-        <strong>Status anterior:</strong> ${log.statusAnterior || 'Não informado'}<br>
-        <strong>Status novo:</strong> ${log.statusNovo || 'Não informado'}<br>
-        <strong>Status alterado:</strong> ${log.statusAlterado ? 'Sim' : 'Não'}<br>
-        <strong>Usuário:</strong> ${log.usuarioEmail || 'Não informado'}<br>
-        <strong>Perfil:</strong> ${log.perfilUsuario || 'Não informado'}<br>
-        <strong>Data:</strong> ${log.dataLocal || 'Não informada'}<br>
-      </div>
-    `).join('');
+    renderizarLogsOperacionais(logsOperacionaisCache);
   } catch (erro) {
     console.error('Erro ao carregar logs operacionais:', erro);
     listaLogs.innerHTML = '<p>Erro ao carregar logs operacionais.</p>';
   }
+};
+
+function renderizarLogsOperacionais(logs) {
+  const listaLogs = document.getElementById('listaLogsOperacionais');
+  if (!listaLogs) return;
+
+  if (!logs || logs.length === 0) {
+    listaLogs.innerHTML = '<p>Nenhum log operacional encontrado.</p>';
+    return;
+  }
+
+  listaLogs.innerHTML = logs.map((log) => `
+    <div class="item-relatorio">
+      <strong style="font-size:16px; color:#d4a017;">${log.numeroObra || 'Obra sem numero'}</strong><br><br>
+      <strong>Ação:</strong> ${log.acao || 'Não informada'}<br>
+      <strong>Cliente:</strong> ${log.cliente || 'Não informado'}<br>
+      <strong>Status anterior:</strong> ${log.statusAnterior || 'Não informado'}<br>
+      <strong>Status novo:</strong> ${log.statusNovo || 'Não informado'}<br>
+      <strong>Status alterado:</strong> ${log.statusAlterado ? 'Sim' : 'Não'}<br>
+      <strong>Usuário:</strong> ${log.usuarioEmail || 'Não informado'}<br>
+      <strong>Perfil:</strong> ${log.perfilUsuario || 'Não informado'}<br>
+      <strong>Data:</strong> ${log.dataLocal || 'Não informada'}<br>
+    </div>
+  `).join('');
+}
+
+window.filtrarLogsOperacionais = function() {
+  const texto = document.getElementById('buscaLogsOperacionais').value.toLowerCase().trim();
+  const acaoFiltro = document.getElementById('filtroAcaoLog').value;
+  const statusAlteradoFiltro = document.getElementById('filtroStatusAlteradoLog').value;
+  const termos = texto.split(' ').filter(Boolean);
+
+  const filtrados = logsOperacionaisCache.filter((log) => {
+    const busca = `${log.numeroObra || ''} ${log.cliente || ''} ${log.usuarioEmail || ''} ${log.statusAnterior || ''} ${log.statusNovo || ''}`.toLowerCase();
+    const passaTexto = termos.length === 0 || termos.every((termo) => busca.includes(termo));
+    const passaAcao = !acaoFiltro || log.acao === acaoFiltro;
+    const passaStatusAlterado = !statusAlteradoFiltro
+      || (statusAlteradoFiltro === 'sim' && log.statusAlterado === true)
+      || (statusAlteradoFiltro === 'nao' && log.statusAlterado !== true);
+
+    return passaTexto && passaAcao && passaStatusAlterado;
+  });
+
+  renderizarLogsOperacionais(filtrados);
+};
+
+window.limparFiltrosLogsOperacionais = function() {
+  document.getElementById('buscaLogsOperacionais').value = '';
+  document.getElementById('filtroAcaoLog').selectedIndex = 0;
+  document.getElementById('filtroStatusAlteradoLog').selectedIndex = 0;
+  renderizarLogsOperacionais(logsOperacionaisCache);
 };
 
 window.ocultarLogsOperacionais = function() {
