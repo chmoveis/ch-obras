@@ -917,6 +917,7 @@ Nova Obra / Limpar Formulário
           <option value="criacao">Criação</option>
           <option value="atualizacao">Atualização</option>
           <option value="requisicao_material">Requisição de material</option>
+          <option value="usuario">Usuário</option>
         </select>
 
         <label for="filtroStatusAlteradoLog">Status alterado</label>
@@ -1909,6 +1910,27 @@ async function registrarLogOperacional(acao, obraId, dadosObra, obraAnterior = n
   }
 }
 
+async function registrarLogUsuario(tipoAlteracao, emailUsuarioAlterado, detalhe) {
+  try {
+    await addDoc(collection(db, "logsObras"), {
+      acao: 'usuario',
+      obraId: emailUsuarioAlterado || '',
+      numeroObra: 'USUARIO',
+      cliente: emailUsuarioAlterado || '',
+      statusAnterior: detalhe.anterior || '',
+      statusNovo: detalhe.novo || '',
+      statusAlterado: detalhe.anterior !== detalhe.novo,
+      detalhe: tipoAlteracao,
+      usuarioEmail: window.usuarioEmailLogado || '',
+      perfilUsuario: window.perfilUsuarioLogado || '',
+      dataLocal: new Date().toLocaleString('pt-BR'),
+      criadoEmServidor: serverTimestamp()
+    });
+  } catch (erro) {
+    console.error('Erro ao registrar log de usuario:', erro);
+  }
+}
+
 window.salvarObraNaNuvem = async function(dadosObra) {
   try {
     if (window.idObraEditando) {
@@ -2409,6 +2431,7 @@ function renderizarLogsOperacionais(logs) {
     <div class="item-relatorio">
       <strong style="font-size:16px; color:#d4a017;">${log.numeroObra || 'Obra sem numero'}</strong><br><br>
       <strong>Ação:</strong> ${log.acao || 'Não informada'}<br>
+      ${log.detalhe ? `<strong>Detalhe:</strong> ${log.detalhe}<br>` : ''}
       <strong>Cliente:</strong> ${log.cliente || 'Não informado'}<br>
       <strong>Status anterior:</strong> ${log.statusAnterior || 'Não informado'}<br>
       <strong>Status novo:</strong> ${log.statusNovo || 'Não informado'}<br>
@@ -2427,7 +2450,7 @@ window.filtrarLogsOperacionais = function() {
   const termos = texto.split(' ').filter(Boolean);
 
   const filtrados = logsOperacionaisCache.filter((log) => {
-    const busca = `${log.numeroObra || ''} ${log.cliente || ''} ${log.usuarioEmail || ''} ${log.statusAnterior || ''} ${log.statusNovo || ''}`.toLowerCase();
+    const busca = `${log.numeroObra || ''} ${log.cliente || ''} ${log.usuarioEmail || ''} ${log.statusAnterior || ''} ${log.statusNovo || ''} ${log.detalhe || ''}`.toLowerCase();
     const passaTexto = termos.length === 0 || termos.every((termo) => busca.includes(termo));
     const passaAcao = !acaoFiltro || log.acao === acaoFiltro;
     const passaStatusAlterado = !statusAlteradoFiltro
@@ -2809,6 +2832,11 @@ window.salvarUsuarioSistema = async function() {
       atualizadoEmServidor: serverTimestamp()
     }, { merge: true });
 
+    await registrarLogUsuario('usuario_salvo', email, {
+      anterior: '',
+      novo: `perfil: ${perfil} | ativo: Sim`
+    });
+
     esconderLoading();
     document.getElementById('novoUsuarioEmail').value = '';
     document.getElementById('novoUsuarioNome').value = '';
@@ -2829,6 +2857,8 @@ window.atualizarPerfilUsuario = async function(id) {
   }
 
   const perfil = document.getElementById(`perfil-${id}`).value;
+  const usuarioAnterior = usuariosSistemaCache.find((usuario) => usuario.id === id) || {};
+  const perfilAnterior = usuarioAnterior.perfil || '';
 
   try {
     mostrarLoading('Atualizando perfil...');
@@ -2836,6 +2866,11 @@ window.atualizarPerfilUsuario = async function(id) {
       perfil,
       atualizadoLocalmenteEm: new Date().toLocaleString('pt-BR'),
       atualizadoEmServidor: serverTimestamp()
+    });
+
+    await registrarLogUsuario('perfil_alterado', id, {
+      anterior: perfilAnterior,
+      novo: perfil
     });
 
     esconderLoading();
@@ -2861,10 +2896,19 @@ window.alternarUsuarioAtivo = async function(id, ativo) {
 
   try {
     mostrarLoading('Atualizando usuario...');
+    const usuarioAnterior = usuariosSistemaCache.find((usuario) => usuario.id === id) || {};
+    const ativoAnterior = usuarioAnterior.ativo === false ? 'Inativo' : 'Ativo';
+    const ativoNovo = ativo ? 'Ativo' : 'Inativo';
+
     await updateDoc(doc(db, "usuarios", id), {
       ativo,
       atualizadoLocalmenteEm: new Date().toLocaleString('pt-BR'),
       atualizadoEmServidor: serverTimestamp()
+    });
+
+    await registrarLogUsuario('status_usuario_alterado', id, {
+      anterior: ativoAnterior,
+      novo: ativoNovo
     });
 
     esconderLoading();
