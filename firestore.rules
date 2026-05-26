@@ -47,6 +47,12 @@ service cloud.firestore {
           && newOwnerIsCurrentUser());
     }
 
+    function canCreateMaterialRequest() {
+      return activeUser()
+        && userRole() in ['admin', 'marceneiro', 'montagem']
+        && request.resource.data.usuarioEmail == userEmail();
+    }
+
     function protectedFieldsWereNotChanged() {
       return !request.resource.data.diff(resource.data).affectedKeys()
         .hasAny(['emailUsuario', 'perfilUsuario', 'numeroObra', 'criadoEmServidor']);
@@ -97,6 +103,13 @@ service cloud.firestore {
       allow read: if activeUser();
       allow create: if activeUser();
       allow update, delete: if false;
+    }
+
+    match /requisicoesMateriais/{requisicaoId} {
+      allow read: if activeUser();
+      allow create: if canCreateMaterialRequest();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
     }
 
     match /{document=**} {

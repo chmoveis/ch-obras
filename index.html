@@ -813,6 +813,7 @@ Nova Obra / Limpar Formulário
     <button onclick="mostrarHistorico()">Ver Histórico de Obras</button>
     <button type="button" onclick="ocultarHistorico()" class="botao-secundario">Ocultar Histórico</button>
     <button type="button" onclick="mostrarLogsOperacionais()" class="botao-secundario" id="btnLogsOperacionais">Histórico Operacional</button>
+    <button type="button" onclick="mostrarMateriais()" class="botao-secundario" id="btnMateriais">Requisição de Materiais</button>
     <button type="button" onclick="exportarCSV()" class="botao-secundario" id="btnExportarCSV">Exportar Relatório CSV</button>
     <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="botao-secundario">Voltar ao Topo</button>
 
@@ -879,6 +880,47 @@ Nova Obra / Limpar Formulário
         <h2>Histórico Operacional</h2>
         <button type="button" onclick="ocultarLogsOperacionais()" class="botao-secundario">Ocultar Histórico Operacional</button>
         <div id="listaLogsOperacionais"></div>
+      </div>
+
+      <div class="resultado" id="moduloMateriais">
+        <h2>Requisição de Materiais</h2>
+
+        <label for="materialNumeroObra">Número da obra</label>
+        <input type="text" id="materialNumeroObra" placeholder="Exemplo: OBRA-2026-0050" />
+
+        <label for="materialCliente">Cliente</label>
+        <input type="text" id="materialCliente" placeholder="Nome do cliente" />
+
+        <label for="materialDescricao">Material solicitado</label>
+        <input type="text" id="materialDescricao" placeholder="Exemplo: MDF Branco TX 18mm" />
+
+        <label for="materialQuantidade">Quantidade</label>
+        <input type="number" id="materialQuantidade" min="0" step="0.01" placeholder="Exemplo: 2" />
+
+        <label for="materialUnidade">Unidade</label>
+        <select id="materialUnidade">
+          <option value="un">un</option>
+          <option value="chapa">chapa</option>
+          <option value="metro">metro</option>
+          <option value="caixa">caixa</option>
+          <option value="kg">kg</option>
+        </select>
+
+        <label for="materialUrgencia">Urgência</label>
+        <select id="materialUrgencia">
+          <option value="Normal">Normal</option>
+          <option value="Alta">Alta</option>
+          <option value="Urgente">Urgente</option>
+        </select>
+
+        <label for="materialObservacao">Observação</label>
+        <textarea id="materialObservacao" placeholder="Detalhes da solicitação"></textarea>
+
+        <button type="button" onclick="salvarRequisicaoMaterial()">Salvar Requisição</button>
+        <button type="button" onclick="carregarRequisicoesMateriais()" class="botao-secundario">Atualizar Lista</button>
+        <button type="button" onclick="ocultarMateriais()" class="botao-secundario">Ocultar Materiais</button>
+
+        <div id="listaMateriais"></div>
       </div>
     </div>
   </div>
@@ -1423,6 +1465,10 @@ function usuarioPodeCriarObra() {
   return ['admin', 'marceneiro'].includes(perfilAtual());
 }
 
+function usuarioPodeCriarRequisicaoMaterial() {
+  return ['admin', 'marceneiro', 'montagem'].includes(perfilAtual());
+}
+
 function usuarioPodeEditarObra(obra) {
   if (!obra) return false;
   if (perfilAtual() === 'admin') return true;
@@ -1441,17 +1487,20 @@ function aplicarPermissoesInterface() {
   const btnLimpar = document.getElementById('btnLimparFormulario');
   const btnExportar = document.getElementById('btnExportarCSV');
   const btnLogs = document.getElementById('btnLogsOperacionais');
+  const btnMateriais = document.getElementById('btnMateriais');
   const botaoSalvar = document.getElementById('botaoSalvar');
 
   if (btnLimpar) btnLimpar.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnExportar) btnExportar.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnLogs) btnLogs.style.display = perfil === 'admin' ? 'block' : 'none';
+  if (btnMateriais) btnMateriais.style.display = ['admin', 'marceneiro', 'montagem'].includes(perfil) ? 'block' : 'none';
   if (botaoSalvar) {
     botaoSalvar.style.display = usuarioPodeCriarObra() || window.idObraEditando ? 'block' : 'none';
   }
 }
 
 window.usuarioPodeCriarObra = usuarioPodeCriarObra;
+window.usuarioPodeCriarRequisicaoMaterial = usuarioPodeCriarRequisicaoMaterial;
 window.usuarioPodeEditarObra = usuarioPodeEditarObra;
 window.aplicarPermissoesInterface = aplicarPermissoesInterface;
 
@@ -2036,6 +2085,170 @@ window.mostrarLogsOperacionais = async function() {
 window.ocultarLogsOperacionais = function() {
   const historicoOperacional = document.getElementById('historicoOperacional');
   if (historicoOperacional) historicoOperacional.style.display = 'none';
+};
+
+window.mostrarMateriais = function() {
+  if (!['admin', 'marceneiro', 'montagem'].includes(window.perfilUsuarioLogado)) {
+    alert('Seu perfil nao tem permissao para acessar requisicoes de materiais.');
+    return;
+  }
+
+  document.getElementById('dashboardResumo').style.display = 'block';
+  document.getElementById('moduloMateriais').style.display = 'block';
+  carregarRequisicoesMateriais();
+};
+
+window.ocultarMateriais = function() {
+  const moduloMateriais = document.getElementById('moduloMateriais');
+  if (moduloMateriais) moduloMateriais.style.display = 'none';
+};
+
+window.salvarRequisicaoMaterial = async function() {
+  if (!window.usuarioPodeCriarRequisicaoMaterial()) {
+    alert('Seu perfil nao tem permissao para criar requisicao de material.');
+    return;
+  }
+
+  const numeroObra = document.getElementById('materialNumeroObra').value.trim();
+  const cliente = document.getElementById('materialCliente').value.trim();
+  const material = document.getElementById('materialDescricao').value.trim();
+  const quantidade = document.getElementById('materialQuantidade').value;
+  const unidade = document.getElementById('materialUnidade').value;
+  const urgencia = document.getElementById('materialUrgencia').value;
+  const observacao = document.getElementById('materialObservacao').value.trim();
+
+  if (!numeroObra || !cliente || !material || !quantidade) {
+    alert('Preencha numero da obra, cliente, material e quantidade.');
+    return;
+  }
+
+  try {
+    mostrarLoading('Salvando requisicao de material...');
+
+    const dadosMaterial = {
+      numeroObra,
+      cliente,
+      material,
+      quantidade: Number(quantidade),
+      unidade,
+      urgencia,
+      observacao,
+      status: 'Solicitado',
+      usuarioEmail: window.usuarioEmailLogado || '',
+      perfilUsuario: window.perfilUsuarioLogado || '',
+      criadoLocalmenteEm: new Date().toLocaleString('pt-BR'),
+      criadoEmServidor: serverTimestamp()
+    };
+
+    const requisicaoRef = await addDoc(collection(db, "requisicoesMateriais"), dadosMaterial);
+
+    await addDoc(collection(db, "logsObras"), {
+      acao: 'requisicao_material',
+      obraId: requisicaoRef.id,
+      numeroObra,
+      cliente,
+      statusAnterior: '',
+      statusNovo: 'Solicitado',
+      statusAlterado: true,
+      usuarioEmail: window.usuarioEmailLogado || '',
+      perfilUsuario: window.perfilUsuarioLogado || '',
+      dataLocal: new Date().toLocaleString('pt-BR'),
+      criadoEmServidor: serverTimestamp()
+    });
+
+    document.getElementById('materialDescricao').value = '';
+    document.getElementById('materialQuantidade').value = '';
+    document.getElementById('materialObservacao').value = '';
+
+    esconderLoading();
+    alert('Requisicao de material salva com sucesso.');
+    carregarRequisicoesMateriais();
+  } catch (erro) {
+    console.error('Erro ao salvar requisicao de material:', erro);
+    esconderLoading();
+    alert('Erro ao salvar requisicao de material.');
+  }
+};
+
+window.carregarRequisicoesMateriais = async function() {
+  const listaMateriais = document.getElementById('listaMateriais');
+  if (!listaMateriais) return;
+
+  listaMateriais.innerHTML = '<p>Carregando requisicoes...</p>';
+
+  try {
+    const materiaisQuery = query(
+      collection(db, "requisicoesMateriais"),
+      orderBy("criadoEmServidor", "desc"),
+      limit(50)
+    );
+
+    const querySnapshot = await getDocs(materiaisQuery);
+    const requisicoes = [];
+
+    querySnapshot.forEach((docItem) => {
+      requisicoes.push({ id: docItem.id, ...docItem.data() });
+    });
+
+    if (requisicoes.length === 0) {
+      listaMateriais.innerHTML = '<p>Nenhuma requisicao encontrada.</p>';
+      return;
+    }
+
+    listaMateriais.innerHTML = requisicoes.map((item) => `
+      <div class="item-relatorio">
+        <strong style="font-size:16px; color:#d4a017;">${item.numeroObra || 'Obra sem numero'}</strong><br><br>
+        <strong>Cliente:</strong> ${item.cliente || 'Não informado'}<br>
+        <strong>Material:</strong> ${item.material || 'Não informado'}<br>
+        <strong>Quantidade:</strong> ${item.quantidade || 0} ${item.unidade || ''}<br>
+        <strong>Urgência:</strong> ${item.urgencia || 'Normal'}<br>
+        <strong>Status:</strong> <span class="${classeStatusMaterial(item.status)}">${item.status || 'Solicitado'}</span><br>
+        <strong>Solicitado por:</strong> ${item.usuarioEmail || 'Não informado'}<br>
+        <strong>Data:</strong> ${item.criadoLocalmenteEm || 'Não informada'}<br>
+        <strong>Observação:</strong> ${item.observacao || 'Sem observação'}<br>
+        ${window.perfilUsuarioLogado === 'admin' ? `
+          <button type="button" class="botao-secundario" onclick="alterarStatusMaterial('${item.id}', 'Aprovado')">Aprovar</button>
+          <button type="button" class="botao-secundario" onclick="alterarStatusMaterial('${item.id}', 'Comprado')">Marcar Comprado</button>
+          <button type="button" class="botao-secundario" onclick="alterarStatusMaterial('${item.id}', 'Entregue')">Marcar Entregue</button>
+          <button type="button" class="botao-perigo" onclick="alterarStatusMaterial('${item.id}', 'Cancelado')">Cancelar</button>
+        ` : ''}
+      </div>
+    `).join('');
+  } catch (erro) {
+    console.error('Erro ao carregar requisicoes de materiais:', erro);
+    listaMateriais.innerHTML = '<p>Erro ao carregar requisicoes.</p>';
+  }
+};
+
+function classeStatusMaterial(status) {
+  if (status === 'Entregue') return 'status status-finalizada';
+  if (status === 'Comprado') return 'status status-producao';
+  if (status === 'Aprovado') return 'status status-iniciar';
+  if (status === 'Cancelado') return 'status status-cancelada';
+  return 'status status-cliente';
+}
+
+window.alterarStatusMaterial = async function(id, novoStatus) {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Apenas admin pode alterar status de material.');
+    return;
+  }
+
+  try {
+    mostrarLoading('Atualizando material...');
+    await updateDoc(doc(db, "requisicoesMateriais", id), {
+      status: novoStatus,
+      atualizadoPor: window.usuarioEmailLogado || '',
+      atualizadoEmLocal: new Date().toLocaleString('pt-BR'),
+      atualizadoEmServidor: serverTimestamp()
+    });
+    esconderLoading();
+    carregarRequisicoesMateriais();
+  } catch (erro) {
+    console.error('Erro ao atualizar material:', erro);
+    esconderLoading();
+    alert('Erro ao atualizar status do material.');
+  }
 };
 
 window.excluirObra = async function(id) {
