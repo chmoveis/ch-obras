@@ -838,6 +838,7 @@ Nova Obra / Limpar Formulário
     <button type="button" onclick="exportarCSV()" class="botao-secundario" id="btnExportarCSV">Exportar Relatório CSV</button>
     <button type="button" onclick="exportarBackupJSON()" class="botao-secundario" id="btnExportarJSON">Backup Obras JSON</button>
     <button type="button" onclick="exportarBackupCompletoJSON()" class="botao-secundario" id="btnBackupCompletoJSON">Backup Completo JSON</button>
+    <button type="button" onclick="mostrarRestaurarBackup()" class="botao-secundario" id="btnRestaurarBackup">Restaurar Backup JSON</button>
     <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="botao-secundario">Voltar ao Topo</button>
 
     <div class="area-visualizar">
@@ -1066,6 +1067,19 @@ Nova Obra / Limpar Formulário
         <button type="button" onclick="limparFiltrosMateriais()" class="botao-secundario">Limpar Filtros de Materiais</button>
 
         <div id="listaMateriais"></div>
+      </div>
+
+      <div class="resultado" id="painelRestaurarBackup">
+        <h2>Restaurar Backup JSON</h2>
+        <p style="font-size:13px; color:#555;">Modo seguro: esta etapa apenas lê o arquivo e mostra o resumo. Nada será gravado no Firebase.</p>
+
+        <label for="arquivoBackupJSON">Arquivo de backup</label>
+        <input type="file" id="arquivoBackupJSON" accept="application/json,.json" />
+
+        <button type="button" onclick="analisarBackupJSON()" class="botao-secundario">Analisar Backup</button>
+        <button type="button" onclick="ocultarRestaurarBackup()" class="botao-secundario">Ocultar Restauração</button>
+
+        <div id="resumoBackupJSON"></div>
       </div>
     </div>
   </div>
@@ -1722,6 +1736,7 @@ function aplicarPermissoesInterface() {
   const btnExportar = document.getElementById('btnExportarCSV');
   const btnExportarJSON = document.getElementById('btnExportarJSON');
   const btnBackupCompletoJSON = document.getElementById('btnBackupCompletoJSON');
+  const btnRestaurarBackup = document.getElementById('btnRestaurarBackup');
   const btnLogs = document.getElementById('btnLogsOperacionais');
   const btnProdutividade = document.getElementById('btnProdutividade');
   const btnUsuarios = document.getElementById('btnUsuarios');
@@ -1734,6 +1749,7 @@ function aplicarPermissoesInterface() {
   if (btnExportar) btnExportar.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnExportarJSON) btnExportarJSON.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnBackupCompletoJSON) btnBackupCompletoJSON.style.display = perfil === 'admin' ? 'block' : 'none';
+  if (btnRestaurarBackup) btnRestaurarBackup.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnLogs) btnLogs.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnProdutividade) btnProdutividade.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnUsuarios) btnUsuarios.style.display = perfil === 'admin' ? 'block' : 'none';
@@ -3735,6 +3751,88 @@ window.exportarBackupCompletoJSON = async function() {
     esconderLoading();
     alert('Erro ao gerar backup completo. Verifique as permissoes do Firebase.');
   }
+};
+
+window.mostrarRestaurarBackup = function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Seu perfil nao tem permissao para restaurar backup.');
+    return;
+  }
+
+  document.getElementById('dashboardResumo').style.display = 'block';
+  document.getElementById('painelRestaurarBackup').style.display = 'block';
+};
+
+window.ocultarRestaurarBackup = function() {
+  const painel = document.getElementById('painelRestaurarBackup');
+  if (painel) painel.style.display = 'none';
+};
+
+window.analisarBackupJSON = function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Seu perfil nao tem permissao para analisar backup.');
+    return;
+  }
+
+  const input = document.getElementById('arquivoBackupJSON');
+  const resumo = document.getElementById('resumoBackupJSON');
+
+  if (!input || !input.files || input.files.length === 0) {
+    alert('Selecione um arquivo JSON de backup.');
+    return;
+  }
+
+  const arquivo = input.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(event) {
+    try {
+      const dados = JSON.parse(event.target.result);
+      const obras = Array.isArray(dados.obras) ? dados.obras : [];
+      const usuarios = Array.isArray(dados.usuarios) ? dados.usuarios : [];
+      const materiais = Array.isArray(dados.materiais)
+        ? dados.materiais
+        : (Array.isArray(dados.requisicoes) ? dados.requisicoes : []);
+      const tipo = dados.tipo || 'nao informado';
+      const sistema = dados.sistema || 'nao informado';
+      const geradoEm = dados.geradoEm || 'nao informado';
+      const geradoPor = dados.geradoPor || 'nao informado';
+
+      const pareceBackupCH = sistema === 'CH Obras'
+        || tipo.includes('backup')
+        || obras.length > 0
+        || usuarios.length > 0
+        || materiais.length > 0;
+
+      if (!pareceBackupCH) {
+        resumo.innerHTML = '<div class="item-relatorio"><strong>Arquivo lido, mas não parece ser um backup do CH Obras.</strong></div>';
+        return;
+      }
+
+      resumo.innerHTML = `
+        <div class="item-relatorio">
+          <strong style="font-size:18px; color:#d4a017;">Resumo do Backup</strong><br><br>
+          <strong>Sistema:</strong> ${sistema}<br>
+          <strong>Tipo:</strong> ${tipo}<br>
+          <strong>Gerado em:</strong> ${geradoEm}<br>
+          <strong>Gerado por:</strong> ${geradoPor}<br><br>
+          <strong>Obras encontradas:</strong> ${obras.length}<br>
+          <strong>Usuários encontrados:</strong> ${usuarios.length}<br>
+          <strong>Materiais encontrados:</strong> ${materiais.length}<br><br>
+          <strong>Status:</strong> Arquivo validado em modo seguro. Nenhum dado foi gravado no Firebase.
+        </div>
+      `;
+    } catch (erro) {
+      console.error('Erro ao analisar backup:', erro);
+      resumo.innerHTML = '<div class="item-relatorio"><strong>Erro:</strong> arquivo JSON inválido ou corrompido.</div>';
+    }
+  };
+
+  reader.onerror = function() {
+    resumo.innerHTML = '<div class="item-relatorio"><strong>Erro:</strong> não foi possível ler o arquivo.</div>';
+  };
+
+  reader.readAsText(arquivo);
 };
 
 window.gerarPDFDaObra = async function(id) {
