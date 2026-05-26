@@ -1469,6 +1469,12 @@ perfilUsuario: window.idObraEditando && window.obraEditandoOriginal
 nomeAssinante,
     cpfAssinante,
     observacoes: pegarValor('observacoes') || 'Sem observações',
+    pisoMadeira: pegarValor('pisoMadeira') || '',
+    riscoPiso: pegarValor('riscoPiso') || '',
+    paredePronta: pegarValor('paredePronta') || '',
+    eletricaPronta: pegarValor('eletricaPronta') || '',
+    localLimpo: pegarValor('localLimpo') || '',
+    medidasConferidas: pegarValor('medidasConferidas') || '',
     assinaturaCliente: imagemAssinatura,
     fotoPisoUrl,
     fotosUrls,
@@ -1490,6 +1496,12 @@ nomeAssinante,
     ['Data da instalação', data],
     ['Assinado por', nomeAssinante],
     ['CPF', cpfAssinante],
+    ['Piso é de madeira?', dadosObra.pisoMadeira],
+    ['Risco ou avaria no piso?', dadosObra.riscoPiso],
+    ['Paredes prontas?', dadosObra.paredePronta],
+    ['Parte elétrica pronta?', dadosObra.eletricaPronta],
+    ['Local limpo e liberado?', dadosObra.localLimpo],
+    ['Medidas conferidas?', dadosObra.medidasConferidas],
     ['Observações', dadosObra.observacoes]
   ];
 
@@ -2059,6 +2071,14 @@ function renderizarHistorico(obras) {
 
         <strong>Prioridade:</strong>
         <span class="${classePrioridade(prioridadeCard)}">${prioridadeCard}</span><br>
+
+        <br><strong>Checklist Técnico:</strong><br>
+        <strong>Piso é de madeira?</strong> ${obra.pisoMadeira || 'Não informado'}<br>
+        <strong>Risco ou avaria no piso?</strong> ${obra.riscoPiso || 'Não informado'}<br>
+        <strong>Paredes prontas?</strong> ${obra.paredePronta || 'Não informado'}<br>
+        <strong>Parte elétrica pronta?</strong> ${obra.eletricaPronta || 'Não informado'}<br>
+        <strong>Local limpo e liberado?</strong> ${obra.localLimpo || 'Não informado'}<br>
+        <strong>Medidas conferidas?</strong> ${obra.medidasConferidas || 'Não informado'}<br>
 
         <strong>Observações:</strong> ${obra.observacoes || 'Sem observações'}<br>
 
@@ -2680,6 +2700,12 @@ window.editarObra = async function(id) {
     document.getElementById('nomeClienteAssinatura').value = obra.nomeAssinante || '';
     document.getElementById('cpfCliente').value = obra.cpfAssinante || '';
     document.getElementById('observacoes').value = obra.observacoes || '';
+    document.getElementById('pisoMadeira').value = obra.pisoMadeira || '';
+    document.getElementById('riscoPiso').value = obra.riscoPiso || '';
+    document.getElementById('paredePronta').value = obra.paredePronta || '';
+    document.getElementById('eletricaPronta').value = obra.eletricaPronta || '';
+    document.getElementById('localLimpo').value = obra.localLimpo || '';
+    document.getElementById('medidasConferidas').value = obra.medidasConferidas || '';
 
     if (obra.assinaturaCliente) {
       await new Promise(function(resolve) {
