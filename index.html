@@ -895,11 +895,19 @@ Nova Obra / Limpar Formulário
       <div class="resultado" id="moduloMateriais">
         <h2>Requisição de Materiais</h2>
 
+        <label for="materialObraSelect">Escolher obra</label>
+        <select id="materialObraSelect" onchange="preencherMaterialPorObra()">
+          <option value="">Selecione uma obra cadastrada</option>
+        </select>
+
         <label for="materialNumeroObra">Número da obra</label>
         <input type="text" id="materialNumeroObra" placeholder="Exemplo: OBRA-2026-0050" />
 
         <label for="materialCliente">Cliente</label>
         <input type="text" id="materialCliente" placeholder="Nome do cliente" />
+
+        <label for="materialAmbiente">Ambiente</label>
+        <input type="text" id="materialAmbiente" placeholder="Ambiente da obra" />
 
         <label for="materialDescricao">Material solicitado</label>
         <input type="text" id="materialDescricao" placeholder="Exemplo: MDF Branco TX 18mm" />
@@ -1462,6 +1470,7 @@ const db = getFirestore(appFirebase);
 const storage = getStorage(appFirebase);
 const auth = getAuth(appFirebase);
 let obrasCache = [];
+let obrasMateriaisCache = [];
 
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
@@ -2141,12 +2150,62 @@ window.mostrarMateriais = function() {
 
   document.getElementById('dashboardResumo').style.display = 'block';
   document.getElementById('moduloMateriais').style.display = 'block';
+  carregarObrasParaMateriais();
   carregarRequisicoesMateriais();
 };
 
 window.ocultarMateriais = function() {
   const moduloMateriais = document.getElementById('moduloMateriais');
   if (moduloMateriais) moduloMateriais.style.display = 'none';
+};
+
+window.carregarObrasParaMateriais = async function() {
+  const selectObras = document.getElementById('materialObraSelect');
+  if (!selectObras) return;
+
+  selectObras.innerHTML = '<option value="">Carregando obras...</option>';
+
+  try {
+    let obrasQuery;
+
+    if (['admin', 'montagem', 'conferencia', 'visualizacao'].includes(window.perfilUsuarioLogado)) {
+      obrasQuery = query(collection(db, "obras"), orderBy("criadoEmServidor", "desc"), limit(100));
+    } else {
+      obrasQuery = query(
+        collection(db, "obras"),
+        where("emailUsuario", "==", window.usuarioEmailLogado),
+        orderBy("criadoEmServidor", "desc"),
+        limit(100)
+      );
+    }
+
+    const querySnapshot = await getDocs(obrasQuery);
+    obrasMateriaisCache = [];
+
+    querySnapshot.forEach((docItem) => {
+      obrasMateriaisCache.push({ id: docItem.id, ...docItem.data() });
+    });
+
+    selectObras.innerHTML = '<option value="">Selecione uma obra cadastrada</option>' +
+      obrasMateriaisCache.map((obra) => {
+        const texto = `${obra.numeroObra || 'SEM NUMERO'} - ${obra.cliente || 'Cliente nao informado'} - ${obra.ambiente || 'Ambiente nao informado'}`;
+        return `<option value="${obra.id}">${texto}</option>`;
+      }).join('');
+  } catch (erro) {
+    console.error('Erro ao carregar obras para materiais:', erro);
+    selectObras.innerHTML = '<option value="">Erro ao carregar obras</option>';
+  }
+};
+
+window.preencherMaterialPorObra = function() {
+  const obraId = document.getElementById('materialObraSelect').value;
+  const obra = obrasMateriaisCache.find((item) => item.id === obraId);
+
+  if (!obra) return;
+
+  document.getElementById('materialNumeroObra').value = obra.numeroObra || '';
+  document.getElementById('materialCliente').value = obra.cliente || '';
+  document.getElementById('materialAmbiente').value = obra.ambiente || '';
 };
 
 window.salvarRequisicaoMaterial = async function() {
@@ -2157,6 +2216,8 @@ window.salvarRequisicaoMaterial = async function() {
 
   const numeroObra = document.getElementById('materialNumeroObra').value.trim();
   const cliente = document.getElementById('materialCliente').value.trim();
+  const ambiente = document.getElementById('materialAmbiente').value.trim();
+  const obraId = document.getElementById('materialObraSelect').value || '';
   const material = document.getElementById('materialDescricao').value.trim();
   const quantidade = document.getElementById('materialQuantidade').value;
   const unidade = document.getElementById('materialUnidade').value;
@@ -2172,8 +2233,10 @@ window.salvarRequisicaoMaterial = async function() {
     mostrarLoading('Salvando requisicao de material...');
 
     const dadosMaterial = {
+      obraId,
       numeroObra,
       cliente,
+      ambiente,
       material,
       quantidade: Number(quantidade),
       unidade,
@@ -2245,6 +2308,7 @@ window.carregarRequisicoesMateriais = async function() {
       <div class="item-relatorio">
         <strong style="font-size:16px; color:#d4a017;">${item.numeroObra || 'Obra sem numero'}</strong><br><br>
         <strong>Cliente:</strong> ${item.cliente || 'Não informado'}<br>
+        <strong>Ambiente:</strong> ${item.ambiente || 'Não informado'}<br>
         <strong>Material:</strong> ${item.material || 'Não informado'}<br>
         <strong>Quantidade:</strong> ${item.quantidade || 0} ${item.unidade || ''}<br>
         <strong>Urgência:</strong> ${item.urgencia || 'Normal'}<br>
