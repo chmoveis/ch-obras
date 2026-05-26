@@ -833,6 +833,7 @@ Nova Obra / Limpar Formulário
     <button type="button" onclick="ocultarHistorico()" class="botao-secundario">Ocultar Histórico</button>
     <button type="button" onclick="mostrarLogsOperacionais()" class="botao-secundario" id="btnLogsOperacionais">Histórico Operacional</button>
     <button type="button" onclick="mostrarProdutividade()" class="botao-secundario" id="btnProdutividade">Produtividade</button>
+    <button type="button" onclick="mostrarUsuarios()" class="botao-secundario" id="btnUsuarios">Gerenciar Usuários</button>
     <button type="button" onclick="mostrarMateriais()" class="botao-secundario" id="btnMateriais">Requisição de Materiais</button>
     <button type="button" onclick="exportarCSV()" class="botao-secundario" id="btnExportarCSV">Exportar Relatório CSV</button>
     <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="botao-secundario">Voltar ao Topo</button>
@@ -938,6 +939,31 @@ Nova Obra / Limpar Formulário
         <button type="button" onclick="exportarProdutividadeCSV()" class="botao-secundario">Exportar Produtividade CSV</button>
         <button type="button" onclick="ocultarProdutividade()" class="botao-secundario">Ocultar Produtividade</button>
         <div id="listaProdutividade"></div>
+      </div>
+
+      <div class="resultado" id="painelUsuarios">
+        <h2>Gerenciar Usuários</h2>
+
+        <label for="novoUsuarioEmail">E-mail do usuário</label>
+        <input type="email" id="novoUsuarioEmail" placeholder="usuario@chobras.com" />
+
+        <label for="novoUsuarioNome">Nome</label>
+        <input type="text" id="novoUsuarioNome" placeholder="Nome do usuário" />
+
+        <label for="novoUsuarioPerfil">Perfil</label>
+        <select id="novoUsuarioPerfil">
+          <option value="visualizacao">Visualização</option>
+          <option value="marceneiro">Marceneiro</option>
+          <option value="montagem">Montagem</option>
+          <option value="conferencia">Conferência</option>
+          <option value="admin">Admin</option>
+        </select>
+
+        <button type="button" onclick="salvarUsuarioSistema()" class="botao-secundario">Salvar Usuário</button>
+        <button type="button" onclick="carregarUsuariosSistema()" class="botao-secundario">Atualizar Lista</button>
+        <button type="button" onclick="ocultarUsuarios()" class="botao-secundario">Ocultar Usuários</button>
+
+        <div id="listaUsuariosSistema"></div>
       </div>
 
       <div class="resultado" id="moduloMateriais">
@@ -1584,6 +1610,7 @@ import {
   getFirestore,
   collection,
   addDoc,
+  setDoc,
   getDoc,
   updateDoc,
   getDocs,
@@ -1625,6 +1652,7 @@ let obrasCache = [];
 let obrasMateriaisCache = [];
 let requisicoesMateriaisCache = [];
 let logsOperacionaisCache = [];
+let usuariosSistemaCache = [];
 
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
@@ -1661,6 +1689,7 @@ function aplicarPermissoesInterface() {
   const btnExportar = document.getElementById('btnExportarCSV');
   const btnLogs = document.getElementById('btnLogsOperacionais');
   const btnProdutividade = document.getElementById('btnProdutividade');
+  const btnUsuarios = document.getElementById('btnUsuarios');
   const btnMateriais = document.getElementById('btnMateriais');
   const btnExportarMateriais = document.getElementById('btnExportarMateriaisCSV');
   const botaoSalvar = document.getElementById('botaoSalvar');
@@ -1669,6 +1698,7 @@ function aplicarPermissoesInterface() {
   if (btnExportar) btnExportar.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnLogs) btnLogs.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnProdutividade) btnProdutividade.style.display = perfil === 'admin' ? 'block' : 'none';
+  if (btnUsuarios) btnUsuarios.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnExportarMateriais) btnExportarMateriais.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnMateriais) btnMateriais.style.display = ['admin', 'marceneiro', 'montagem'].includes(perfil) ? 'block' : 'none';
   if (botaoSalvar) {
@@ -2613,6 +2643,179 @@ window.exportarProdutividadeCSV = function() {
 window.ocultarProdutividade = function() {
   const painel = document.getElementById('painelProdutividade');
   if (painel) painel.style.display = 'none';
+};
+
+window.mostrarUsuarios = function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Seu perfil nao tem permissao para gerenciar usuarios.');
+    return;
+  }
+
+  document.getElementById('dashboardResumo').style.display = 'block';
+  document.getElementById('painelUsuarios').style.display = 'block';
+  carregarUsuariosSistema();
+};
+
+window.ocultarUsuarios = function() {
+  const painel = document.getElementById('painelUsuarios');
+  if (painel) painel.style.display = 'none';
+};
+
+window.carregarUsuariosSistema = async function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Apenas admin pode carregar usuarios.');
+    return;
+  }
+
+  const lista = document.getElementById('listaUsuariosSistema');
+  if (!lista) return;
+
+  lista.innerHTML = '<p>Carregando usuarios...</p>';
+
+  try {
+    const querySnapshot = await getDocs(collection(db, "usuarios"));
+    usuariosSistemaCache = [];
+
+    querySnapshot.forEach((docItem) => {
+      usuariosSistemaCache.push({ id: docItem.id, ...docItem.data() });
+    });
+
+    usuariosSistemaCache.sort((a, b) => String(a.email || a.id).localeCompare(String(b.email || b.id)));
+    renderizarUsuariosSistema();
+  } catch (erro) {
+    console.error('Erro ao carregar usuarios:', erro);
+    lista.innerHTML = '<p>Erro ao carregar usuarios.</p>';
+  }
+};
+
+function renderizarUsuariosSistema() {
+  const lista = document.getElementById('listaUsuariosSistema');
+  if (!lista) return;
+
+  if (!usuariosSistemaCache || usuariosSistemaCache.length === 0) {
+    lista.innerHTML = '<p>Nenhum usuario encontrado.</p>';
+    return;
+  }
+
+  lista.innerHTML = usuariosSistemaCache.map((usuario) => {
+    const email = usuario.email || usuario.id || '';
+    const perfil = usuario.perfil || 'visualizacao';
+    const ativo = usuario.ativo !== false;
+
+    return `
+      <div class="item-relatorio">
+        <strong style="font-size:16px; color:#d4a017;">${email}</strong><br><br>
+        <strong>Nome:</strong> ${usuario.nome || 'Nao informado'}<br>
+        <strong>Status:</strong> ${ativo ? 'Ativo' : 'Inativo'}<br>
+
+        <label for="perfil-${usuario.id}">Perfil</label>
+        <select id="perfil-${usuario.id}">
+          <option value="visualizacao" ${perfil === 'visualizacao' ? 'selected' : ''}>Visualização</option>
+          <option value="marceneiro" ${perfil === 'marceneiro' ? 'selected' : ''}>Marceneiro</option>
+          <option value="montagem" ${perfil === 'montagem' ? 'selected' : ''}>Montagem</option>
+          <option value="conferencia" ${perfil === 'conferencia' ? 'selected' : ''}>Conferência</option>
+          <option value="admin" ${perfil === 'admin' ? 'selected' : ''}>Admin</option>
+        </select>
+
+        <button type="button" class="botao-secundario" onclick="atualizarPerfilUsuario('${usuario.id}')">Salvar Perfil</button>
+        <button type="button" class="botao-secundario" onclick="alternarUsuarioAtivo('${usuario.id}', ${ativo ? 'false' : 'true'})">${ativo ? 'Inativar Usuário' : 'Ativar Usuário'}</button>
+      </div>
+    `;
+  }).join('');
+}
+
+window.salvarUsuarioSistema = async function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Apenas admin pode salvar usuarios.');
+    return;
+  }
+
+  const email = document.getElementById('novoUsuarioEmail').value.trim().toLowerCase();
+  const nome = document.getElementById('novoUsuarioNome').value.trim();
+  const perfil = document.getElementById('novoUsuarioPerfil').value;
+
+  if (!email || !perfil) {
+    alert('Preencha o e-mail e o perfil do usuario.');
+    return;
+  }
+
+  try {
+    mostrarLoading('Salvando usuario...');
+    await setDoc(doc(db, "usuarios", email), {
+      email,
+      nome: nome || email,
+      perfil,
+      ativo: true,
+      atualizadoLocalmenteEm: new Date().toLocaleString('pt-BR'),
+      atualizadoEmServidor: serverTimestamp()
+    }, { merge: true });
+
+    esconderLoading();
+    document.getElementById('novoUsuarioEmail').value = '';
+    document.getElementById('novoUsuarioNome').value = '';
+    document.getElementById('novoUsuarioPerfil').value = 'visualizacao';
+    alert('Usuario salvo com sucesso.');
+    carregarUsuariosSistema();
+  } catch (erro) {
+    console.error('Erro ao salvar usuario:', erro);
+    esconderLoading();
+    alert('Erro ao salvar usuario.');
+  }
+};
+
+window.atualizarPerfilUsuario = async function(id) {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Apenas admin pode atualizar perfil.');
+    return;
+  }
+
+  const perfil = document.getElementById(`perfil-${id}`).value;
+
+  try {
+    mostrarLoading('Atualizando perfil...');
+    await updateDoc(doc(db, "usuarios", id), {
+      perfil,
+      atualizadoLocalmenteEm: new Date().toLocaleString('pt-BR'),
+      atualizadoEmServidor: serverTimestamp()
+    });
+
+    esconderLoading();
+    alert('Perfil atualizado com sucesso.');
+    carregarUsuariosSistema();
+  } catch (erro) {
+    console.error('Erro ao atualizar perfil:', erro);
+    esconderLoading();
+    alert('Erro ao atualizar perfil.');
+  }
+};
+
+window.alternarUsuarioAtivo = async function(id, ativo) {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Apenas admin pode alterar usuario.');
+    return;
+  }
+
+  if (id === window.usuarioEmailLogado && ativo === false) {
+    alert('Voce nao pode inativar seu proprio usuario logado.');
+    return;
+  }
+
+  try {
+    mostrarLoading('Atualizando usuario...');
+    await updateDoc(doc(db, "usuarios", id), {
+      ativo,
+      atualizadoLocalmenteEm: new Date().toLocaleString('pt-BR'),
+      atualizadoEmServidor: serverTimestamp()
+    });
+
+    esconderLoading();
+    alert('Usuario atualizado com sucesso.');
+    carregarUsuariosSistema();
+  } catch (erro) {
+    console.error('Erro ao atualizar usuario:', erro);
+    esconderLoading();
+    alert('Erro ao atualizar usuario.');
+  }
 };
 
 window.mostrarMateriais = function() {
