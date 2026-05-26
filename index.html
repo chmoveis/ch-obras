@@ -1425,6 +1425,7 @@ async function salvarChecklist() {
         data: agoraStatus
       }])
     : historicoStatusAnterior;
+  const responsavelEtapaAtual = `${window.usuarioEmailLogado || 'Usuário não informado'} | ${window.perfilUsuarioLogado || 'perfil não informado'} | ${agoraStatus}`;
 
   const dadosObra = {
     numeroObra,
@@ -1438,6 +1439,11 @@ async function salvarChecklist() {
     dataMontagem: (obraAnterior && obraAnterior.dataMontagem) || (statusNovo === 'Em montagem' ? agoraStatus : ''),
     dataConferencia: (obraAnterior && obraAnterior.dataConferencia) || (statusNovo === 'Em conferência' ? agoraStatus : ''),
     dataFinalizacao: (obraAnterior && obraAnterior.dataFinalizacao) || (statusNovo === 'Finalizada' ? agoraStatus : ''),
+    responsavelMedicao: (obraAnterior && obraAnterior.responsavelMedicao) || (statusNovo === 'Em medição' ? responsavelEtapaAtual : ''),
+    responsavelProducao: (obraAnterior && obraAnterior.responsavelProducao) || (statusNovo === 'Em produção' ? responsavelEtapaAtual : ''),
+    responsavelMontagem: (obraAnterior && obraAnterior.responsavelMontagem) || (statusNovo === 'Em montagem' ? responsavelEtapaAtual : ''),
+    responsavelConferencia: (obraAnterior && obraAnterior.responsavelConferencia) || (statusNovo === 'Em conferência' ? responsavelEtapaAtual : ''),
+    responsavelFinalizacao: (obraAnterior && obraAnterior.responsavelFinalizacao) || (statusNovo === 'Finalizada' ? responsavelEtapaAtual : ''),
     historicoStatus,
     prioridadeObra: pegarValor('prioridadeObra') || 'Média',
     data,
@@ -1972,6 +1978,25 @@ function htmlHistoricoStatus(obra) {
   `;
 }
 
+function htmlResponsaveisEtapas(obra) {
+  const linhas = [
+    ['Medição', obra.responsavelMedicao],
+    ['Produção', obra.responsavelProducao],
+    ['Montagem', obra.responsavelMontagem],
+    ['Conferência', obra.responsavelConferencia],
+    ['Finalização', obra.responsavelFinalizacao]
+  ].filter((item) => item[1]);
+
+  if (linhas.length === 0) return '';
+
+  return `
+    <br><strong>Responsáveis por etapa:</strong>
+    ${linhas.map((item) => `
+      <div class="linha-data-etapa">${item[0]}: ${item[1]}</div>
+    `).join('')}
+  `;
+}
+
 function renderizarHistorico(obras) {
   const lista = document.getElementById('listaHistorico');
 
@@ -2015,6 +2040,8 @@ function renderizarHistorico(obras) {
         ${obra.dataMontagem ? `<div class="linha-data-etapa">🔧 Montagem: ${obra.dataMontagem}</div>` : ''}
         ${obra.dataConferencia ? `<div class="linha-data-etapa">📋 Conferência: ${obra.dataConferencia}</div>` : ''}
         ${obra.dataFinalizacao ? `<div class="linha-data-etapa">🟢 Finalização: ${obra.dataFinalizacao}</div>` : ''}
+
+        ${htmlResponsaveisEtapas(obra)}
 
         ${htmlHistoricoStatus(obra)}
 
