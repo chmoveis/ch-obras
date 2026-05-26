@@ -936,6 +936,7 @@ Nova Obra / Limpar Formulário
 
         <button type="button" onclick="salvarRequisicaoMaterial()">Salvar Requisição</button>
         <button type="button" onclick="carregarRequisicoesMateriais()" class="botao-secundario">Atualizar Lista</button>
+        <button type="button" onclick="exportarMateriaisCSV()" class="botao-secundario" id="btnExportarMateriaisCSV">Exportar Materiais CSV</button>
         <button type="button" onclick="ocultarMateriais()" class="botao-secundario">Ocultar Materiais</button>
 
         <h2>Filtros de Materiais</h2>
@@ -1532,11 +1533,13 @@ function aplicarPermissoesInterface() {
   const btnExportar = document.getElementById('btnExportarCSV');
   const btnLogs = document.getElementById('btnLogsOperacionais');
   const btnMateriais = document.getElementById('btnMateriais');
+  const btnExportarMateriais = document.getElementById('btnExportarMateriaisCSV');
   const botaoSalvar = document.getElementById('botaoSalvar');
 
   if (btnLimpar) btnLimpar.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnExportar) btnExportar.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnLogs) btnLogs.style.display = perfil === 'admin' ? 'block' : 'none';
+  if (btnExportarMateriais) btnExportarMateriais.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnMateriais) btnMateriais.style.display = ['admin', 'marceneiro', 'montagem'].includes(perfil) ? 'block' : 'none';
   if (botaoSalvar) {
     botaoSalvar.style.display = usuarioPodeCriarObra() || window.idObraEditando ? 'block' : 'none';
@@ -2386,6 +2389,67 @@ window.limparFiltrosMateriais = function() {
   document.getElementById('filtroStatusMaterial').selectedIndex = 0;
   document.getElementById('filtroUrgenciaMaterial').selectedIndex = 0;
   renderizarMateriais(requisicoesMateriaisCache);
+};
+
+window.exportarMateriaisCSV = function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Seu perfil nao tem permissao para exportar materiais.');
+    return;
+  }
+
+  if (!requisicoesMateriaisCache || requisicoesMateriaisCache.length === 0) {
+    alert('Carregue as requisicoes de materiais antes de exportar.');
+    return;
+  }
+
+  const cabecalho = [
+    'NumeroObra',
+    'Cliente',
+    'Ambiente',
+    'Material',
+    'Quantidade',
+    'Unidade',
+    'Urgencia',
+    'Status',
+    'SolicitadoPor',
+    'Data',
+    'Observacao'
+  ];
+
+  const linhas = requisicoesMateriaisCache.map((item) => [
+    item.numeroObra || '',
+    item.cliente || '',
+    item.ambiente || '',
+    item.material || '',
+    item.quantidade || '',
+    item.unidade || '',
+    item.urgencia || '',
+    item.status || 'Solicitado',
+    item.usuarioEmail || '',
+    item.criadoLocalmenteEm || '',
+    item.observacao || ''
+  ]);
+
+  const todasLinhas = [cabecalho].concat(linhas);
+
+  const csv = todasLinhas.map((linha) => {
+    return linha.map((campo) => {
+      return '"' + String(campo).replace(/"/g, '""') + '"';
+    }).join(';');
+  }).join('\n');
+
+  const blob = new Blob([csv], {
+    type: 'text/csv;charset=utf-8;'
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = 'requisicoes-materiais-ch-obras.csv';
+  link.click();
+
+  URL.revokeObjectURL(url);
 };
 
 function classeStatusMaterial(status) {
