@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="manifest.json?v=4">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -812,6 +812,7 @@ Nova Obra / Limpar Formulário
     <button onclick="gerarPDF()" class="botao-secundario">Gerar Relatório / PDF</button>
     <button onclick="mostrarHistorico()">Ver Histórico de Obras</button>
     <button type="button" onclick="ocultarHistorico()" class="botao-secundario">Ocultar Histórico</button>
+    <button type="button" onclick="mostrarLogsOperacionais()" class="botao-secundario" id="btnLogsOperacionais">Histórico Operacional</button>
     <button type="button" onclick="exportarCSV()" class="botao-secundario" id="btnExportarCSV">Exportar Relatório CSV</button>
     <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="botao-secundario">Voltar ao Topo</button>
 
@@ -872,6 +873,12 @@ Nova Obra / Limpar Formulário
 
         <button type="button" onclick="limparFiltrosHistorico()" class="botao-secundario">Limpar Filtros</button>
         <div id="listaHistorico"></div>
+      </div>
+
+      <div class="resultado" id="historicoOperacional">
+        <h2>Histórico Operacional</h2>
+        <button type="button" onclick="ocultarLogsOperacionais()" class="botao-secundario">Ocultar Histórico Operacional</button>
+        <div id="listaLogsOperacionais"></div>
       </div>
     </div>
   </div>
@@ -1370,6 +1377,7 @@ import {
   getDocs,
   query,
   orderBy,
+  limit,
   where,
   deleteDoc,
   doc,
@@ -1432,10 +1440,12 @@ function aplicarPermissoesInterface() {
   const perfil = perfilAtual();
   const btnLimpar = document.getElementById('btnLimparFormulario');
   const btnExportar = document.getElementById('btnExportarCSV');
+  const btnLogs = document.getElementById('btnLogsOperacionais');
   const botaoSalvar = document.getElementById('botaoSalvar');
 
   if (btnLimpar) btnLimpar.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnExportar) btnExportar.style.display = perfil === 'admin' ? 'block' : 'none';
+  if (btnLogs) btnLogs.style.display = perfil === 'admin' ? 'block' : 'none';
   if (botaoSalvar) {
     botaoSalvar.style.display = usuarioPodeCriarObra() || window.idObraEditando ? 'block' : 'none';
   }
@@ -1965,6 +1975,67 @@ window.filtrarHistorico = function() {
 window.ocultarHistorico = function() {
   document.getElementById('historico').style.display = 'none';
   document.getElementById('dashboardResumo').style.display = 'none';
+};
+
+window.mostrarLogsOperacionais = async function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Seu perfil nao tem permissao para visualizar os logs operacionais.');
+    return;
+  }
+
+  const historicoOperacional = document.getElementById('historicoOperacional');
+  const listaLogs = document.getElementById('listaLogsOperacionais');
+
+  if (!historicoOperacional || !listaLogs) {
+    alert('Erro: area de historico operacional nao encontrada.');
+    return;
+  }
+
+  historicoOperacional.style.display = 'block';
+  document.getElementById('dashboardResumo').style.display = 'block';
+  listaLogs.innerHTML = '<p>Carregando logs operacionais...</p>';
+
+  try {
+    const logsQuery = query(
+      collection(db, "logsObras"),
+      orderBy("criadoEmServidor", "desc"),
+      limit(50)
+    );
+
+    const querySnapshot = await getDocs(logsQuery);
+    const logs = [];
+
+    querySnapshot.forEach((docItem) => {
+      logs.push({ id: docItem.id, ...docItem.data() });
+    });
+
+    if (logs.length === 0) {
+      listaLogs.innerHTML = '<p>Nenhum log operacional encontrado.</p>';
+      return;
+    }
+
+    listaLogs.innerHTML = logs.map((log) => `
+      <div class="item-relatorio">
+        <strong style="font-size:16px; color:#d4a017;">${log.numeroObra || 'Obra sem numero'}</strong><br><br>
+        <strong>Ação:</strong> ${log.acao || 'Não informada'}<br>
+        <strong>Cliente:</strong> ${log.cliente || 'Não informado'}<br>
+        <strong>Status anterior:</strong> ${log.statusAnterior || 'Não informado'}<br>
+        <strong>Status novo:</strong> ${log.statusNovo || 'Não informado'}<br>
+        <strong>Status alterado:</strong> ${log.statusAlterado ? 'Sim' : 'Não'}<br>
+        <strong>Usuário:</strong> ${log.usuarioEmail || 'Não informado'}<br>
+        <strong>Perfil:</strong> ${log.perfilUsuario || 'Não informado'}<br>
+        <strong>Data:</strong> ${log.dataLocal || 'Não informada'}<br>
+      </div>
+    `).join('');
+  } catch (erro) {
+    console.error('Erro ao carregar logs operacionais:', erro);
+    listaLogs.innerHTML = '<p>Erro ao carregar logs operacionais.</p>';
+  }
+};
+
+window.ocultarLogsOperacionais = function() {
+  const historicoOperacional = document.getElementById('historicoOperacional');
+  if (historicoOperacional) historicoOperacional.style.display = 'none';
 };
 
 window.excluirObra = async function(id) {
