@@ -973,6 +973,25 @@ function pegarValor(id) {
   return document.getElementById(id).value;
 }
 
+window.normalizarStatusObra = window.normalizarStatusObra || function(status) {
+  const textoOriginal = String(status || '').trim();
+  const textoBusca = textoOriginal
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+
+  if (textoBusca.includes('andamento') || textoBusca.includes('producao')) return 'Em produção';
+  if (textoBusca.includes('montagem')) return 'Em montagem';
+  if (textoBusca.includes('medicao')) return 'Em medição';
+  if (textoBusca.includes('conferencia')) return 'Em conferência';
+  if (textoBusca.includes('pendencia')) return 'Com pendência';
+  if (textoBusca.includes('iniciar')) return 'A iniciar';
+  if (textoBusca.includes('cliente')) return 'Aguardando cliente';
+  if (textoBusca.includes('finalizada') || textoBusca.includes('concluida')) return 'Finalizada';
+  if (textoBusca.includes('cancelada')) return 'Cancelada';
+  return textoOriginal;
+};
+
 function mostrarLoading(texto = 'Salvando obra...') {
   const overlay = document.getElementById('loadingOverlay');
   const textoLoading = document.getElementById('loadingTexto');
