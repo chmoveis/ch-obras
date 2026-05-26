@@ -1479,11 +1479,23 @@ nomeAssinante,
   salvarNoHistorico({ ...dadosObra, criadoEm: new Date().toLocaleString('pt-BR') });
   await salvarObraNaNuvem(dadosObra);
 
-  let html = `<div class="item-relatorio"><strong>Número da Obra:</strong> ${numeroObra}</div>`;
-  Object.entries(dadosObra).forEach(([chave, valor]) => {
-    if (!['assinaturaCliente', 'fotosUrls'].includes(chave)) {
-      html += `<div class="item-relatorio"><strong>${chave}:</strong> ${valor || 'Não informado'}</div>`;
-    }
+  const camposRelatorio = [
+    ['Número da Obra', numeroObra],
+    ['Cliente', cliente],
+    ['Endereço', endereco],
+    ['Ambiente', ambiente],
+    ['Marceneiro', marceneiro],
+    ['Status', statusObra],
+    ['Prioridade', dadosObra.prioridadeObra],
+    ['Data da instalação', data],
+    ['Assinado por', nomeAssinante],
+    ['CPF', cpfAssinante],
+    ['Observações', dadosObra.observacoes]
+  ];
+
+  let html = '';
+  camposRelatorio.forEach(([rotulo, valor]) => {
+    html += `<div class="item-relatorio"><strong>${rotulo}:</strong> ${valor || 'Não informado'}</div>`;
   });
   html += `<div class="item-relatorio"><strong>Assinatura do cliente:</strong><br><img class="assinatura-relatorio" src="${imagemAssinatura}" alt="Assinatura do cliente"></div>`;
 
