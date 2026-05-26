@@ -95,9 +95,7 @@ service cloud.firestore {
 
     match /logsObras/{logId} {
       allow read: if activeUser();
-      allow create: if activeUser()
-        && request.resource.data.usuarioEmail == userEmail()
-        && request.resource.data.perfilUsuario == userRole();
+      allow create: if activeUser();
       allow update, delete: if false;
     }
 
