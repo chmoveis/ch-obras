@@ -54,8 +54,28 @@ service cloud.firestore {
 
     function canUpdateOwnObra() {
       return isOwner()
-        && userRole() in ['marceneiro', 'montagem', 'conferencia']
+        && userRole() == 'marceneiro'
         && protectedFieldsWereNotChanged();
+    }
+
+    function canUpdateMontagemObra() {
+      return activeUser()
+        && userRole() == 'montagem'
+        && protectedFieldsWereNotChanged()
+        && (
+          resource.data.statusObra in ['Em montagem', 'Com pendência']
+          || request.resource.data.statusObra in ['Em montagem', 'Em conferência', 'Com pendência']
+        );
+    }
+
+    function canUpdateConferenciaObra() {
+      return activeUser()
+        && userRole() == 'conferencia'
+        && protectedFieldsWereNotChanged()
+        && (
+          resource.data.statusObra in ['Em conferência', 'Com pendência']
+          || request.resource.data.statusObra in ['Em conferência', 'Finalizada', 'Com pendência']
+        );
     }
 
     match /usuarios/{email} {
@@ -66,7 +86,10 @@ service cloud.firestore {
     match /obras/{obraId} {
       allow read: if activeUser();
       allow create: if canCreateObra();
-      allow update: if isAdmin() || canUpdateOwnObra();
+      allow update: if isAdmin()
+        || canUpdateOwnObra()
+        || canUpdateMontagemObra()
+        || canUpdateConferenciaObra();
       allow delete: if isAdmin();
     }
 

@@ -1419,6 +1419,12 @@ function usuarioPodeEditarObra(obra) {
   if (!obra) return false;
   if (perfilAtual() === 'admin') return true;
   if (perfilAtual() === 'visualizacao') return false;
+  if (perfilAtual() === 'montagem') {
+    return ['Em montagem', 'Com pendência'].includes(normalizarStatusObra(obra.statusObra));
+  }
+  if (perfilAtual() === 'conferencia') {
+    return ['Em conferência', 'Com pendência'].includes(normalizarStatusObra(obra.statusObra));
+  }
   return obra.emailUsuario === emailAtual();
 }
 
@@ -1430,7 +1436,9 @@ function aplicarPermissoesInterface() {
 
   if (btnLimpar) btnLimpar.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnExportar) btnExportar.style.display = perfil === 'admin' ? 'block' : 'none';
-  if (botaoSalvar) botaoSalvar.style.display = usuarioPodeCriarObra() ? 'block' : 'none';
+  if (botaoSalvar) {
+    botaoSalvar.style.display = usuarioPodeCriarObra() || window.idObraEditando ? 'block' : 'none';
+  }
 }
 
 window.fazerLogin = async function () {
@@ -1608,6 +1616,7 @@ window.salvarObraNaNuvem = async function(dadosObra) {
       window.obraEditandoOriginal = null;
       document.getElementById('avisoEdicao').style.display = 'none';
       document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';
+      aplicarPermissoesInterface();
     } else {
       if (!usuarioPodeCriarObra()) {
         alert("Seu perfil nao tem permissao para criar obras.");
@@ -1662,7 +1671,7 @@ window.filtrarObras = function() {
   try {
    let obrasOrdenadas;
 
-if (window.perfilUsuarioLogado === 'admin') {
+if (['admin', 'montagem', 'conferencia', 'visualizacao'].includes(window.perfilUsuarioLogado)) {
 
   obrasOrdenadas = query(
     collection(db, "obras"),
@@ -1955,6 +1964,7 @@ window.limparFormulario = function() {
   window.obraEditandoOriginal = null;
   document.getElementById('avisoEdicao').style.display = 'none';
   document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';
+  aplicarPermissoesInterface();
   alert('Formulário limpo para nova obra.');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
@@ -2002,6 +2012,7 @@ window.editarObra = async function(id) {
     window.obraEditandoOriginal = obra;
     document.getElementById('avisoEdicao').style.display = 'block';
     document.getElementById('botaoSalvar').innerText = 'Atualizar Obra';
+    document.getElementById('botaoSalvar').style.display = 'block';
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
     alert('Obra carregada para edição.');
