@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="App%20CH%20Obras/manifest.json">
+  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -1258,6 +1258,16 @@ async function gerarPDF() {
 }
 
 async function salvarChecklist() {
+  if (!window.idObraEditando && !usuarioPodeCriarObra()) {
+    alert('Seu perfil nao tem permissao para criar obras.');
+    return;
+  }
+
+  if (window.idObraEditando && !usuarioPodeEditarObra(window.obraEditandoOriginal)) {
+    alert('Seu perfil nao tem permissao para atualizar esta obra.');
+    return;
+  }
+
   mostrarLoading('Salvando obra...');
 
   const cliente = pegarValor('cliente');
@@ -1303,8 +1313,12 @@ async function salvarChecklist() {
     dataFinalizacao: statusObra === 'Finalizada' ? new Date().toLocaleString('pt-BR') : '',
     prioridadeObra: pegarValor('prioridadeObra') || 'Média',
     data,
-emailUsuario: window.usuarioEmailLogado || '',
-perfilUsuario: window.perfilUsuarioLogado || '',
+emailUsuario: window.idObraEditando && window.obraEditandoOriginal
+      ? (window.obraEditandoOriginal.emailUsuario || window.usuarioEmailLogado || '')
+      : (window.usuarioEmailLogado || ''),
+perfilUsuario: window.idObraEditando && window.obraEditandoOriginal
+      ? (window.obraEditandoOriginal.perfilUsuario || window.perfilUsuarioLogado || '')
+      : (window.perfilUsuarioLogado || ''),
 nomeAssinante,
     cpfAssinante,
     observacoes: pegarValor('observacoes') || 'Sem observações',
@@ -1389,6 +1403,36 @@ const storage = getStorage(appFirebase);
 const auth = getAuth(appFirebase);
 let obrasCache = [];
 
+function perfilAtual() {
+  return window.perfilUsuarioLogado || 'visualizacao';
+}
+
+function emailAtual() {
+  return window.usuarioEmailLogado || '';
+}
+
+function usuarioPodeCriarObra() {
+  return ['admin', 'marceneiro'].includes(perfilAtual());
+}
+
+function usuarioPodeEditarObra(obra) {
+  if (!obra) return false;
+  if (perfilAtual() === 'admin') return true;
+  if (perfilAtual() === 'visualizacao') return false;
+  return obra.emailUsuario === emailAtual();
+}
+
+function aplicarPermissoesInterface() {
+  const perfil = perfilAtual();
+  const btnLimpar = document.getElementById('btnLimparFormulario');
+  const btnExportar = document.getElementById('btnExportarCSV');
+  const botaoSalvar = document.getElementById('botaoSalvar');
+
+  if (btnLimpar) btnLimpar.style.display = perfil === 'admin' ? 'block' : 'none';
+  if (btnExportar) btnExportar.style.display = perfil === 'admin' ? 'block' : 'none';
+  if (botaoSalvar) botaoSalvar.style.display = usuarioPodeCriarObra() ? 'block' : 'none';
+}
+
 window.fazerLogin = async function () {
 
   const email = document.getElementById('emailLogin').value;
@@ -1410,7 +1454,7 @@ window.fazerLogin = async function () {
     alert('Login realizado com sucesso.');
 const emailUsuario = auth.currentUser.email;
 
-window.emailUsuarioLogado = emailUsuario;
+window.usuarioEmailLogado = emailUsuario;
 
 if (emailUsuario === 'financeirochmoveis@gmail.com') {
     window.perfilUsuarioLogado = 'admin';
@@ -1441,9 +1485,6 @@ onAuthStateChanged(auth, async (user) => {
   const barraUsuario = document.getElementById('barraUsuario');
   const usuarioTexto = document.getElementById('usuarioLogadoTexto');
   const perfilPainel = document.getElementById('perfilPainel');
-  const btnLimpar = document.getElementById('btnLimparFormulario');
-  const btnExportar = document.getElementById('btnExportarCSV');
-
   window.perfilUsuarioLogado = 'usuario';
   window.usuarioEmailLogado = '';
 
@@ -1503,30 +1544,7 @@ onAuthStateChanged(auth, async (user) => {
     status.innerText = 'Status: usuário autenticado e Firebase conectado.';
   }
 
-if (perfilUsuario === 'admin') {
-  if (btnLimpar) btnLimpar.style.display = 'block';
-  if (btnExportar) btnExportar.style.display = 'block';
-}
-
-if (perfilUsuario === 'marceneiro') {
-  if (btnLimpar) btnLimpar.style.display = 'none';
-  if (btnExportar) btnExportar.style.display = 'none';
-}
-
-if (perfilUsuario === 'montagem') {
-  if (btnLimpar) btnLimpar.style.display = 'none';
-  if (btnExportar) btnExportar.style.display = 'none';
-}
-
-if (perfilUsuario === 'conferencia') {
-  if (btnLimpar) btnLimpar.style.display = 'none';
-  if (btnExportar) btnExportar.style.display = 'none';
-}
-
-if (perfilUsuario === 'visualizacao') {
-  if (btnLimpar) btnLimpar.style.display = 'none';
-  if (btnExportar) btnExportar.style.display = 'none';
-}
+  aplicarPermissoesInterface();
 
 });
 window.logoutApp = async function () {
@@ -1570,6 +1588,12 @@ window.enviarFotoParaStorage = async function(inputId, nomePasta) {
 window.salvarObraNaNuvem = async function(dadosObra) {
   try {
     if (window.idObraEditando) {
+      if (!usuarioPodeEditarObra(window.obraEditandoOriginal)) {
+        alert("Voce nao tem permissao para atualizar esta obra.");
+        esconderLoading();
+        return;
+      }
+
       await updateDoc(
         doc(db, "obras", window.idObraEditando),
         {
@@ -1581,9 +1605,16 @@ window.salvarObraNaNuvem = async function(dadosObra) {
       alert("Obra atualizada com sucesso.");
       window.idObraEditando = null;
       window.numeroObraEditando = null;
+      window.obraEditandoOriginal = null;
       document.getElementById('avisoEdicao').style.display = 'none';
       document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';
     } else {
+      if (!usuarioPodeCriarObra()) {
+        alert("Seu perfil nao tem permissao para criar obras.");
+        esconderLoading();
+        return;
+      }
+
       await addDoc(collection(db, "obras"), {
         ...dadosObra,
         criadoEmServidor: serverTimestamp()
@@ -1801,7 +1832,9 @@ function renderizarHistorico(obras) {
           </div>
         ` : ''}
 
-        <button class="botao-secundario" onclick="editarObra('${obra.id}')">Editar Obra</button>
+        ${usuarioPodeEditarObra(obra) ? `
+          <button class="botao-secundario" onclick="editarObra('${obra.id}')">Editar Obra</button>
+        ` : ''}
         <button class="botao-secundario" onclick="gerarPDFDaObra('${obra.id}')">Gerar PDF desta Obra</button>
         ${window.perfilUsuarioLogado === 'admin' ? `
           <button class="botao-perigo" onclick="excluirObra('${obra.id}')">Excluir Obra</button>
@@ -1919,6 +1952,7 @@ window.limparFormulario = function() {
   document.getElementById('resultado').style.display = 'none';
   window.idObraEditando = null;
   window.numeroObraEditando = null;
+  window.obraEditandoOriginal = null;
   document.getElementById('avisoEdicao').style.display = 'none';
   document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';
   alert('Formulário limpo para nova obra.');
@@ -1947,6 +1981,12 @@ window.editarObra = async function(id) {
     }
 
     const obra = obraEncontrada;
+
+    if (!usuarioPodeEditarObra(obra)) {
+      alert('Seu perfil nao tem permissao para editar esta obra.');
+      return;
+    }
+
     document.getElementById('cliente').value = obra.cliente || '';
     document.getElementById('endereco').value = obra.endereco || '';
     document.getElementById('ambiente').value = obra.ambiente || '';
@@ -1959,6 +1999,7 @@ window.editarObra = async function(id) {
 
     window.idObraEditando = id;
     window.numeroObraEditando = obra.numeroObra || null;
+    window.obraEditandoOriginal = obra;
     document.getElementById('avisoEdicao').style.display = 'block';
     document.getElementById('botaoSalvar').innerText = 'Atualizar Obra';
 
@@ -1977,6 +2018,11 @@ window.limparFiltrosHistorico = function() {
 };
 
 window.exportarCSV = function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Seu perfil nao tem permissao para exportar CSV.');
+    return;
+  }
+
   if (!obrasCache || obrasCache.length === 0) {
     alert('Carregue o histórico antes de exportar.');
     return;

@@ -1,13 +1,26 @@
 self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open('ch-obras-cache-v1').then(function(cache) {
-      return cache.addAll([
+      const arquivosEssenciais = [
         'index.html',
         'manifest.json',
-        'service-worker.js',
+        'service-worker.js'
+      ];
+
+      const arquivosOpcionais = [
         'logotipo novo atual.jpg',
         'icone-ch-obras.png'
-      ]);
+      ];
+
+      return cache.addAll(arquivosEssenciais).then(function() {
+        return Promise.all(
+          arquivosOpcionais.map(function(arquivo) {
+            return cache.add(arquivo).catch(function() {
+              return null;
+            });
+          })
+        );
+      });
     })
   );
 });

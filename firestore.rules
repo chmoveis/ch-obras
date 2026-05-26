@@ -1,0 +1,77 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userEmail() {
+      return request.auth.token.email;
+    }
+
+    function userDoc() {
+      return get(/databases/$(database)/documents/usuarios/$(userEmail()));
+    }
+
+    function userRole() {
+      return signedIn() && exists(/databases/$(database)/documents/usuarios/$(userEmail()))
+        ? userDoc().data.perfil
+        : 'visualizacao';
+    }
+
+    function activeUser() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/usuarios/$(userEmail()))
+        && userDoc().data.ativo != false;
+    }
+
+    function isAdmin() {
+      return activeUser() && userRole() == 'admin';
+    }
+
+    function isOwner() {
+      return activeUser()
+        && resource.data.emailUsuario == userEmail();
+    }
+
+    function newOwnerIsCurrentUser() {
+      return activeUser()
+        && request.resource.data.emailUsuario == userEmail();
+    }
+
+    function canCreateObra() {
+      return isAdmin()
+        || (activeUser()
+          && userRole() == 'marceneiro'
+          && newOwnerIsCurrentUser());
+    }
+
+    function protectedFieldsWereNotChanged() {
+      return !request.resource.data.diff(resource.data).affectedKeys()
+        .hasAny(['emailUsuario', 'perfilUsuario', 'numeroObra', 'criadoEmServidor']);
+    }
+
+    function canUpdateOwnObra() {
+      return isOwner()
+        && userRole() in ['marceneiro', 'montagem', 'conferencia']
+        && protectedFieldsWereNotChanged();
+    }
+
+    match /usuarios/{email} {
+      allow read: if activeUser() && (isAdmin() || email == userEmail());
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /obras/{obraId} {
+      allow read: if activeUser();
+      allow create: if canCreateObra();
+      allow update: if isAdmin() || canUpdateOwnObra();
+      allow delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
