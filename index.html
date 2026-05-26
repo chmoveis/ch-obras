@@ -935,6 +935,7 @@ Nova Obra / Limpar Formulário
         <h2>Produtividade por Usuario</h2>
         <p style="font-size:13px; color:#555;">Resumo calculado pelos ultimos registros do historico operacional.</p>
         <button type="button" onclick="mostrarProdutividade()" class="botao-secundario">Atualizar Produtividade</button>
+        <button type="button" onclick="exportarProdutividadeCSV()" class="botao-secundario">Exportar Produtividade CSV</button>
         <button type="button" onclick="ocultarProdutividade()" class="botao-secundario">Ocultar Produtividade</button>
         <div id="listaProdutividade"></div>
       </div>
@@ -2503,6 +2504,22 @@ function renderizarProdutividade(logs) {
     return;
   }
 
+  const usuarios = calcularProdutividadePorUsuario(logs);
+
+  lista.innerHTML = usuarios.map((usuario) => `
+    <div class="item-relatorio">
+      <strong style="font-size:16px; color:#d4a017;">${usuario.email}</strong><br><br>
+      <strong>Perfil:</strong> ${usuario.perfil}<br>
+      <strong>Total de acoes:</strong> ${usuario.totalAcoes}<br>
+      <strong>Obras atualizadas:</strong> ${usuario.obrasAtualizadas}<br>
+      <strong>Mudancas de status:</strong> ${usuario.mudancasStatus}<br>
+      <strong>Requisicoes de materiais:</strong> ${usuario.requisicoesMateriais}<br>
+      <strong>Ultima acao:</strong> ${usuario.ultimaAcao}<br>
+    </div>
+  `).join('');
+}
+
+function calcularProdutividadePorUsuario(logs) {
   const resumo = {};
 
   logs.forEach((log) => {
@@ -2535,19 +2552,62 @@ function renderizarProdutividade(logs) {
     }
   });
 
-  const usuarios = Object.values(resumo).sort((a, b) => b.totalAcoes - a.totalAcoes);
+  return Object.values(resumo).sort((a, b) => b.totalAcoes - a.totalAcoes);
+}
 
-  lista.innerHTML = usuarios.map((usuario) => `
-    <div class="item-relatorio">
-      <strong style="font-size:16px; color:#d4a017;">${usuario.email}</strong><br><br>
-      <strong>Perfil:</strong> ${usuario.perfil}<br>
-      <strong>Total de acoes:</strong> ${usuario.totalAcoes}<br>
-      <strong>Obras atualizadas:</strong> ${usuario.obrasAtualizadas}<br>
-      <strong>Mudancas de status:</strong> ${usuario.mudancasStatus}<br>
-      <strong>Requisicoes de materiais:</strong> ${usuario.requisicoesMateriais}<br>
-      <strong>Ultima acao:</strong> ${usuario.ultimaAcao}<br>
-    </div>
-  `).join('');
+window.exportarProdutividadeCSV = function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Seu perfil nao tem permissao para exportar produtividade.');
+    return;
+  }
+
+  if (!logsOperacionaisCache || logsOperacionaisCache.length === 0) {
+    alert('Clique primeiro em Atualizar Produtividade.');
+    return;
+  }
+
+  const usuarios = calcularProdutividadePorUsuario(logsOperacionaisCache);
+
+  const cabecalho = [
+    'Usuario',
+    'Perfil',
+    'TotalAcoes',
+    'ObrasAtualizadas',
+    'MudancasStatus',
+    'RequisicoesMateriais',
+    'UltimaAcao'
+  ];
+
+  const linhas = usuarios.map((usuario) => [
+    usuario.email,
+    usuario.perfil,
+    usuario.totalAcoes,
+    usuario.obrasAtualizadas,
+    usuario.mudancasStatus,
+    usuario.requisicoesMateriais,
+    usuario.ultimaAcao
+  ]);
+
+  const todasLinhas = [cabecalho].concat(linhas);
+
+  const csv = todasLinhas.map((linha) => {
+    return linha.map((campo) => {
+      return '"' + String(campo).replace(/"/g, '""') + '"';
+    }).join(';');
+  }).join('\n');
+
+  const blob = new Blob([csv], {
+    type: 'text/csv;charset=utf-8;'
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = 'produtividade-ch-obras.csv';
+  link.click();
+
+  URL.revokeObjectURL(url);
 }
 
 window.ocultarProdutividade = function() {
