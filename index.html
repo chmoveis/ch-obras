@@ -1677,9 +1677,14 @@ let obrasMateriaisCache = [];
 let requisicoesMateriaisCache = [];
 let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
+const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
 
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
+}
+
+function emailEhAdminPrincipal(email) {
+  return String(email || '').toLowerCase() === EMAIL_ADMIN_PRINCIPAL;
 }
 
 function emailAtual() {
@@ -1758,7 +1763,7 @@ const emailUsuario = auth.currentUser.email;
 
 window.usuarioEmailLogado = emailUsuario;
 
-if (emailUsuario === 'financeirochmoveis@gmail.com') {
+if (emailEhAdminPrincipal(emailUsuario)) {
     window.perfilUsuarioLogado = 'admin';
 } else if (emailUsuario.includes('marceneiro')) {
     window.perfilUsuarioLogado = 'marceneiro';
@@ -1819,6 +1824,11 @@ onAuthStateChanged(auth, async (user) => {
 
   } catch (erro) {
     console.log('Erro ao carregar perfil:', erro);
+  }
+
+  if (emailEhAdminPrincipal(user.email)) {
+    perfilUsuario = 'admin';
+    usuarioAtivo = true;
   }
 
   if (!usuarioAtivo) {
@@ -2857,6 +2867,12 @@ window.atualizarPerfilUsuario = async function(id) {
   }
 
   const perfil = document.getElementById(`perfil-${id}`).value;
+  if (emailEhAdminPrincipal(id) && perfil !== 'admin') {
+    alert('O administrador principal precisa permanecer com perfil admin.');
+    document.getElementById(`perfil-${id}`).value = 'admin';
+    return;
+  }
+
   const usuarioAnterior = usuariosSistemaCache.find((usuario) => usuario.id === id) || {};
   const perfilAnterior = usuarioAnterior.perfil || '';
 
@@ -2889,8 +2905,8 @@ window.alternarUsuarioAtivo = async function(id, ativo) {
     return;
   }
 
-  if (id === window.usuarioEmailLogado && ativo === false) {
-    alert('Voce nao pode inativar seu proprio usuario logado.');
+  if ((id === window.usuarioEmailLogado || emailEhAdminPrincipal(id)) && ativo === false) {
+    alert('Voce nao pode inativar o usuario administrador principal.');
     return;
   }
 
