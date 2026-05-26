@@ -925,6 +925,7 @@ Nova Obra / Limpar Formulário
         </select>
 
         <button type="button" onclick="limparFiltrosLogsOperacionais()" class="botao-secundario">Limpar Filtros de Logs</button>
+        <button type="button" onclick="exportarLogsCSV()" class="botao-secundario">Exportar Logs CSV</button>
         <button type="button" onclick="ocultarLogsOperacionais()" class="botao-secundario">Ocultar Histórico Operacional</button>
         <div id="listaLogsOperacionais"></div>
       </div>
@@ -2379,6 +2380,63 @@ window.limparFiltrosLogsOperacionais = function() {
   document.getElementById('filtroAcaoLog').selectedIndex = 0;
   document.getElementById('filtroStatusAlteradoLog').selectedIndex = 0;
   renderizarLogsOperacionais(logsOperacionaisCache);
+};
+
+window.exportarLogsCSV = function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Seu perfil nao tem permissao para exportar logs.');
+    return;
+  }
+
+  if (!logsOperacionaisCache || logsOperacionaisCache.length === 0) {
+    alert('Carregue o historico operacional antes de exportar.');
+    return;
+  }
+
+  const cabecalho = [
+    'NumeroObra',
+    'Cliente',
+    'Acao',
+    'StatusAnterior',
+    'StatusNovo',
+    'StatusAlterado',
+    'Usuario',
+    'Perfil',
+    'Data'
+  ];
+
+  const linhas = logsOperacionaisCache.map((log) => [
+    log.numeroObra || '',
+    log.cliente || '',
+    log.acao || '',
+    log.statusAnterior || '',
+    log.statusNovo || '',
+    log.statusAlterado ? 'Sim' : 'Nao',
+    log.usuarioEmail || '',
+    log.perfilUsuario || '',
+    log.dataLocal || ''
+  ]);
+
+  const todasLinhas = [cabecalho].concat(linhas);
+
+  const csv = todasLinhas.map((linha) => {
+    return linha.map((campo) => {
+      return '"' + String(campo).replace(/"/g, '""') + '"';
+    }).join(';');
+  }).join('\n');
+
+  const blob = new Blob([csv], {
+    type: 'text/csv;charset=utf-8;'
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = 'historico-operacional-ch-obras.csv';
+  link.click();
+
+  URL.revokeObjectURL(url);
 };
 
 window.ocultarLogsOperacionais = function() {
