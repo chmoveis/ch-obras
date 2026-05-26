@@ -1593,6 +1593,29 @@ window.enviarFotoParaStorage = async function(inputId, nomePasta) {
   return urls[0] || '';
 };
 
+async function registrarLogOperacional(acao, obraId, dadosObra, obraAnterior = null) {
+  try {
+    const statusAnterior = obraAnterior ? normalizarStatusObra(obraAnterior.statusObra) : '';
+    const statusNovo = normalizarStatusObra(dadosObra.statusObra);
+
+    await addDoc(collection(db, "logsObras"), {
+      acao,
+      obraId,
+      numeroObra: dadosObra.numeroObra || '',
+      cliente: dadosObra.cliente || '',
+      statusAnterior,
+      statusNovo,
+      statusAlterado: statusAnterior !== statusNovo,
+      usuarioEmail: window.usuarioEmailLogado || '',
+      perfilUsuario: window.perfilUsuarioLogado || '',
+      dataLocal: new Date().toLocaleString('pt-BR'),
+      criadoEmServidor: serverTimestamp()
+    });
+  } catch (erro) {
+    console.error('Erro ao registrar log operacional:', erro);
+  }
+}
+
 window.salvarObraNaNuvem = async function(dadosObra) {
   try {
     if (window.idObraEditando) {
@@ -1602,6 +1625,9 @@ window.salvarObraNaNuvem = async function(dadosObra) {
         return;
       }
 
+      const obraAnterior = window.obraEditandoOriginal || null;
+      const obraIdAtualizada = window.idObraEditando;
+
       await updateDoc(
         doc(db, "obras", window.idObraEditando),
         {
@@ -1609,6 +1635,8 @@ window.salvarObraNaNuvem = async function(dadosObra) {
           atualizadoEmServidor: serverTimestamp()
         }
       );
+
+      await registrarLogOperacional('atualizacao', obraIdAtualizada, dadosObra, obraAnterior);
 
       alert("Obra atualizada com sucesso.");
       window.idObraEditando = null;
@@ -1624,10 +1652,12 @@ window.salvarObraNaNuvem = async function(dadosObra) {
         return;
       }
 
-      await addDoc(collection(db, "obras"), {
+      const obraCriadaRef = await addDoc(collection(db, "obras"), {
         ...dadosObra,
         criadoEmServidor: serverTimestamp()
       });
+
+      await registrarLogOperacional('criacao', obraCriadaRef.id, dadosObra);
 
       alert("Checklist salvo na nuvem com sucesso.");
     }
