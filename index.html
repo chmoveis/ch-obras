@@ -1391,8 +1391,8 @@ async function salvarChecklist() {
   const fotosUrls = await enviarFotosParaStorage(['fotoPiso', 'fotoAmbiente', 'fotoParede', 'fotoAvaria'], 'obras');
   const fotoPisoUrl = fotosUrls.length > 0 ? fotosUrls[0] : '';
   const obraAnterior = window.idObraEditando && window.obraEditandoOriginal ? window.obraEditandoOriginal : null;
-  const statusAnterior = obraAnterior ? normalizarStatusObra(obraAnterior.statusObra) : '';
-  const statusNovo = normalizarStatusObra(statusObra);
+  const statusAnterior = obraAnterior ? window.normalizarStatusObra(obraAnterior.statusObra) : '';
+  const statusNovo = window.normalizarStatusObra(statusObra);
   const agoraStatus = new Date().toLocaleString('pt-BR');
   const historicoStatusAnterior = obraAnterior && Array.isArray(obraAnterior.historicoStatus)
     ? obraAnterior.historicoStatus
@@ -1883,6 +1883,8 @@ function normalizarStatusObra(status) {
   if (textoBusca.includes('cancelada')) return 'Cancelada';
   return textoOriginal;
 }
+
+window.normalizarStatusObra = normalizarStatusObra;
 
 function classeStatus(status) {
   const s = normalizarStatusObra(status);
