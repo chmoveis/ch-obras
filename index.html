@@ -1390,6 +1390,22 @@ async function salvarChecklist() {
 
   const fotosUrls = await enviarFotosParaStorage(['fotoPiso', 'fotoAmbiente', 'fotoParede', 'fotoAvaria'], 'obras');
   const fotoPisoUrl = fotosUrls.length > 0 ? fotosUrls[0] : '';
+  const obraAnterior = window.idObraEditando && window.obraEditandoOriginal ? window.obraEditandoOriginal : null;
+  const statusAnterior = obraAnterior ? normalizarStatusObra(obraAnterior.statusObra) : '';
+  const statusNovo = normalizarStatusObra(statusObra);
+  const agoraStatus = new Date().toLocaleString('pt-BR');
+  const historicoStatusAnterior = obraAnterior && Array.isArray(obraAnterior.historicoStatus)
+    ? obraAnterior.historicoStatus
+    : [];
+  const historicoStatus = statusAnterior && statusAnterior !== statusNovo
+    ? historicoStatusAnterior.concat([{
+        de: statusAnterior,
+        para: statusNovo,
+        usuarioEmail: window.usuarioEmailLogado || '',
+        perfilUsuario: window.perfilUsuarioLogado || '',
+        data: agoraStatus
+      }])
+    : historicoStatusAnterior;
 
   const dadosObra = {
     numeroObra,
@@ -1398,11 +1414,12 @@ async function salvarChecklist() {
     ambiente,
     marceneiro,
     statusObra,
-    dataMedicao: statusObra === 'Em medição' ? new Date().toLocaleString('pt-BR') : '',
-    dataProducao: statusObra === 'Em produção' ? new Date().toLocaleString('pt-BR') : '',
-    dataMontagem: statusObra === 'Em montagem' ? new Date().toLocaleString('pt-BR') : '',
-    dataConferencia: statusObra === 'Em conferência' ? new Date().toLocaleString('pt-BR') : '',
-    dataFinalizacao: statusObra === 'Finalizada' ? new Date().toLocaleString('pt-BR') : '',
+    dataMedicao: (obraAnterior && obraAnterior.dataMedicao) || (statusNovo === 'Em medição' ? agoraStatus : ''),
+    dataProducao: (obraAnterior && obraAnterior.dataProducao) || (statusNovo === 'Em produção' ? agoraStatus : ''),
+    dataMontagem: (obraAnterior && obraAnterior.dataMontagem) || (statusNovo === 'Em montagem' ? agoraStatus : ''),
+    dataConferencia: (obraAnterior && obraAnterior.dataConferencia) || (statusNovo === 'Em conferência' ? agoraStatus : ''),
+    dataFinalizacao: (obraAnterior && obraAnterior.dataFinalizacao) || (statusNovo === 'Finalizada' ? agoraStatus : ''),
+    historicoStatus,
     prioridadeObra: pegarValor('prioridadeObra') || 'Média',
     data,
 emailUsuario: window.idObraEditando && window.obraEditandoOriginal
@@ -1918,6 +1935,22 @@ function etapaClasse(statusAtual, etapa) {
   return normalizarStatusObra(statusAtual) === etapa ? 'timeline-etapa ativa' : 'timeline-etapa';
 }
 
+function htmlHistoricoStatus(obra) {
+  const historico = Array.isArray(obra.historicoStatus) ? obra.historicoStatus.slice(-5).reverse() : [];
+
+  if (historico.length === 0) return '';
+
+  return `
+    <br><strong>Histórico de status:</strong>
+    ${historico.map((item) => `
+      <div class="linha-data-etapa">
+        ${item.de || 'Sem status'} → ${item.para || 'Sem status'}<br>
+        ${item.usuarioEmail || 'Usuário não informado'} | ${item.data || 'Data não informada'}
+      </div>
+    `).join('')}
+  `;
+}
+
 function renderizarHistorico(obras) {
   const lista = document.getElementById('listaHistorico');
 
@@ -1961,6 +1994,8 @@ function renderizarHistorico(obras) {
         ${obra.dataMontagem ? `<div class="linha-data-etapa">🔧 Montagem: ${obra.dataMontagem}</div>` : ''}
         ${obra.dataConferencia ? `<div class="linha-data-etapa">📋 Conferência: ${obra.dataConferencia}</div>` : ''}
         ${obra.dataFinalizacao ? `<div class="linha-data-etapa">🟢 Finalização: ${obra.dataFinalizacao}</div>` : ''}
+
+        ${htmlHistoricoStatus(obra)}
 
         <div class="timeline-obra">
           <div class="${etapaClasse(statusCard, 'A iniciar')}">🟡 A iniciar</div>
