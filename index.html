@@ -1709,9 +1709,22 @@ const querySnapshot = await getDocs(obrasOrdenadas);
 
 
 function normalizarStatusObra(status) {
-  if (status === 'Em andamento') return 'Em produção';
-  if (status === 'Concluída') return 'Finalizada';
-  return status || '';
+  const textoOriginal = String(status || '').trim();
+  const textoBusca = textoOriginal
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+
+  if (textoBusca.includes('andamento') || textoBusca.includes('producao')) return 'Em produção';
+  if (textoBusca.includes('montagem')) return 'Em montagem';
+  if (textoBusca.includes('medicao')) return 'Em medição';
+  if (textoBusca.includes('conferencia')) return 'Em conferência';
+  if (textoBusca.includes('pendencia')) return 'Com pendência';
+  if (textoBusca.includes('iniciar')) return 'A iniciar';
+  if (textoBusca.includes('cliente')) return 'Aguardando cliente';
+  if (textoBusca.includes('finalizada') || textoBusca.includes('concluida')) return 'Finalizada';
+  if (textoBusca.includes('cancelada')) return 'Cancelada';
+  return textoOriginal;
 }
 
 function classeStatus(status) {
@@ -2001,7 +2014,7 @@ window.editarObra = async function(id) {
     document.getElementById('endereco').value = obra.endereco || '';
     document.getElementById('ambiente').value = obra.ambiente || '';
     document.getElementById('marceneiro').value = obra.marceneiro || '';
-    document.getElementById('statusObra').value = obra.statusObra || '';
+    document.getElementById('statusObra').value = normalizarStatusObra(obra.statusObra);
     document.getElementById('data').value = obra.data || '';
     document.getElementById('nomeClienteAssinatura').value = obra.nomeAssinante || '';
     document.getElementById('cpfCliente').value = obra.cpfAssinante || '';
@@ -2091,7 +2104,7 @@ window.gerarPDFDaObra = async function(id) {
   document.getElementById('endereco').value = obra.endereco || '';
   document.getElementById('ambiente').value = obra.ambiente || '';
   document.getElementById('marceneiro').value = obra.marceneiro || '';
-  document.getElementById('statusObra').value = obra.statusObra || '';
+  document.getElementById('statusObra').value = normalizarStatusObra(obra.statusObra);
   document.getElementById('data').value = obra.data || '';
   document.getElementById('nomeClienteAssinatura').value = obra.nomeAssinante || '';
   document.getElementById('cpfCliente').value = obra.cpfAssinante || '';
