@@ -393,6 +393,25 @@ color:#444;
 border-left:4px solid #d4a017;
 }
 
+.bloco-recolhivel {
+  margin-top: 12px;
+  border: 1px solid rgba(212,160,23,0.28);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.72);
+  overflow: hidden;
+}
+
+.bloco-recolhivel summary {
+  cursor: pointer;
+  padding: 12px;
+  font-weight: bold;
+  color: #111;
+}
+
+.bloco-recolhivel-conteudo {
+  padding: 0 12px 12px;
+}
+
 .qr-box {
   margin-top: 12px;
   padding: 12px;
@@ -2072,16 +2091,23 @@ function renderizarHistorico(obras) {
         <strong>Prioridade:</strong>
         <span class="${classePrioridade(prioridadeCard)}">${prioridadeCard}</span><br>
 
-        <br><strong>Checklist Técnico:</strong><br>
+        <details class="bloco-recolhivel">
+          <summary>Checklist técnico</summary>
+          <div class="bloco-recolhivel-conteudo">
         <strong>Piso é de madeira?</strong> ${obra.pisoMadeira || 'Não informado'}<br>
         <strong>Risco ou avaria no piso?</strong> ${obra.riscoPiso || 'Não informado'}<br>
         <strong>Paredes prontas?</strong> ${obra.paredePronta || 'Não informado'}<br>
         <strong>Parte elétrica pronta?</strong> ${obra.eletricaPronta || 'Não informado'}<br>
         <strong>Local limpo e liberado?</strong> ${obra.localLimpo || 'Não informado'}<br>
         <strong>Medidas conferidas?</strong> ${obra.medidasConferidas || 'Não informado'}<br>
+          </div>
+        </details>
 
         <strong>Observações:</strong> ${obra.observacoes || 'Sem observações'}<br>
 
+        <details class="bloco-recolhivel">
+          <summary>Status e timeline</summary>
+          <div class="bloco-recolhivel-conteudo">
         ${obra.dataMedicao ? `<div class="linha-data-etapa">🔵 Medição: ${obra.dataMedicao}</div>` : ''}
         ${obra.dataProducao ? `<div class="linha-data-etapa">🟣 Produção: ${obra.dataProducao}</div>` : ''}
         ${obra.dataMontagem ? `<div class="linha-data-etapa">🔧 Montagem: ${obra.dataMontagem}</div>` : ''}
@@ -2106,7 +2132,12 @@ function renderizarHistorico(obras) {
         </div>
 
         <div class="texto-progresso">${progresso} concluído</div>
+          </div>
+        </details>
 
+        <details class="bloco-recolhivel">
+          <summary>QR Code, assinatura e fotos</summary>
+          <div class="bloco-recolhivel-conteudo">
         <div class="qr-box">
           <div id="qr-${obra.id}"></div>
           <div><strong>QR Code da Obra</strong><br><small>${obra.numeroObra || ''}</small></div>
@@ -2123,6 +2154,8 @@ function renderizarHistorico(obras) {
             ${fotos.map(url => `<img src="${url}" alt="Foto da obra">`).join('')}
           </div>
         ` : ''}
+          </div>
+        </details>
 
         ${usuarioPodeEditarObra(obra) ? `
           <button class="botao-secundario" onclick="editarObra('${obra.id}')">Editar Obra</button>
