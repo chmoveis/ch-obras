@@ -1829,6 +1829,19 @@ onAuthStateChanged(auth, async (user) => {
   if (emailEhAdminPrincipal(user.email)) {
     perfilUsuario = 'admin';
     usuarioAtivo = true;
+
+    try {
+      await setDoc(doc(db, 'usuarios', EMAIL_ADMIN_PRINCIPAL), {
+        email: EMAIL_ADMIN_PRINCIPAL,
+        nome: 'Administrador Principal',
+        perfil: 'admin',
+        ativo: true,
+        atualizadoLocalmenteEm: new Date().toLocaleString('pt-BR'),
+        atualizadoEmServidor: serverTimestamp()
+      }, { merge: true });
+    } catch (erro) {
+      console.log('Nao foi possivel autocorrigir o admin principal:', erro);
+    }
   }
 
   if (!usuarioAtivo) {
