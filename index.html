@@ -832,6 +832,7 @@ Nova Obra / Limpar Formulário
     <button onclick="mostrarHistorico()">Ver Histórico de Obras</button>
     <button type="button" onclick="ocultarHistorico()" class="botao-secundario">Ocultar Histórico</button>
     <button type="button" onclick="mostrarLogsOperacionais()" class="botao-secundario" id="btnLogsOperacionais">Histórico Operacional</button>
+    <button type="button" onclick="mostrarProdutividade()" class="botao-secundario" id="btnProdutividade">Produtividade</button>
     <button type="button" onclick="mostrarMateriais()" class="botao-secundario" id="btnMateriais">Requisição de Materiais</button>
     <button type="button" onclick="exportarCSV()" class="botao-secundario" id="btnExportarCSV">Exportar Relatório CSV</button>
     <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="botao-secundario">Voltar ao Topo</button>
@@ -928,6 +929,14 @@ Nova Obra / Limpar Formulário
         <button type="button" onclick="exportarLogsCSV()" class="botao-secundario">Exportar Logs CSV</button>
         <button type="button" onclick="ocultarLogsOperacionais()" class="botao-secundario">Ocultar Histórico Operacional</button>
         <div id="listaLogsOperacionais"></div>
+      </div>
+
+      <div class="resultado" id="painelProdutividade">
+        <h2>Produtividade por Usuario</h2>
+        <p style="font-size:13px; color:#555;">Resumo calculado pelos ultimos registros do historico operacional.</p>
+        <button type="button" onclick="mostrarProdutividade()" class="botao-secundario">Atualizar Produtividade</button>
+        <button type="button" onclick="ocultarProdutividade()" class="botao-secundario">Ocultar Produtividade</button>
+        <div id="listaProdutividade"></div>
       </div>
 
       <div class="resultado" id="moduloMateriais">
@@ -1650,6 +1659,7 @@ function aplicarPermissoesInterface() {
   const btnLimpar = document.getElementById('btnLimparFormulario');
   const btnExportar = document.getElementById('btnExportarCSV');
   const btnLogs = document.getElementById('btnLogsOperacionais');
+  const btnProdutividade = document.getElementById('btnProdutividade');
   const btnMateriais = document.getElementById('btnMateriais');
   const btnExportarMateriais = document.getElementById('btnExportarMateriaisCSV');
   const botaoSalvar = document.getElementById('botaoSalvar');
@@ -1657,6 +1667,7 @@ function aplicarPermissoesInterface() {
   if (btnLimpar) btnLimpar.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnExportar) btnExportar.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnLogs) btnLogs.style.display = perfil === 'admin' ? 'block' : 'none';
+  if (btnProdutividade) btnProdutividade.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnExportarMateriais) btnExportarMateriais.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnMateriais) btnMateriais.style.display = ['admin', 'marceneiro', 'montagem'].includes(perfil) ? 'block' : 'none';
   if (botaoSalvar) {
@@ -2442,6 +2453,106 @@ window.exportarLogsCSV = function() {
 window.ocultarLogsOperacionais = function() {
   const historicoOperacional = document.getElementById('historicoOperacional');
   if (historicoOperacional) historicoOperacional.style.display = 'none';
+};
+
+window.mostrarProdutividade = async function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Seu perfil nao tem permissao para visualizar produtividade.');
+    return;
+  }
+
+  const painel = document.getElementById('painelProdutividade');
+  const lista = document.getElementById('listaProdutividade');
+
+  if (!painel || !lista) {
+    alert('Erro: painel de produtividade nao encontrado.');
+    return;
+  }
+
+  painel.style.display = 'block';
+  document.getElementById('dashboardResumo').style.display = 'block';
+  lista.innerHTML = '<p>Carregando produtividade...</p>';
+
+  try {
+    const logsQuery = query(
+      collection(db, "logsObras"),
+      orderBy("criadoEmServidor", "desc"),
+      limit(100)
+    );
+
+    const querySnapshot = await getDocs(logsQuery);
+    logsOperacionaisCache = [];
+
+    querySnapshot.forEach((docItem) => {
+      logsOperacionaisCache.push({ id: docItem.id, ...docItem.data() });
+    });
+
+    renderizarProdutividade(logsOperacionaisCache);
+  } catch (erro) {
+    console.error('Erro ao carregar produtividade:', erro);
+    lista.innerHTML = '<p>Erro ao carregar produtividade.</p>';
+  }
+};
+
+function renderizarProdutividade(logs) {
+  const lista = document.getElementById('listaProdutividade');
+  if (!lista) return;
+
+  if (!logs || logs.length === 0) {
+    lista.innerHTML = '<p>Nenhum registro encontrado para calcular produtividade.</p>';
+    return;
+  }
+
+  const resumo = {};
+
+  logs.forEach((log) => {
+    const email = log.usuarioEmail || 'Usuario nao informado';
+
+    if (!resumo[email]) {
+      resumo[email] = {
+        email,
+        perfil: log.perfilUsuario || 'nao informado',
+        obrasAtualizadas: 0,
+        mudancasStatus: 0,
+        requisicoesMateriais: 0,
+        totalAcoes: 0,
+        ultimaAcao: log.dataLocal || 'nao informada'
+      };
+    }
+
+    resumo[email].totalAcoes += 1;
+
+    if (log.acao === 'atualizacao') {
+      resumo[email].obrasAtualizadas += 1;
+    }
+
+    if (log.statusAlterado === true) {
+      resumo[email].mudancasStatus += 1;
+    }
+
+    if (log.acao === 'requisicao_material') {
+      resumo[email].requisicoesMateriais += 1;
+    }
+  });
+
+  const usuarios = Object.values(resumo).sort((a, b) => b.totalAcoes - a.totalAcoes);
+
+  lista.innerHTML = usuarios.map((usuario) => `
+    <div class="item-relatorio">
+      <strong style="font-size:16px; color:#d4a017;">${usuario.email}</strong><br><br>
+      <strong>Perfil:</strong> ${usuario.perfil}<br>
+      <strong>Total de acoes:</strong> ${usuario.totalAcoes}<br>
+      <strong>Obras atualizadas:</strong> ${usuario.obrasAtualizadas}<br>
+      <strong>Mudancas de status:</strong> ${usuario.mudancasStatus}<br>
+      <strong>Requisicoes de materiais:</strong> ${usuario.requisicoesMateriais}<br>
+      <strong>Ultima acao:</strong> ${usuario.ultimaAcao}<br>
+    </div>
+  `).join('');
+}
+
+window.ocultarProdutividade = function() {
+  const painel = document.getElementById('painelProdutividade');
+  if (painel) painel.style.display = 'none';
 };
 
 window.mostrarMateriais = function() {
