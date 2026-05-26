@@ -836,6 +836,7 @@ Nova Obra / Limpar Formulário
     <button type="button" onclick="mostrarUsuarios()" class="botao-secundario" id="btnUsuarios">Gerenciar Usuários</button>
     <button type="button" onclick="mostrarMateriais()" class="botao-secundario" id="btnMateriais">Requisição de Materiais</button>
     <button type="button" onclick="exportarCSV()" class="botao-secundario" id="btnExportarCSV">Exportar Relatório CSV</button>
+    <button type="button" onclick="exportarBackupJSON()" class="botao-secundario" id="btnExportarJSON">Backup Obras JSON</button>
     <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="botao-secundario">Voltar ao Topo</button>
 
     <div class="area-visualizar">
@@ -1716,6 +1717,7 @@ function aplicarPermissoesInterface() {
   const perfil = perfilAtual();
   const btnLimpar = document.getElementById('btnLimparFormulario');
   const btnExportar = document.getElementById('btnExportarCSV');
+  const btnExportarJSON = document.getElementById('btnExportarJSON');
   const btnLogs = document.getElementById('btnLogsOperacionais');
   const btnProdutividade = document.getElementById('btnProdutividade');
   const btnUsuarios = document.getElementById('btnUsuarios');
@@ -1725,6 +1727,7 @@ function aplicarPermissoesInterface() {
 
   if (btnLimpar) btnLimpar.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnExportar) btnExportar.style.display = perfil === 'admin' ? 'block' : 'none';
+  if (btnExportarJSON) btnExportarJSON.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnLogs) btnLogs.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnProdutividade) btnProdutividade.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnUsuarios) btnUsuarios.style.display = perfil === 'admin' ? 'block' : 'none';
@@ -3552,6 +3555,41 @@ window.exportarCSV = function() {
 
   link.href = url;
   link.download = 'relatorio-ch-obras.csv';
+  link.click();
+
+  URL.revokeObjectURL(url);
+};
+
+window.exportarBackupJSON = function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Seu perfil nao tem permissao para gerar backup JSON.');
+    return;
+  }
+
+  if (!obrasCache || obrasCache.length === 0) {
+    alert('Carregue o historico antes de gerar o backup.');
+    return;
+  }
+
+  const backup = {
+    sistema: 'CH Obras',
+    tipo: 'backup_obras',
+    geradoEm: new Date().toLocaleString('pt-BR'),
+    geradoPor: window.usuarioEmailLogado || '',
+    totalObras: obrasCache.length,
+    obras: obrasCache
+  };
+
+  const json = JSON.stringify(backup, null, 2);
+  const blob = new Blob([json], {
+    type: 'application/json;charset=utf-8;'
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = 'backup-ch-obras.json';
   link.click();
 
   URL.revokeObjectURL(url);
