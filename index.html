@@ -1258,12 +1258,12 @@ async function gerarPDF() {
 }
 
 async function salvarChecklist() {
-  if (!window.idObraEditando && !usuarioPodeCriarObra()) {
+  if (!window.idObraEditando && !window.usuarioPodeCriarObra()) {
     alert('Seu perfil nao tem permissao para criar obras.');
     return;
   }
 
-  if (window.idObraEditando && !usuarioPodeEditarObra(window.obraEditandoOriginal)) {
+  if (window.idObraEditando && !window.usuarioPodeEditarObra(window.obraEditandoOriginal)) {
     alert('Seu perfil nao tem permissao para atualizar esta obra.');
     return;
   }

@@ -1,6 +1,6 @@
 self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open('ch-obras-cache-v1').then(function(cache) {
+    caches.open('ch-obras-cache-v2').then(function(cache) {
       const arquivosEssenciais = [
         'index.html',
         'manifest.json',
