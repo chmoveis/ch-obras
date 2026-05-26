@@ -3083,7 +3083,38 @@ window.exportarCSV = function() {
     return;
   }
 
-  const cabecalho = ['Numero', 'Cliente', 'Endereco', 'Ambiente', 'Marceneiro', 'Status', 'Data', 'AssinadoPor', 'CPF'];
+  const cabecalho = [
+    'Numero',
+    'Cliente',
+    'Endereco',
+    'Ambiente',
+    'Marceneiro',
+    'Status',
+    'Prioridade',
+    'DataInstalacao',
+    'AssinadoPor',
+    'CPF',
+    'PisoMadeira',
+    'RiscoPiso',
+    'ParedePronta',
+    'EletricaPronta',
+    'LocalLimpo',
+    'MedidasConferidas',
+    'Observacoes',
+    'DataMedicao',
+    'ResponsavelMedicao',
+    'DataProducao',
+    'ResponsavelProducao',
+    'DataMontagem',
+    'ResponsavelMontagem',
+    'DataConferencia',
+    'ResponsavelConferencia',
+    'DataFinalizacao',
+    'ResponsavelFinalizacao',
+    'UsuarioCriador',
+    'PerfilCriador',
+    'Fotos'
+  ];
 
   const linhas = obrasCache.map(function(o) {
     return [
@@ -3093,9 +3124,30 @@ window.exportarCSV = function() {
       o.ambiente || '',
       o.marceneiro || '',
       o.statusObra || '',
+      o.prioridadeObra || '',
       o.data || '',
       o.nomeAssinante || '',
-      o.cpfAssinante || ''
+      o.cpfAssinante || '',
+      o.pisoMadeira || '',
+      o.riscoPiso || '',
+      o.paredePronta || '',
+      o.eletricaPronta || '',
+      o.localLimpo || '',
+      o.medidasConferidas || '',
+      o.observacoes || '',
+      o.dataMedicao || '',
+      o.responsavelMedicao || '',
+      o.dataProducao || '',
+      o.responsavelProducao || '',
+      o.dataMontagem || '',
+      o.responsavelMontagem || '',
+      o.dataConferencia || '',
+      o.responsavelConferencia || '',
+      o.dataFinalizacao || '',
+      o.responsavelFinalizacao || '',
+      o.emailUsuario || '',
+      o.perfilUsuario || '',
+      Array.isArray(o.fotosUrls) ? o.fotosUrls.join(' | ') : (o.fotoPisoUrl || '')
     ];
   });
 
