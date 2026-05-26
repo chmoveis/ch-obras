@@ -964,6 +964,28 @@ Nova Obra / Limpar Formulário
         <button type="button" onclick="exportarUsuariosCSV()" class="botao-secundario">Exportar Usuários CSV</button>
         <button type="button" onclick="ocultarUsuarios()" class="botao-secundario">Ocultar Usuários</button>
 
+        <h2>Filtros de Usuários</h2>
+        <input type="text" id="buscaUsuariosSistema" placeholder="Buscar por e-mail ou nome" oninput="filtrarUsuariosSistema()" />
+
+        <label for="filtroPerfilUsuarioSistema">Perfil</label>
+        <select id="filtroPerfilUsuarioSistema" onchange="filtrarUsuariosSistema()">
+          <option value="">Todos os perfis</option>
+          <option value="admin">Admin</option>
+          <option value="marceneiro">Marceneiro</option>
+          <option value="montagem">Montagem</option>
+          <option value="conferencia">Conferência</option>
+          <option value="visualizacao">Visualização</option>
+        </select>
+
+        <label for="filtroStatusUsuarioSistema">Status</label>
+        <select id="filtroStatusUsuarioSistema" onchange="filtrarUsuariosSistema()">
+          <option value="">Todos os status</option>
+          <option value="ativo">Ativos</option>
+          <option value="inativo">Inativos</option>
+        </select>
+
+        <button type="button" onclick="limparFiltrosUsuariosSistema()" class="botao-secundario">Limpar Filtros de Usuários</button>
+
         <div id="listaUsuariosSistema"></div>
       </div>
 
@@ -2698,7 +2720,32 @@ function renderizarUsuariosSistema() {
     return;
   }
 
-  lista.innerHTML = usuariosSistemaCache.map((usuario) => {
+  const texto = document.getElementById('buscaUsuariosSistema')?.value.toLowerCase().trim() || '';
+  const perfilFiltro = document.getElementById('filtroPerfilUsuarioSistema')?.value || '';
+  const statusFiltro = document.getElementById('filtroStatusUsuarioSistema')?.value || '';
+  const termos = texto.split(' ').filter(Boolean);
+
+  const usuariosFiltrados = usuariosSistemaCache.filter((usuario) => {
+    const email = usuario.email || usuario.id || '';
+    const nome = usuario.nome || '';
+    const perfil = usuario.perfil || 'visualizacao';
+    const ativo = usuario.ativo !== false;
+    const busca = `${email} ${nome}`.toLowerCase();
+    const passaTexto = termos.length === 0 || termos.every((termo) => busca.includes(termo));
+    const passaPerfil = !perfilFiltro || perfil === perfilFiltro;
+    const passaStatus = !statusFiltro
+      || (statusFiltro === 'ativo' && ativo)
+      || (statusFiltro === 'inativo' && !ativo);
+
+    return passaTexto && passaPerfil && passaStatus;
+  });
+
+  if (usuariosFiltrados.length === 0) {
+    lista.innerHTML = '<p>Nenhum usuario encontrado com os filtros atuais.</p>';
+    return;
+  }
+
+  lista.innerHTML = usuariosFiltrados.map((usuario) => {
     const email = usuario.email || usuario.id || '';
     const perfil = usuario.perfil || 'visualizacao';
     const ativo = usuario.ativo !== false;
@@ -2724,6 +2771,17 @@ function renderizarUsuariosSistema() {
     `;
   }).join('');
 }
+
+window.filtrarUsuariosSistema = function() {
+  renderizarUsuariosSistema();
+};
+
+window.limparFiltrosUsuariosSistema = function() {
+  document.getElementById('buscaUsuariosSistema').value = '';
+  document.getElementById('filtroPerfilUsuarioSistema').selectedIndex = 0;
+  document.getElementById('filtroStatusUsuarioSistema').selectedIndex = 0;
+  renderizarUsuariosSistema();
+};
 
 window.salvarUsuarioSistema = async function() {
   if (window.perfilUsuarioLogado !== 'admin') {
