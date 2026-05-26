@@ -841,6 +841,16 @@ Nova Obra / Limpar Formulário
           <div class="card-resumo"><h3>🟣 Aguardando cliente</h3><p id="obrasCliente">0</p></div>
         </div>
 
+        <h2 style="margin-top:22px;">Materiais</h2>
+        <div class="cards-resumo dashboard-grid">
+          <div class="card-resumo"><h3>Total</h3><p id="materiaisTotal">0</p></div>
+          <div class="card-resumo"><h3>Solicitados</h3><p id="materiaisSolicitados">0</p></div>
+          <div class="card-resumo"><h3>Aprovados</h3><p id="materiaisAprovados">0</p></div>
+          <div class="card-resumo"><h3>Comprados</h3><p id="materiaisComprados">0</p></div>
+          <div class="card-resumo"><h3>Entregues</h3><p id="materiaisEntregues">0</p></div>
+          <div class="card-resumo"><h3>Urgentes</h3><p id="materiaisUrgentes">0</p></div>
+        </div>
+
         <p id="taxaConclusao" style="text-align:center; font-weight:bold; margin-top:15px;">Taxa de conclusão: 0%</p>
         <div class="dashboard-barra">
           <div id="barraConclusao" class="dashboard-barra-preenchida"></div>
@@ -2003,6 +2013,42 @@ function atualizarDashboard(obras) {
 
   const status = document.getElementById('statusConexao');
   if (status) status.innerText = 'Status: ' + totalObras + ' obras carregadas no painel.';
+
+  atualizarDashboardMateriais();
+}
+
+async function atualizarDashboardMateriais() {
+  try {
+    const materiaisSnapshot = await getDocs(collection(db, "requisicoesMateriais"));
+    const materiais = [];
+
+    materiaisSnapshot.forEach((docItem) => {
+      materiais.push({ id: docItem.id, ...docItem.data() });
+    });
+
+    const total = materiais.length;
+    const solicitados = materiais.filter(m => (m.status || 'Solicitado') === 'Solicitado').length;
+    const aprovados = materiais.filter(m => m.status === 'Aprovado').length;
+    const comprados = materiais.filter(m => m.status === 'Comprado').length;
+    const entregues = materiais.filter(m => m.status === 'Entregue').length;
+    const urgentes = materiais.filter(m => m.urgencia === 'Urgente').length;
+
+    const campos = {
+      materiaisTotal: total,
+      materiaisSolicitados: solicitados,
+      materiaisAprovados: aprovados,
+      materiaisComprados: comprados,
+      materiaisEntregues: entregues,
+      materiaisUrgentes: urgentes
+    };
+
+    Object.entries(campos).forEach(([id, valor]) => {
+      const elemento = document.getElementById(id);
+      if (elemento) elemento.innerText = valor;
+    });
+  } catch (erro) {
+    console.error('Erro ao atualizar dashboard de materiais:', erro);
+  }
 }
 
 
