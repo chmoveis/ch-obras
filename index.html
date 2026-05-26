@@ -961,6 +961,7 @@ Nova Obra / Limpar Formulário
 
         <button type="button" onclick="salvarUsuarioSistema()" class="botao-secundario">Salvar Usuário</button>
         <button type="button" onclick="carregarUsuariosSistema()" class="botao-secundario">Atualizar Lista</button>
+        <button type="button" onclick="exportarUsuariosCSV()" class="botao-secundario">Exportar Usuários CSV</button>
         <button type="button" onclick="ocultarUsuarios()" class="botao-secundario">Ocultar Usuários</button>
 
         <div id="listaUsuariosSistema"></div>
@@ -2816,6 +2817,55 @@ window.alternarUsuarioAtivo = async function(id, ativo) {
     esconderLoading();
     alert('Erro ao atualizar usuario.');
   }
+};
+
+window.exportarUsuariosCSV = function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Apenas admin pode exportar usuarios.');
+    return;
+  }
+
+  if (!usuariosSistemaCache || usuariosSistemaCache.length === 0) {
+    alert('Clique primeiro em Atualizar Lista.');
+    return;
+  }
+
+  const cabecalho = [
+    'Email',
+    'Nome',
+    'Perfil',
+    'Ativo',
+    'AtualizadoEm'
+  ];
+
+  const linhas = usuariosSistemaCache.map((usuario) => [
+    usuario.email || usuario.id || '',
+    usuario.nome || '',
+    usuario.perfil || '',
+    usuario.ativo === false ? 'Nao' : 'Sim',
+    usuario.atualizadoLocalmenteEm || ''
+  ]);
+
+  const todasLinhas = [cabecalho].concat(linhas);
+
+  const csv = todasLinhas.map((linha) => {
+    return linha.map((campo) => {
+      return '"' + String(campo).replace(/"/g, '""') + '"';
+    }).join(';');
+  }).join('\n');
+
+  const blob = new Blob([csv], {
+    type: 'text/csv;charset=utf-8;'
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = 'usuarios-ch-obras.csv';
+  link.click();
+
+  URL.revokeObjectURL(url);
 };
 
 window.mostrarMateriais = function() {
