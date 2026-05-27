@@ -789,12 +789,32 @@ placeholder="Senha"
 style="
 width:100%;
 padding:15px;
-margin-bottom:20px;
+margin-bottom:10px;
 border:none;
 border-radius:12px;
 font-size:16px;
 "
 />
+
+<button
+type="button"
+id="btnMostrarSenhaLogin"
+onclick="alternarVisibilidadeSenhaLogin()"
+style="
+width:100%;
+padding:10px;
+margin-bottom:16px;
+border:1px solid #444;
+border-radius:12px;
+background:#2d2d2d;
+color:white;
+font-size:14px;
+font-weight:bold;
+cursor:pointer;
+"
+>
+Mostrar Senha
+</button>
 
 <button
 onclick="fazerLogin()"
@@ -2061,7 +2081,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101072';
+const VERSAO_APP_CH_OBRAS = '101073';
 
 function atualizarVersaoAppNaTela() {
   const versaoCabecalho = document.getElementById('versaoAppCabecalho');
@@ -2093,6 +2113,17 @@ function ativarLoginComEnter() {
 }
 
 ativarLoginComEnter();
+
+function alternarVisibilidadeSenhaLogin() {
+  const campoSenha = document.getElementById('senhaLogin');
+  const botaoSenha = document.getElementById('btnMostrarSenhaLogin');
+
+  if (!campoSenha || !botaoSenha) return;
+
+  const senhaVisivel = campoSenha.type === 'text';
+  campoSenha.type = senhaVisivel ? 'password' : 'text';
+  botaoSenha.innerText = senhaVisivel ? 'Mostrar Senha' : 'Ocultar Senha';
+}
 
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
