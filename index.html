@@ -767,7 +767,15 @@ margin-bottom:24px;
 ">
 Versão carregando...
 </div>
-
+<div id="mensagemLogin" style="
+display:none;
+margin-bottom:12px;
+padding:10px 12px;
+border-radius:10px;
+font-size:13px;
+font-weight:bold;
+text-align:center;
+"></div>
 <input
 id="emailLogin"
 type="email"
@@ -2144,7 +2152,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101082';
+const VERSAO_APP_CH_OBRAS = '101083';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
@@ -2247,6 +2255,7 @@ function limparCamposLogin() {
   }
   if (avisoCapsLock) avisoCapsLock.style.display = 'none';
   if (botaoSenha) botaoSenha.innerText = 'Mostrar Senha';
+  limparMensagemLogin();
   if (campoEmail) campoEmail.focus();
 }
 
@@ -2259,6 +2268,26 @@ function ativarBotaoLimparLogin() {
 
 ativarBotaoLimparLogin();
 carregarUltimoEmailLogin();
+
+function mostrarMensagemLogin(tipo, texto) {
+  const mensagem = document.getElementById('mensagemLogin');
+  if (!mensagem) return;
+
+  const sucesso = tipo === 'sucesso';
+  mensagem.style.display = 'block';
+  mensagem.style.background = sucesso ? '#d9f7df' : '#fde2e2';
+  mensagem.style.border = '1px solid ' + (sucesso ? '#63a56e' : '#d77b7b');
+  mensagem.style.color = sucesso ? '#14532d' : '#8b1d1d';
+  mensagem.innerText = texto;
+}
+
+function limparMensagemLogin() {
+  const mensagem = document.getElementById('mensagemLogin');
+  if (!mensagem) return;
+
+  mensagem.style.display = 'none';
+  mensagem.innerText = '';
+}
 
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
@@ -2341,9 +2370,10 @@ window.fazerLogin = async function () {
   const botaoEntrar = document.getElementById('btnEntrarLogin');
 
   campoEmail.value = email;
+  limparMensagemLogin();
 
   if (!email || !senha) {
-    alert('Digite e-mail e senha.');
+    mostrarMensagemLogin('erro', 'Digite e-mail e senha.');
     return;
   }
 
@@ -2363,7 +2393,6 @@ window.fazerLogin = async function () {
 
     salvarUltimoEmailLogin(email);
 
-    alert('Login realizado com sucesso.');
 const emailUsuario = auth.currentUser.email;
 
 window.usuarioEmailLogado = emailUsuario;
@@ -2386,9 +2415,9 @@ console.log('Perfil do usuário:', window.perfilUsuarioLogado);
   } catch (erro) {
 
     if (erro.code === 'auth/invalid-credential' || erro.code === 'auth/wrong-password' || erro.code === 'auth/user-not-found') {
-      alert('E-mail ou senha incorretos. Confira os dados e tente novamente.');
+      mostrarMensagemLogin('erro', 'E-mail ou senha incorretos. Confira os dados e tente novamente.');
     } else {
-      alert('Erro no login: ' + erro.message);
+      mostrarMensagemLogin('erro', 'Erro no login: ' + erro.message);
     }
 
   } finally {
@@ -2408,21 +2437,22 @@ window.recuperarSenhaLogin = async function () {
 
   const email = campoEmail.value.trim().toLowerCase();
   campoEmail.value = email;
+  limparMensagemLogin();
 
   if (!email) {
-    alert('Digite seu e-mail para recuperar a senha.');
+    mostrarMensagemLogin('erro', 'Digite seu e-mail para recuperar a senha.');
     campoEmail.focus();
     return;
   }
 
   try {
     await sendPasswordResetEmail(auth, email);
-    alert('Link de recuperacao enviado para ' + email + '. Verifique sua caixa de entrada.');
+    mostrarMensagemLogin('sucesso', 'Link de recuperacao enviado para ' + email + '. Verifique sua caixa de entrada.');
   } catch (erro) {
     if (erro.code === 'auth/invalid-email' || erro.code === 'auth/user-not-found') {
-      alert('Nao foi possivel enviar a recuperacao. Confira o e-mail digitado.');
+      mostrarMensagemLogin('erro', 'Nao foi possivel enviar a recuperacao. Confira o e-mail digitado.');
     } else {
-      alert('Erro ao enviar recuperacao: ' + erro.message);
+      mostrarMensagemLogin('erro', 'Erro ao enviar recuperacao: ' + erro.message);
     }
   }
 };
@@ -2438,6 +2468,7 @@ onAuthStateChanged(auth, async (user) => {
 
   if (!user) {
     document.getElementById('telaLogin').style.display = 'flex';
+    limparMensagemLogin();
 
     if (barraUsuario) barraUsuario.style.display = 'none';
     if (perfilPainel) perfilPainel.innerText = 'Perfil: aguardando login';
