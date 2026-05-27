@@ -810,7 +810,7 @@ Entrar
       <img src="logotipo novo atual.jpg" alt="CH Móveis" class="logo" />
       <h1>CH Obras</h1>
       <p>Checklist de Instalação - CH Móveis Sob Medida</p>
-      <span class="versao-app">Versão 101066</span>
+      <span class="versao-app" id="versaoAppCabecalho">Versão carregando...</span>
     </div>
 
     <h2>1. Dados da Obra</h2>
@@ -2030,7 +2030,16 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101066';
+const VERSAO_APP_CH_OBRAS = '101067';
+
+function atualizarVersaoAppNaTela() {
+  const versaoCabecalho = document.getElementById('versaoAppCabecalho');
+  if (versaoCabecalho) {
+    versaoCabecalho.innerText = 'Versão ' + VERSAO_APP_CH_OBRAS;
+  }
+}
+
+atualizarVersaoAppNaTela();
 
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
