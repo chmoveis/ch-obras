@@ -1249,6 +1249,92 @@ function pegarValor(id) {
   return document.getElementById(id).value;
 }
 
+const CHAVE_RASCUNHO_CHECKLIST = 'rascunhoChecklistCHObras';
+const CAMPOS_RASCUNHO_CHECKLIST = [
+  'cliente',
+  'endereco',
+  'ambiente',
+  'marceneiro',
+  'statusObra',
+  'prioridadeObra',
+  'data',
+  'pisoMadeira',
+  'riscoPiso',
+  'paredePronta',
+  'eletricaPronta',
+  'localLimpo',
+  'medidasConferidas',
+  'observacoes',
+  'nomeClienteAssinatura',
+  'cpfCliente'
+];
+
+function salvarRascunhoChecklist() {
+  if (window.idObraEditando) return;
+
+  const dados = {};
+  let temConteudo = false;
+
+  CAMPOS_RASCUNHO_CHECKLIST.forEach((id) => {
+    const campo = document.getElementById(id);
+    if (!campo) return;
+
+    dados[id] = campo.value || '';
+    if (dados[id]) temConteudo = true;
+  });
+
+  if (!temConteudo) {
+    localStorage.removeItem(CHAVE_RASCUNHO_CHECKLIST);
+    return;
+  }
+
+  localStorage.setItem(CHAVE_RASCUNHO_CHECKLIST, JSON.stringify({
+    atualizadoEm: new Date().toLocaleString('pt-BR'),
+    dados
+  }));
+}
+
+function limparRascunhoChecklist() {
+  localStorage.removeItem(CHAVE_RASCUNHO_CHECKLIST);
+}
+
+function restaurarRascunhoChecklist() {
+  if (window.idObraEditando) return;
+
+  const bruto = localStorage.getItem(CHAVE_RASCUNHO_CHECKLIST);
+  if (!bruto) return;
+
+  try {
+    const rascunho = JSON.parse(bruto);
+    const confirmar = confirm('Existe um rascunho salvo em ' + (rascunho.atualizadoEm || 'data não informada') + '. Deseja recuperar?');
+
+    if (!confirmar) return;
+
+    CAMPOS_RASCUNHO_CHECKLIST.forEach((id) => {
+      const campo = document.getElementById(id);
+      if (campo && rascunho.dados && Object.prototype.hasOwnProperty.call(rascunho.dados, id)) {
+        campo.value = rascunho.dados[id] || '';
+      }
+    });
+  } catch (erro) {
+    console.log('Erro ao restaurar rascunho:', erro);
+    limparRascunhoChecklist();
+  }
+}
+
+function ativarRascunhoAutomatico() {
+  CAMPOS_RASCUNHO_CHECKLIST.forEach((id) => {
+    const campo = document.getElementById(id);
+    if (!campo) return;
+
+    campo.addEventListener('input', salvarRascunhoChecklist);
+    campo.addEventListener('change', salvarRascunhoChecklist);
+  });
+
+  window.addEventListener('beforeunload', salvarRascunhoChecklist);
+  setTimeout(restaurarRascunhoChecklist, 600);
+}
+
 function alternarAcoesPrincipais() {
   const bloco = document.getElementById('acoesPrincipais');
   if (!bloco) return;
@@ -1798,6 +1884,7 @@ nomeAssinante,
   document.getElementById('relatorio').innerHTML = html;
   document.getElementById('resultado').style.display = 'block';
   document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
+  limparRascunhoChecklist();
 }
   
 
@@ -1811,6 +1898,8 @@ nomeAssinante,
           console.log('Erro ao registrar Service Worker:', erro);
         });
     }
+
+    ativarRascunhoAutomatico();
   </script>
   <script type="module">
 
@@ -3661,6 +3750,7 @@ window.limparFormulario = function() {
   window.obraEditandoOriginal = null;
   document.getElementById('avisoEdicao').style.display = 'none';
   document.getElementById('botaoSalvar').innerText = 'Salvar Checklist';
+  limparRascunhoChecklist();
   aplicarPermissoesInterface();
   alert('Formulário limpo para nova obra.');
   window.scrollTo({ top: 0, behavior: 'smooth' });
