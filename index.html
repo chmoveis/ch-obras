@@ -1236,6 +1236,7 @@ Nova Obra / Limpar Formulário
           <option value="">Todas</option>
           <option value="criacao">Criação</option>
           <option value="atualizacao">Atualização</option>
+          <option value="gerente_obra">Log gerente da obra</option>
           <option value="requisicao_material">Requisição de material</option>
           <option value="usuario">Usuário</option>
         </select>
@@ -2109,6 +2110,7 @@ import {
   setDoc,
   getDoc,
   updateDoc,
+  arrayUnion,
   getDocs,
   query,
   orderBy,
@@ -2152,7 +2154,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101085';
+const VERSAO_APP_CH_OBRAS = '101086';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
@@ -2666,6 +2668,94 @@ async function registrarLogUsuario(tipoAlteracao, emailUsuarioAlterado, detalhe)
   }
 }
 
+window.registrarLogGerenteObra = async function(obraId) {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Apenas admin pode registrar log do gerente.');
+    return;
+  }
+
+  if (!obraId) {
+    alert('Obra nao encontrada para registrar log.');
+    return;
+  }
+
+  let obra = obrasCache.find((item) => item.id === obraId);
+
+  if (!obra) {
+    try {
+      const obraSnap = await getDoc(doc(db, "obras", obraId));
+      if (obraSnap.exists()) {
+        obra = { id: obraSnap.id, ...obraSnap.data() };
+      }
+    } catch (erro) {
+      console.error('Erro ao localizar obra para log do gerente:', erro);
+    }
+  }
+
+  if (!obra) {
+    alert('Obra nao encontrada.');
+    return;
+  }
+
+  const mensagemDigitada = prompt('Digite o log do gerente para esta obra:');
+  if (mensagemDigitada === null) return;
+
+  const mensagem = mensagemDigitada.trim();
+  if (!mensagem) {
+    alert('Digite uma mensagem para registrar.');
+    return;
+  }
+
+  const registro = {
+    mensagem,
+    usuarioEmail: window.usuarioEmailLogado || '',
+    perfilUsuario: window.perfilUsuarioLogado || '',
+    data: new Date().toLocaleString('pt-BR')
+  };
+
+  try {
+    mostrarLoading('Salvando log do gerente...');
+
+    await updateDoc(doc(db, "obras", obraId), {
+      logGerenteObra: arrayUnion(registro),
+      atualizadoLocalmenteEm: registro.data,
+      atualizadoEmServidor: serverTimestamp()
+    });
+
+    await addDoc(collection(db, "logsObras"), {
+      acao: 'gerente_obra',
+      obraId,
+      numeroObra: obra.numeroObra || '',
+      cliente: obra.cliente || '',
+      statusAnterior: '',
+      statusNovo: normalizarStatusObra(obra.statusObra),
+      statusAlterado: false,
+      detalhe: mensagem,
+      usuarioEmail: window.usuarioEmailLogado || '',
+      perfilUsuario: window.perfilUsuarioLogado || '',
+      dataLocal: registro.data,
+      criadoEmServidor: serverTimestamp()
+    });
+
+    const indice = obrasCache.findIndex((item) => item.id === obraId);
+    if (indice >= 0) {
+      const logsAtuais = Array.isArray(obrasCache[indice].logGerenteObra) ? obrasCache[indice].logGerenteObra : [];
+      obrasCache[indice].logGerenteObra = logsAtuais.concat([registro]);
+      obrasCache[indice].atualizadoLocalmenteEm = registro.data;
+      renderizarHistorico(obrasCache);
+    } else {
+      await mostrarHistorico();
+    }
+
+    esconderLoading();
+    alert('Log do gerente salvo com sucesso.');
+  } catch (erro) {
+    console.error('Erro ao salvar log do gerente:', erro);
+    esconderLoading();
+    alert('Erro ao salvar log do gerente.');
+  }
+};
+
 window.salvarObraNaNuvem = async function(dadosObra) {
   try {
     if (window.idObraEditando) {
@@ -2897,6 +2987,26 @@ function htmlResponsaveisEtapas(obra) {
   `;
 }
 
+function htmlLogGerenteObra(obra) {
+  const logs = Array.isArray(obra.logGerenteObra) ? obra.logGerenteObra.slice(-8).reverse() : [];
+
+  return `
+    <details class="bloco-recolhivel">
+      <summary>Log do gerente da obra</summary>
+      <div class="bloco-recolhivel-conteudo">
+        ${logs.length === 0
+          ? '<div class="linha-data-etapa">Nenhum registro de gerencia nesta obra.</div>'
+          : logs.map((item) => `
+              <div class="linha-data-etapa">
+                <strong>${item.mensagem || 'Sem mensagem'}</strong><br>
+                ${item.usuarioEmail || 'Usuario nao informado'} | ${item.data || 'Data nao informada'}
+              </div>
+            `).join('')}
+      </div>
+    </details>
+  `;
+}
+
 function renderizarHistorico(obras) {
   const lista = document.getElementById('listaHistorico');
 
@@ -2999,10 +3109,15 @@ function renderizarHistorico(obras) {
           </div>
         </details>
 
+        ${htmlLogGerenteObra(obra)}
+
         ${usuarioPodeEditarObra(obra) ? `
           <button class="botao-secundario" onclick="editarObra('${obra.id}')">Editar Obra</button>
         ` : ''}
         <button class="botao-secundario" onclick="gerarPDFDaObra('${obra.id}')">Gerar PDF desta Obra</button>
+        ${window.perfilUsuarioLogado === 'admin' ? `
+          <button class="botao-secundario" onclick="registrarLogGerenteObra('${obra.id}')">Log do gerente da obra</button>
+        ` : ''}
         ${window.perfilUsuarioLogado === 'admin' ? `
           <button class="botao-perigo" onclick="excluirObra('${obra.id}')">Excluir Obra</button>
         ` : ''}
@@ -3282,6 +3397,7 @@ window.exportarLogsCSV = function() {
     'NumeroObra',
     'Cliente',
     'Acao',
+    'Detalhe',
     'StatusAnterior',
     'StatusNovo',
     'StatusAlterado',
@@ -3294,6 +3410,7 @@ window.exportarLogsCSV = function() {
     log.numeroObra || '',
     log.cliente || '',
     log.acao || '',
+    log.detalhe || '',
     log.statusAnterior || '',
     log.statusNovo || '',
     log.statusAlterado ? 'Sim' : 'Nao',
