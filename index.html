@@ -171,6 +171,39 @@ button:active {
   background: linear-gradient(135deg, #222222, #555555);
 }
 
+.acoes-principais {
+  margin-top: 22px;
+  padding: 14px;
+  background: rgba(255,255,255,0.70);
+  border: 1px solid rgba(212,160,23,0.24);
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+
+.acoes-principais h2 {
+  margin-top: 0;
+}
+
+.acoes-principais button {
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 16px;
+}
+
+@media (max-width: 600px) {
+  .acoes-principais {
+    padding: 12px;
+  }
+
+  .acoes-principais button {
+    padding: 12px;
+    min-height: 46px;
+    font-size: 15px;
+    box-shadow: 0 5px 14px rgba(0,0,0,0.20);
+  }
+}
+
 button.botao-excluir,
 .botao-perigo {
   display: block !important;
@@ -839,6 +872,8 @@ font-size:14px;
     Sair do sistema
   </button>
 </div>
+    <div class="acoes-principais">
+      <h2>Ações Principais</h2>
     <button id="botaoSalvar" onclick="salvarChecklist()">Salvar Checklist</button>
     <button 
 type="button"
@@ -861,6 +896,7 @@ Nova Obra / Limpar Formulário
     <button type="button" onclick="exportarBackupCompletoJSON()" class="botao-secundario" id="btnBackupCompletoJSON">Backup Completo JSON</button>
     <button type="button" onclick="mostrarRestaurarBackup()" class="botao-secundario" id="btnRestaurarBackup">Restaurar Backup JSON</button>
     <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="botao-secundario">Voltar ao Topo</button>
+    </div>
 
     <div class="area-visualizar">
       <button onclick="window.open('https://chmoveis.github.io/ch-obras/', '_blank')">Visualizar App</button>
