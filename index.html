@@ -989,6 +989,7 @@ Nova Obra / Limpar Formulário
     <button onclick="mostrarHistorico()">Ver Histórico de Obras</button>
     <button type="button" onclick="ocultarHistorico()" class="botao-secundario">Ocultar Histórico</button>
     <button type="button" onclick="mostrarConfiguracoesSistema()" class="botao-secundario" id="btnConfiguracoesSistema">Configurações do Sistema</button>
+    <button type="button" onclick="limparCacheAtualizarApp()" class="botao-secundario" id="btnAtualizarAppCache">Atualizar App / Limpar Cache</button>
     <button type="button" onclick="mostrarLogsOperacionais()" class="botao-secundario" id="btnLogsOperacionais">Histórico Operacional</button>
     <button type="button" onclick="mostrarProdutividade()" class="botao-secundario" id="btnProdutividade">Produtividade</button>
     <button type="button" onclick="mostrarUsuarios()" class="botao-secundario" id="btnUsuarios">Gerenciar Usuários</button>
@@ -2031,7 +2032,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101068';
+const VERSAO_APP_CH_OBRAS = '101069';
 
 function atualizarVersaoAppNaTela() {
   const versaoCabecalho = document.getElementById('versaoAppCabecalho');
@@ -2083,6 +2084,7 @@ function aplicarPermissoesInterface() {
   const btnBackupCompletoJSON = document.getElementById('btnBackupCompletoJSON');
   const btnRestaurarBackup = document.getElementById('btnRestaurarBackup');
   const btnConfiguracoesSistema = document.getElementById('btnConfiguracoesSistema');
+  const btnAtualizarAppCache = document.getElementById('btnAtualizarAppCache');
   const btnLogs = document.getElementById('btnLogsOperacionais');
   const btnProdutividade = document.getElementById('btnProdutividade');
   const btnUsuarios = document.getElementById('btnUsuarios');
@@ -2097,6 +2099,7 @@ function aplicarPermissoesInterface() {
   if (btnBackupCompletoJSON) btnBackupCompletoJSON.style.display = 'none';
   if (btnRestaurarBackup) btnRestaurarBackup.style.display = 'none';
   if (btnConfiguracoesSistema) btnConfiguracoesSistema.style.display = perfil === 'admin' ? 'block' : 'none';
+  if (btnAtualizarAppCache) btnAtualizarAppCache.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnLogs) btnLogs.style.display = 'none';
   if (btnProdutividade) btnProdutividade.style.display = 'none';
   if (btnUsuarios) btnUsuarios.style.display = 'none';
