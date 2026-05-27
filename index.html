@@ -2152,7 +2152,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101083';
+const VERSAO_APP_CH_OBRAS = '101084';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
@@ -2289,6 +2289,49 @@ function limparMensagemLogin() {
   mensagem.innerText = '';
 }
 
+function obterMensagemAmigavelRecuperacaoSenha(erro) {
+  const codigo = String((erro && erro.code) || '').toLowerCase();
+  const mensagem = String((erro && erro.message) || '').toLowerCase();
+
+  if (!codigo && !mensagem) {
+    return 'Não foi possível enviar a recuperação agora. Tente novamente em instantes.';
+  }
+
+  if (codigo === 'auth/invalid-email') {
+    return 'E-mail inválido. Confira o endereço digitado.';
+  }
+
+  if (codigo === 'auth/user-not-found') {
+    return 'Se este e-mail existir no sistema, o link de recuperação será enviado.';
+  }
+
+  if (codigo === 'auth/too-many-requests') {
+    return 'Muitas tentativas no momento. Aguarde 1 minuto e tente novamente.';
+  }
+
+  if (codigo === 'auth/network-request-failed') {
+    return 'Sem conexão com a internet. Verifique sua rede e tente novamente.';
+  }
+
+  if (codigo === 'auth/operation-not-allowed') {
+    return 'Recuperação de senha não está habilitada no Firebase.';
+  }
+
+  if (codigo === 'auth/app-not-authorized' || codigo === 'auth/unauthorized-domain' || codigo === 'auth/unauthorized-continue-uri') {
+    return 'Domínio não autorizado no Firebase Auth. Adicione o domínio do app em Authentication > Settings > Authorized domains.';
+  }
+
+  if (codigo === 'auth/error-code-26' || mensagem.includes('error-code-26')) {
+    return 'Recuperação indisponível no momento. Verifique as configurações do Firebase Auth e tente novamente.';
+  }
+
+  if (window.location && window.location.protocol === 'file:') {
+    return 'No modo local (arquivo), a recuperação pode falhar. Use o app publicado no GitHub Pages.';
+  }
+
+  return 'Não foi possível enviar a recuperação agora. Tente novamente em instantes.';
+}
+
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
 }
@@ -2417,7 +2460,7 @@ console.log('Perfil do usuário:', window.perfilUsuarioLogado);
     if (erro.code === 'auth/invalid-credential' || erro.code === 'auth/wrong-password' || erro.code === 'auth/user-not-found') {
       mostrarMensagemLogin('erro', 'E-mail ou senha incorretos. Confira os dados e tente novamente.');
     } else {
-      mostrarMensagemLogin('erro', 'Erro no login: ' + erro.message);
+      mostrarMensagemLogin('erro', 'Não foi possível entrar agora. Tente novamente em instantes.');
     }
 
   } finally {
@@ -2449,11 +2492,8 @@ window.recuperarSenhaLogin = async function () {
     await sendPasswordResetEmail(auth, email);
     mostrarMensagemLogin('sucesso', 'Link de recuperacao enviado para ' + email + '. Verifique sua caixa de entrada.');
   } catch (erro) {
-    if (erro.code === 'auth/invalid-email' || erro.code === 'auth/user-not-found') {
-      mostrarMensagemLogin('erro', 'Nao foi possivel enviar a recuperacao. Confira o e-mail digitado.');
-    } else {
-      mostrarMensagemLogin('erro', 'Erro ao enviar recuperacao: ' + erro.message);
-    }
+    console.error('Erro ao recuperar senha:', erro);
+    mostrarMensagemLogin('erro', obterMensagemAmigavelRecuperacaoSenha(erro));
   }
 };
 
