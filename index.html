@@ -831,6 +831,7 @@ Nova Obra / Limpar Formulário
     <button onclick="gerarPDF()" class="botao-secundario">Gerar Relatório / PDF</button>
     <button onclick="mostrarHistorico()">Ver Histórico de Obras</button>
     <button type="button" onclick="ocultarHistorico()" class="botao-secundario">Ocultar Histórico</button>
+    <button type="button" onclick="mostrarConfiguracoesSistema()" class="botao-secundario" id="btnConfiguracoesSistema">Configurações do Sistema</button>
     <button type="button" onclick="mostrarLogsOperacionais()" class="botao-secundario" id="btnLogsOperacionais">Histórico Operacional</button>
     <button type="button" onclick="mostrarProdutividade()" class="botao-secundario" id="btnProdutividade">Produtividade</button>
     <button type="button" onclick="mostrarUsuarios()" class="botao-secundario" id="btnUsuarios">Gerenciar Usuários</button>
@@ -908,6 +909,19 @@ Nova Obra / Limpar Formulário
 
         <button type="button" onclick="limparFiltrosHistorico()" class="botao-secundario">Limpar Filtros</button>
         <div id="listaHistorico"></div>
+      </div>
+
+      <div class="resultado" id="painelConfiguracoesSistema">
+        <h2>Configurações do Sistema</h2>
+        <p style="font-size:13px; color:#555;">Área administrativa para segurança, usuários, relatórios e operação.</p>
+
+        <button type="button" onclick="mostrarUsuarios()" class="botao-secundario">Gerenciar Usuários</button>
+        <button type="button" onclick="mostrarLogsOperacionais()" class="botao-secundario">Histórico Operacional</button>
+        <button type="button" onclick="mostrarProdutividade()" class="botao-secundario">Produtividade</button>
+        <button type="button" onclick="exportarCSV()" class="botao-secundario">Exportar Obras CSV</button>
+        <button type="button" onclick="exportarBackupCompletoJSON()" class="botao-secundario">Backup Completo JSON</button>
+        <button type="button" onclick="mostrarRestaurarBackup()" class="botao-secundario">Restaurar Backup JSON</button>
+        <button type="button" onclick="ocultarConfiguracoesSistema()" class="botao-secundario">Ocultar Configurações</button>
       </div>
 
       <div class="resultado" id="historicoOperacional">
@@ -1739,6 +1753,7 @@ function aplicarPermissoesInterface() {
   const btnExportarJSON = document.getElementById('btnExportarJSON');
   const btnBackupCompletoJSON = document.getElementById('btnBackupCompletoJSON');
   const btnRestaurarBackup = document.getElementById('btnRestaurarBackup');
+  const btnConfiguracoesSistema = document.getElementById('btnConfiguracoesSistema');
   const btnLogs = document.getElementById('btnLogsOperacionais');
   const btnProdutividade = document.getElementById('btnProdutividade');
   const btnUsuarios = document.getElementById('btnUsuarios');
@@ -1752,6 +1767,7 @@ function aplicarPermissoesInterface() {
   if (btnExportarJSON) btnExportarJSON.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnBackupCompletoJSON) btnBackupCompletoJSON.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnRestaurarBackup) btnRestaurarBackup.style.display = perfil === 'admin' ? 'block' : 'none';
+  if (btnConfiguracoesSistema) btnConfiguracoesSistema.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnLogs) btnLogs.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnProdutividade) btnProdutividade.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnUsuarios) btnUsuarios.style.display = perfil === 'admin' ? 'block' : 'none';
@@ -2428,6 +2444,22 @@ window.filtrarHistorico = function() {
 window.ocultarHistorico = function() {
   document.getElementById('historico').style.display = 'none';
   document.getElementById('dashboardResumo').style.display = 'none';
+};
+
+window.mostrarConfiguracoesSistema = function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Seu perfil nao tem permissao para acessar configuracoes.');
+    return;
+  }
+
+  document.getElementById('dashboardResumo').style.display = 'block';
+  document.getElementById('painelConfiguracoesSistema').style.display = 'block';
+  document.getElementById('painelConfiguracoesSistema').scrollIntoView({ behavior: 'smooth' });
+};
+
+window.ocultarConfiguracoesSistema = function() {
+  const painel = document.getElementById('painelConfiguracoesSistema');
+  if (painel) painel.style.display = 'none';
 };
 
 window.mostrarLogsOperacionais = async function() {
