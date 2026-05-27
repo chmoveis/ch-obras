@@ -813,6 +813,25 @@ cursor:pointer;
 Entrar
 </button>
 
+<button
+type="button"
+onclick="limparCacheAtualizarApp()"
+style="
+width:100%;
+padding:12px;
+margin-top:12px;
+border:none;
+border-radius:12px;
+background:#2d2d2d;
+color:white;
+font-size:14px;
+font-weight:bold;
+cursor:pointer;
+"
+>
+Atualizar App / Limpar Cache
+</button>
+
 </div>
 </div>
   <div class="app">
@@ -2042,7 +2061,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101070';
+const VERSAO_APP_CH_OBRAS = '101071';
 
 function atualizarVersaoAppNaTela() {
   const versaoCabecalho = document.getElementById('versaoAppCabecalho');
