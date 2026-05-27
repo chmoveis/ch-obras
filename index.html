@@ -1327,6 +1327,9 @@ function limparRascunhoChecklist() {
 }
 
 function descartarRascunhoChecklist() {
+  const confirmarDescarte = confirm('Tem certeza que deseja descartar o rascunho salvo?');
+  if (!confirmarDescarte) return;
+
   limparRascunhoChecklist();
   alert('Rascunho descartado com sucesso.');
 }
