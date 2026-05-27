@@ -936,6 +936,12 @@ Nova Obra / Limpar Formulário
         <p style="font-size:13px; color:#555;">Área administrativa para segurança, usuários, relatórios e operação.</p>
 
         <div class="config-bloco">
+          <h3>Status do Sistema</h3>
+          <div id="statusSistemaResumo" style="font-size:14px; line-height:1.55; color:#333;">Carregando status...</div>
+          <button type="button" onclick="atualizarStatusSistema()" class="botao-secundario">Atualizar Status</button>
+        </div>
+
+        <div class="config-bloco">
           <h3>Usuários</h3>
           <button type="button" onclick="mostrarUsuarios()" class="botao-secundario">Gerenciar Usuários</button>
         </div>
@@ -1749,6 +1755,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
+const VERSAO_APP_CH_OBRAS = '101051';
 
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
@@ -2491,12 +2498,32 @@ window.mostrarConfiguracoesSistema = function() {
 
   document.getElementById('dashboardResumo').style.display = 'block';
   document.getElementById('painelConfiguracoesSistema').style.display = 'block';
+  atualizarStatusSistema();
   document.getElementById('painelConfiguracoesSistema').scrollIntoView({ behavior: 'smooth' });
 };
 
 window.ocultarConfiguracoesSistema = function() {
   const painel = document.getElementById('painelConfiguracoesSistema');
   if (painel) painel.style.display = 'none';
+};
+
+window.atualizarStatusSistema = function() {
+  const resumo = document.getElementById('statusSistemaResumo');
+  if (!resumo) return;
+
+  const statusConexao = document.getElementById('statusConexao')?.innerText || 'Status não informado.';
+  const serviceWorkerAtivo = 'serviceWorker' in navigator ? 'Disponível' : 'Indisponível';
+  const modoOnline = navigator.onLine ? 'Online' : 'Offline';
+
+  resumo.innerHTML = `
+    <strong>Versão:</strong> ${VERSAO_APP_CH_OBRAS}<br>
+    <strong>Usuário:</strong> ${window.usuarioEmailLogado || 'Não informado'}<br>
+    <strong>Perfil:</strong> ${window.perfilUsuarioLogado || 'Não informado'}<br>
+    <strong>Conexão:</strong> ${modoOnline}<br>
+    <strong>PWA/Offline:</strong> ${serviceWorkerAtivo}<br>
+    <strong>Firebase:</strong> ${statusConexao}<br>
+    <strong>Atualizado em:</strong> ${new Date().toLocaleString('pt-BR')}
+  `;
 };
 
 window.mostrarLogsOperacionais = async function() {
