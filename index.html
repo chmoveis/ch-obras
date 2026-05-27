@@ -37,6 +37,10 @@ body {
   box-sizing: border-box;
 }
 
+.barra-mobile {
+  display: none;
+}
+
 .cabecalho {
   text-align: center;
   margin-bottom: 25px;
@@ -215,7 +219,17 @@ button:active {
   font-size: 16px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
+  body {
+    padding-bottom: 88px;
+  }
+
+  .app {
+    margin: 0 auto;
+    border-radius: 0;
+    padding-bottom: 32px;
+  }
+
   .acoes-principais {
     padding: 12px;
   }
@@ -225,6 +239,31 @@ button:active {
     min-height: 46px;
     font-size: 15px;
     box-shadow: 0 5px 14px rgba(0,0,0,0.20);
+  }
+
+  .barra-mobile {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100000;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    background: rgba(15,15,15,0.96);
+    border-top: 1px solid rgba(212,160,23,0.55);
+    box-shadow: 0 -8px 24px rgba(0,0,0,0.28);
+  }
+
+  .barra-mobile button {
+    margin: 0;
+    padding: 11px 8px;
+    min-height: 42px;
+    border-radius: 12px;
+    font-size: 13px;
+    box-shadow: none;
+    background: linear-gradient(135deg, #111111, #363636);
   }
 }
 
@@ -4213,6 +4252,12 @@ margin-bottom:20px;"></div>
 
 <div id="loadingTexto">Salvando obra...</div>
 
+</div>
+
+<div class="barra-mobile" aria-label="Ações rápidas">
+  <button type="button" onclick="salvarChecklist()">Salvar</button>
+  <button type="button" onclick="mostrarHistorico()">Histórico</button>
+  <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">Topo</button>
 </div>
 </body>
 </html>
