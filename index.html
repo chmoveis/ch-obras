@@ -44,7 +44,7 @@ body {
   bottom: 0;
   z-index: 100000;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
   padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
   background: rgba(15,15,15,0.96);
@@ -57,7 +57,7 @@ body {
   padding: 11px 8px;
   min-height: 42px;
   border-radius: 12px;
-  font-size: 13px;
+  font-size: 12px;
   box-shadow: none;
   background: linear-gradient(135deg, #111111, #363636);
 }
@@ -928,7 +928,7 @@ font-size:14px;
     Sair do sistema
   </button>
 </div>
-    <details class="acoes-principais" open>
+    <details class="acoes-principais" id="acoesPrincipais" open>
       <summary>Ações Principais</summary>
       <div class="acoes-principais-conteudo">
     <button id="botaoSalvar" onclick="salvarChecklist()">Salvar Checklist</button>
@@ -1239,6 +1239,14 @@ Nova Obra / Limpar Formulário
   <script>
 function pegarValor(id) {
   return document.getElementById(id).value;
+}
+
+function alternarAcoesPrincipais() {
+  const bloco = document.getElementById('acoesPrincipais');
+  if (!bloco) return;
+
+  bloco.open = !bloco.open;
+  bloco.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 window.normalizarStatusObra = window.normalizarStatusObra || function(status) {
@@ -4250,6 +4258,7 @@ margin-bottom:20px;"></div>
 <div class="barra-mobile" aria-label="Ações rápidas">
   <button type="button" onclick="salvarChecklist()">Salvar</button>
   <button type="button" onclick="mostrarHistorico()">Histórico</button>
+  <button type="button" onclick="alternarAcoesPrincipais()">Menu</button>
   <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">Topo</button>
 </div>
 </body>
