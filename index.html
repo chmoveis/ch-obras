@@ -233,6 +233,19 @@ button:active {
   margin-top: 8px;
 }
 
+.rascunho-status {
+  display: none;
+  margin-top: 10px;
+  padding: 9px 10px;
+  background: #fff8e1;
+  border: 1px solid rgba(212,160,23,0.45);
+  border-left: 5px solid #d4a017;
+  border-radius: 10px;
+  color: #5c4100;
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .acoes-principais-conteudo button {
   margin-top: 10px;
   padding: 14px;
@@ -938,6 +951,7 @@ font-size:14px;
 </div>
     <details class="acoes-principais" id="acoesPrincipais" open>
       <summary>Ações Principais</summary>
+      <div id="statusRascunhoChecklist" class="rascunho-status"></div>
       <div class="acoes-principais-conteudo">
     <button id="botaoSalvar" onclick="salvarChecklist()">Salvar Checklist</button>
     <button 
@@ -1285,17 +1299,47 @@ function salvarRascunhoChecklist() {
 
   if (!temConteudo) {
     localStorage.removeItem(CHAVE_RASCUNHO_CHECKLIST);
+    atualizarStatusRascunhoChecklist();
     return;
   }
 
+  const atualizadoEm = new Date().toLocaleString('pt-BR');
   localStorage.setItem(CHAVE_RASCUNHO_CHECKLIST, JSON.stringify({
-    atualizadoEm: new Date().toLocaleString('pt-BR'),
+    atualizadoEm,
     dados
   }));
+  atualizarStatusRascunhoChecklist(atualizadoEm);
 }
 
 function limparRascunhoChecklist() {
   localStorage.removeItem(CHAVE_RASCUNHO_CHECKLIST);
+  atualizarStatusRascunhoChecklist();
+}
+
+function atualizarStatusRascunhoChecklist(dataTexto = '') {
+  const status = document.getElementById('statusRascunhoChecklist');
+  if (!status) return;
+
+  let data = dataTexto;
+
+  if (!data) {
+    try {
+      const bruto = localStorage.getItem(CHAVE_RASCUNHO_CHECKLIST);
+      const rascunho = bruto ? JSON.parse(bruto) : null;
+      data = rascunho && rascunho.atualizadoEm ? rascunho.atualizadoEm : '';
+    } catch (erro) {
+      data = '';
+    }
+  }
+
+  if (!data) {
+    status.style.display = 'none';
+    status.innerText = '';
+    return;
+  }
+
+  status.style.display = 'block';
+  status.innerText = 'Rascunho salvo em ' + data;
 }
 
 function restaurarRascunhoChecklist() {
@@ -1316,6 +1360,7 @@ function restaurarRascunhoChecklist() {
         campo.value = rascunho.dados[id] || '';
       }
     });
+    atualizarStatusRascunhoChecklist(rascunho.atualizadoEm || '');
   } catch (erro) {
     console.log('Erro ao restaurar rascunho:', erro);
     limparRascunhoChecklist();
@@ -1332,6 +1377,7 @@ function ativarRascunhoAutomatico() {
   });
 
   window.addEventListener('beforeunload', salvarRascunhoChecklist);
+  atualizarStatusRascunhoChecklist();
   setTimeout(restaurarRascunhoChecklist, 600);
 }
 
