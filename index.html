@@ -814,7 +814,6 @@ Caps Lock ativado
 <button
 type="button"
 id="btnMostrarSenhaLogin"
-onclick="alternarVisibilidadeSenhaLogin()"
 style="
 width:100%;
 padding:10px;
@@ -2096,7 +2095,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101074';
+const VERSAO_APP_CH_OBRAS = '101076';
 
 function atualizarVersaoAppNaTela() {
   const versaoCabecalho = document.getElementById('versaoAppCabecalho');
@@ -2147,7 +2146,7 @@ function ativarAvisoCapsLockLogin() {
 
 ativarAvisoCapsLockLogin();
 
-function alternarVisibilidadeSenhaLogin() {
+window.alternarVisibilidadeSenhaLogin = function() {
   const campoSenha = document.getElementById('senhaLogin');
   const botaoSenha = document.getElementById('btnMostrarSenhaLogin');
 
@@ -2156,7 +2155,16 @@ function alternarVisibilidadeSenhaLogin() {
   const senhaVisivel = campoSenha.type === 'text';
   campoSenha.type = senhaVisivel ? 'password' : 'text';
   botaoSenha.innerText = senhaVisivel ? 'Mostrar Senha' : 'Ocultar Senha';
+};
+
+function ativarBotaoMostrarSenhaLogin() {
+  const botaoSenha = document.getElementById('btnMostrarSenhaLogin');
+  if (!botaoSenha) return;
+
+  botaoSenha.addEventListener('click', window.alternarVisibilidadeSenhaLogin);
 }
+
+ativarBotaoMostrarSenhaLogin();
 
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
@@ -2271,7 +2279,11 @@ console.log('Perfil do usuário:', window.perfilUsuarioLogado);
 
   } catch (erro) {
 
-    alert('Erro no login: ' + erro.message);
+    if (erro.code === 'auth/invalid-credential' || erro.code === 'auth/wrong-password' || erro.code === 'auth/user-not-found') {
+      alert('E-mail ou senha incorretos. Confira os dados e tente novamente.');
+    } else {
+      alert('Erro no login: ' + erro.message);
+    }
 
   }
 
