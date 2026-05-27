@@ -180,11 +180,35 @@ button:active {
   box-shadow: 0 4px 14px rgba(0,0,0,0.06);
 }
 
-.acoes-principais h2 {
-  margin-top: 0;
+.acoes-principais summary {
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 18px;
+  color: #111;
+  list-style: none;
 }
 
-.acoes-principais button {
+.acoes-principais summary::-webkit-details-marker {
+  display: none;
+}
+
+.acoes-principais summary::after {
+  content: '+';
+  float: right;
+  font-size: 22px;
+  line-height: 1;
+  color: #d4a017;
+}
+
+.acoes-principais[open] summary::after {
+  content: '-';
+}
+
+.acoes-principais-conteudo {
+  margin-top: 8px;
+}
+
+.acoes-principais-conteudo button {
   margin-top: 10px;
   padding: 14px;
   border-radius: 14px;
@@ -196,7 +220,7 @@ button:active {
     padding: 12px;
   }
 
-  .acoes-principais button {
+  .acoes-principais-conteudo button {
     padding: 12px;
     min-height: 46px;
     font-size: 15px;
@@ -872,8 +896,9 @@ font-size:14px;
     Sair do sistema
   </button>
 </div>
-    <div class="acoes-principais">
-      <h2>Ações Principais</h2>
+    <details class="acoes-principais" open>
+      <summary>Ações Principais</summary>
+      <div class="acoes-principais-conteudo">
     <button id="botaoSalvar" onclick="salvarChecklist()">Salvar Checklist</button>
     <button 
 type="button"
@@ -896,7 +921,8 @@ Nova Obra / Limpar Formulário
     <button type="button" onclick="exportarBackupCompletoJSON()" class="botao-secundario" id="btnBackupCompletoJSON">Backup Completo JSON</button>
     <button type="button" onclick="mostrarRestaurarBackup()" class="botao-secundario" id="btnRestaurarBackup">Restaurar Backup JSON</button>
     <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="botao-secundario">Voltar ao Topo</button>
-    </div>
+      </div>
+    </details>
 
     <div class="area-visualizar">
       <button onclick="window.open('https://chmoveis.github.io/ch-obras/', '_blank')">Visualizar App</button>
