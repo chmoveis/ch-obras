@@ -796,6 +796,21 @@ font-size:16px;
 "
 />
 
+<div id="avisoCapsLockLogin" style="
+display:none;
+margin-bottom:10px;
+padding:9px 10px;
+border-radius:10px;
+background:#fff3cd;
+border:1px solid #d4a017;
+color:#5c4100;
+font-size:13px;
+font-weight:bold;
+text-align:center;
+">
+Caps Lock ativado
+</div>
+
 <button
 type="button"
 id="btnMostrarSenhaLogin"
@@ -2081,7 +2096,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101073';
+const VERSAO_APP_CH_OBRAS = '101074';
 
 function atualizarVersaoAppNaTela() {
   const versaoCabecalho = document.getElementById('versaoAppCabecalho');
@@ -2113,6 +2128,24 @@ function ativarLoginComEnter() {
 }
 
 ativarLoginComEnter();
+
+function ativarAvisoCapsLockLogin() {
+  const campoSenha = document.getElementById('senhaLogin');
+  const avisoCapsLock = document.getElementById('avisoCapsLockLogin');
+
+  if (!campoSenha || !avisoCapsLock) return;
+
+  campoSenha.addEventListener('keyup', (evento) => {
+    const capsAtivo = evento.getModifierState && evento.getModifierState('CapsLock');
+    avisoCapsLock.style.display = capsAtivo ? 'block' : 'none';
+  });
+
+  campoSenha.addEventListener('blur', () => {
+    avisoCapsLock.style.display = 'none';
+  });
+}
+
+ativarAvisoCapsLockLogin();
 
 function alternarVisibilidadeSenhaLogin() {
   const campoSenha = document.getElementById('senhaLogin');
