@@ -246,6 +246,15 @@ button:active {
   font-weight: 700;
 }
 
+.botao-rascunho {
+  display: none;
+  margin-top: 8px !important;
+  padding: 10px !important;
+  border-radius: 12px !important;
+  font-size: 13px !important;
+  background: linear-gradient(135deg, #3a3a3a, #111111) !important;
+}
+
 .acoes-principais-conteudo button {
   margin-top: 10px;
   padding: 14px;
@@ -952,6 +961,7 @@ font-size:14px;
     <details class="acoes-principais" id="acoesPrincipais" open>
       <summary>Ações Principais</summary>
       <div id="statusRascunhoChecklist" class="rascunho-status"></div>
+      <button type="button" id="btnDescartarRascunhoChecklist" class="botao-rascunho" onclick="descartarRascunhoChecklist()">Descartar Rascunho</button>
       <div class="acoes-principais-conteudo">
     <button id="botaoSalvar" onclick="salvarChecklist()">Salvar Checklist</button>
     <button 
@@ -1316,8 +1326,14 @@ function limparRascunhoChecklist() {
   atualizarStatusRascunhoChecklist();
 }
 
+function descartarRascunhoChecklist() {
+  limparRascunhoChecklist();
+  alert('Rascunho descartado com sucesso.');
+}
+
 function atualizarStatusRascunhoChecklist(dataTexto = '') {
   const status = document.getElementById('statusRascunhoChecklist');
+  const botaoDescartar = document.getElementById('btnDescartarRascunhoChecklist');
   if (!status) return;
 
   let data = dataTexto;
@@ -1335,11 +1351,13 @@ function atualizarStatusRascunhoChecklist(dataTexto = '') {
   if (!data) {
     status.style.display = 'none';
     status.innerText = '';
+    if (botaoDescartar) botaoDescartar.style.display = 'none';
     return;
   }
 
   status.style.display = 'block';
   status.innerText = 'Rascunho salvo em ' + data;
+  if (botaoDescartar) botaoDescartar.style.display = 'block';
 }
 
 function restaurarRascunhoChecklist() {
