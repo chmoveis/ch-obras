@@ -753,10 +753,20 @@ box-shadow:0 0 30px rgba(0,0,0,0.5);
 <h1 style="
 color:#d4a017;
 text-align:center;
-margin-bottom:30px;
+margin-bottom:8px;
 ">
 CH Obras
 </h1>
+
+<div id="versaoAppLogin" style="
+color:#b8b8b8;
+font-size:12px;
+font-weight:bold;
+text-align:center;
+margin-bottom:24px;
+">
+Versão carregando...
+</div>
 
 <input
 id="emailLogin"
@@ -2032,12 +2042,18 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101069';
+const VERSAO_APP_CH_OBRAS = '101070';
 
 function atualizarVersaoAppNaTela() {
   const versaoCabecalho = document.getElementById('versaoAppCabecalho');
+  const versaoLogin = document.getElementById('versaoAppLogin');
+
   if (versaoCabecalho) {
     versaoCabecalho.innerText = 'Versão ' + VERSAO_APP_CH_OBRAS;
+  }
+
+  if (versaoLogin) {
+    versaoLogin.innerText = 'Versão ' + VERSAO_APP_CH_OBRAS;
   }
 }
 
