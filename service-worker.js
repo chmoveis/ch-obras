@@ -1,6 +1,6 @@
 self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open('ch-obras-cache-v50').then(function(cache) {
+    caches.open('ch-obras-cache-v51').then(function(cache) {
       const arquivosEssenciais = [
         'index.html',
         'manifest.json',
@@ -31,7 +31,7 @@ self.addEventListener('activate', function(event) {
       return Promise.all(
         nomesCaches
           .filter(function(nomeCache) {
-            return nomeCache.startsWith('ch-obras-cache-') && nomeCache !== 'ch-obras-cache-v50';
+            return nomeCache.startsWith('ch-obras-cache-') && nomeCache !== 'ch-obras-cache-v51';
           })
           .map(function(nomeCache) {
             return caches.delete(nomeCache);

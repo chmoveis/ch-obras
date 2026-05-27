@@ -772,6 +772,11 @@ Versão carregando...
 id="emailLogin"
 type="email"
 placeholder="E-mail"
+autocomplete="username"
+autocapitalize="none"
+autocorrect="off"
+spellcheck="false"
+inputmode="email"
 style="
 width:100%;
 padding:15px;
@@ -786,6 +791,10 @@ font-size:16px;
 id="senhaLogin"
 type="password"
 placeholder="Senha"
+autocomplete="current-password"
+autocapitalize="none"
+autocorrect="off"
+spellcheck="false"
 style="
 width:100%;
 padding:15px;
@@ -2096,7 +2105,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101078';
+const VERSAO_APP_CH_OBRAS = '101079';
 
 function atualizarVersaoAppNaTela() {
   const versaoCabecalho = document.getElementById('versaoAppCabecalho');
