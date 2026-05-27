@@ -878,11 +878,30 @@ Entrar
 
 <button
 type="button"
+onclick="recuperarSenhaLogin()"
+style="
+width:100%;
+padding:12px;
+margin-top:10px;
+border:1px solid #444;
+border-radius:12px;
+background:#202020;
+color:white;
+font-size:14px;
+font-weight:bold;
+cursor:pointer;
+"
+>
+Esqueci minha senha
+</button>
+
+<button
+type="button"
 onclick="limparCacheAtualizarApp()"
 style="
 width:100%;
 padding:12px;
-margin-top:12px;
+margin-top:10px;
 border:none;
 border-radius:12px;
 background:#2d2d2d;
@@ -2100,6 +2119,7 @@ import {
 import {
   getAuth,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
@@ -2124,7 +2144,8 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101080';
+const VERSAO_APP_CH_OBRAS = '101082';
+const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
   const versaoCabecalho = document.getElementById('versaoAppCabecalho');
@@ -2195,6 +2216,23 @@ function ativarBotaoMostrarSenhaLogin() {
 
 ativarBotaoMostrarSenhaLogin();
 
+function salvarUltimoEmailLogin(email) {
+  if (!email) return;
+  localStorage.setItem(CHAVE_ULTIMO_EMAIL_LOGIN, email);
+}
+
+function carregarUltimoEmailLogin() {
+  const campoEmail = document.getElementById('emailLogin');
+  const campoSenha = document.getElementById('senhaLogin');
+  if (!campoEmail) return;
+
+  const ultimoEmail = localStorage.getItem(CHAVE_ULTIMO_EMAIL_LOGIN) || '';
+  if (!ultimoEmail) return;
+
+  campoEmail.value = ultimoEmail;
+  if (campoSenha) campoSenha.focus();
+}
+
 function limparCamposLogin() {
   const campoEmail = document.getElementById('emailLogin');
   const campoSenha = document.getElementById('senhaLogin');
@@ -2202,6 +2240,7 @@ function limparCamposLogin() {
   const botaoSenha = document.getElementById('btnMostrarSenhaLogin');
 
   if (campoEmail) campoEmail.value = '';
+  localStorage.removeItem(CHAVE_ULTIMO_EMAIL_LOGIN);
   if (campoSenha) {
     campoSenha.value = '';
     campoSenha.type = 'password';
@@ -2219,6 +2258,7 @@ function ativarBotaoLimparLogin() {
 }
 
 ativarBotaoLimparLogin();
+carregarUltimoEmailLogin();
 
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
@@ -2321,6 +2361,8 @@ window.fazerLogin = async function () {
       senha
     );
 
+    salvarUltimoEmailLogin(email);
+
     alert('Login realizado com sucesso.');
 const emailUsuario = auth.currentUser.email;
 
@@ -2358,6 +2400,31 @@ console.log('Perfil do usuário:', window.perfilUsuarioLogado);
     }
   }
 
+};
+
+window.recuperarSenhaLogin = async function () {
+  const campoEmail = document.getElementById('emailLogin');
+  if (!campoEmail) return;
+
+  const email = campoEmail.value.trim().toLowerCase();
+  campoEmail.value = email;
+
+  if (!email) {
+    alert('Digite seu e-mail para recuperar a senha.');
+    campoEmail.focus();
+    return;
+  }
+
+  try {
+    await sendPasswordResetEmail(auth, email);
+    alert('Link de recuperacao enviado para ' + email + '. Verifique sua caixa de entrada.');
+  } catch (erro) {
+    if (erro.code === 'auth/invalid-email' || erro.code === 'auth/user-not-found') {
+      alert('Nao foi possivel enviar a recuperacao. Confira o e-mail digitado.');
+    } else {
+      alert('Erro ao enviar recuperacao: ' + erro.message);
+    }
+  }
 };
 
 onAuthStateChanged(auth, async (user) => {
