@@ -101,6 +101,18 @@ body {
   text-shadow: 0 1px 3px rgba(0,0,0,0.6);
 }
 
+.versao-app {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(212,160,23,0.18);
+  color: #ffd76b;
+  border: 1px solid rgba(212,160,23,0.42);
+  font-size: 12px;
+  font-weight: 700;
+}
+
 h2 {
   border-bottom: 2px solid #d4a017;
   padding-bottom: 8px;
@@ -798,6 +810,7 @@ Entrar
       <img src="logotipo novo atual.jpg" alt="CH Móveis" class="logo" />
       <h1>CH Obras</h1>
       <p>Checklist de Instalação - CH Móveis Sob Medida</p>
+      <span class="versao-app">Versão 101066</span>
     </div>
 
     <h2>1. Dados da Obra</h2>
@@ -2017,7 +2030,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101051';
+const VERSAO_APP_CH_OBRAS = '101066';
 
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
