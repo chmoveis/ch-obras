@@ -231,6 +231,26 @@ button.botao-excluir:hover,
   font-size: 20px;
 }
 
+.config-bloco {
+  margin-top: 16px;
+  padding: 14px;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(212,160,23,0.32);
+  border-left: 6px solid #d4a017;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.config-bloco h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: #111;
+}
+
+.config-bloco button {
+  margin-top: 10px;
+}
+
 .cards-resumo {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -915,13 +935,29 @@ Nova Obra / Limpar Formulário
         <h2>Configurações do Sistema</h2>
         <p style="font-size:13px; color:#555;">Área administrativa para segurança, usuários, relatórios e operação.</p>
 
-        <button type="button" onclick="mostrarUsuarios()" class="botao-secundario">Gerenciar Usuários</button>
-        <button type="button" onclick="mostrarLogsOperacionais()" class="botao-secundario">Histórico Operacional</button>
-        <button type="button" onclick="mostrarProdutividade()" class="botao-secundario">Produtividade</button>
-        <button type="button" onclick="exportarCSV()" class="botao-secundario">Exportar Obras CSV</button>
-        <button type="button" onclick="exportarBackupJSON()" class="botao-secundario">Backup Obras JSON</button>
-        <button type="button" onclick="exportarBackupCompletoJSON()" class="botao-secundario">Backup Completo JSON</button>
-        <button type="button" onclick="mostrarRestaurarBackup()" class="botao-secundario">Restaurar Backup JSON</button>
+        <div class="config-bloco">
+          <h3>Usuários</h3>
+          <button type="button" onclick="mostrarUsuarios()" class="botao-secundario">Gerenciar Usuários</button>
+        </div>
+
+        <div class="config-bloco">
+          <h3>Operação</h3>
+          <button type="button" onclick="mostrarLogsOperacionais()" class="botao-secundario">Histórico Operacional</button>
+          <button type="button" onclick="mostrarProdutividade()" class="botao-secundario">Produtividade</button>
+        </div>
+
+        <div class="config-bloco">
+          <h3>Relatórios</h3>
+          <button type="button" onclick="exportarCSV()" class="botao-secundario">Exportar Obras CSV</button>
+        </div>
+
+        <div class="config-bloco">
+          <h3>Backup e Restauração</h3>
+          <button type="button" onclick="exportarBackupJSON()" class="botao-secundario">Backup Obras JSON</button>
+          <button type="button" onclick="exportarBackupCompletoJSON()" class="botao-secundario">Backup Completo JSON</button>
+          <button type="button" onclick="mostrarRestaurarBackup()" class="botao-secundario">Restaurar Backup JSON</button>
+        </div>
+
         <button type="button" onclick="ocultarConfiguracoesSistema()" class="botao-secundario">Ocultar Configurações</button>
       </div>
 
