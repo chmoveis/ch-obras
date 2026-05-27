@@ -919,6 +919,7 @@ Nova Obra / Limpar Formulário
         <button type="button" onclick="mostrarLogsOperacionais()" class="botao-secundario">Histórico Operacional</button>
         <button type="button" onclick="mostrarProdutividade()" class="botao-secundario">Produtividade</button>
         <button type="button" onclick="exportarCSV()" class="botao-secundario">Exportar Obras CSV</button>
+        <button type="button" onclick="exportarBackupJSON()" class="botao-secundario">Backup Obras JSON</button>
         <button type="button" onclick="exportarBackupCompletoJSON()" class="botao-secundario">Backup Completo JSON</button>
         <button type="button" onclick="mostrarRestaurarBackup()" class="botao-secundario">Restaurar Backup JSON</button>
         <button type="button" onclick="ocultarConfiguracoesSistema()" class="botao-secundario">Ocultar Configurações</button>
@@ -1763,14 +1764,14 @@ function aplicarPermissoesInterface() {
   const botaoSalvar = document.getElementById('botaoSalvar');
 
   if (btnLimpar) btnLimpar.style.display = perfil === 'admin' ? 'block' : 'none';
-  if (btnExportar) btnExportar.style.display = perfil === 'admin' ? 'block' : 'none';
-  if (btnExportarJSON) btnExportarJSON.style.display = perfil === 'admin' ? 'block' : 'none';
-  if (btnBackupCompletoJSON) btnBackupCompletoJSON.style.display = perfil === 'admin' ? 'block' : 'none';
-  if (btnRestaurarBackup) btnRestaurarBackup.style.display = perfil === 'admin' ? 'block' : 'none';
+  if (btnExportar) btnExportar.style.display = 'none';
+  if (btnExportarJSON) btnExportarJSON.style.display = 'none';
+  if (btnBackupCompletoJSON) btnBackupCompletoJSON.style.display = 'none';
+  if (btnRestaurarBackup) btnRestaurarBackup.style.display = 'none';
   if (btnConfiguracoesSistema) btnConfiguracoesSistema.style.display = perfil === 'admin' ? 'block' : 'none';
-  if (btnLogs) btnLogs.style.display = perfil === 'admin' ? 'block' : 'none';
-  if (btnProdutividade) btnProdutividade.style.display = perfil === 'admin' ? 'block' : 'none';
-  if (btnUsuarios) btnUsuarios.style.display = perfil === 'admin' ? 'block' : 'none';
+  if (btnLogs) btnLogs.style.display = 'none';
+  if (btnProdutividade) btnProdutividade.style.display = 'none';
+  if (btnUsuarios) btnUsuarios.style.display = 'none';
   if (btnExportarMateriais) btnExportarMateriais.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnExportarMateriaisJSON) btnExportarMateriaisJSON.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnMateriais) btnMateriais.style.display = ['admin', 'marceneiro', 'montagem'].includes(perfil) ? 'block' : 'none';
