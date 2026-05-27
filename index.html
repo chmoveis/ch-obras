@@ -1078,6 +1078,7 @@ Nova Obra / Limpar Formulário
           <h3>Status do Sistema</h3>
           <div id="statusSistemaResumo" style="font-size:14px; line-height:1.55; color:#333;">Carregando status...</div>
           <button type="button" onclick="atualizarStatusSistema()" class="botao-secundario">Atualizar Status</button>
+          <button type="button" onclick="limparCacheAtualizarApp()" class="botao-secundario">Atualizar App / Limpar Cache</button>
         </div>
 
         <div class="config-bloco">
@@ -2030,7 +2031,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101067';
+const VERSAO_APP_CH_OBRAS = '101068';
 
 function atualizarVersaoAppNaTela() {
   const versaoCabecalho = document.getElementById('versaoAppCabecalho');
@@ -2808,6 +2809,32 @@ window.atualizarStatusSistema = function() {
     <strong>Firebase:</strong> ${statusConexao}<br>
     <strong>Atualizado em:</strong> ${new Date().toLocaleString('pt-BR')}
   `;
+};
+
+window.limparCacheAtualizarApp = async function() {
+  const confirmar = confirm('Deseja limpar o cache do app e recarregar a versão mais recente?');
+  if (!confirmar) return;
+
+  try {
+    mostrarLoading('Atualizando app...');
+
+    if ('caches' in window) {
+      const nomesCaches = await caches.keys();
+      await Promise.all(nomesCaches.map((nome) => caches.delete(nome)));
+    }
+
+    if ('serviceWorker' in navigator) {
+      const registros = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(registros.map((registro) => registro.unregister()));
+    }
+
+    const urlBase = window.location.origin + window.location.pathname;
+    window.location.href = urlBase + '?v=' + VERSAO_APP_CH_OBRAS;
+  } catch (erro) {
+    console.error('Erro ao limpar cache do app:', erro);
+    esconderLoading();
+    alert('Não foi possível limpar o cache automaticamente. Tente atualizar com Ctrl + F5.');
+  }
 };
 
 window.mostrarLogsOperacionais = async function() {
