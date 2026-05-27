@@ -2096,7 +2096,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101077';
+const VERSAO_APP_CH_OBRAS = '101078';
 
 function atualizarVersaoAppNaTela() {
   const versaoCabecalho = document.getElementById('versaoAppCabecalho');
@@ -2242,9 +2242,12 @@ window.aplicarPermissoesInterface = aplicarPermissoesInterface;
 
 window.fazerLogin = async function () {
 
-  const email = document.getElementById('emailLogin').value;
+  const campoEmail = document.getElementById('emailLogin');
+  const email = campoEmail.value.trim().toLowerCase();
   const senha = document.getElementById('senhaLogin').value;
   const botaoEntrar = document.getElementById('btnEntrarLogin');
+
+  campoEmail.value = email;
 
   if (!email || !senha) {
     alert('Digite e-mail e senha.');
