@@ -3787,6 +3787,9 @@ window.excluirObra = async function(id) {
 };
 
 window.limparFormulario = function() {
+  const confirmarLimpeza = confirm('Tem certeza que deseja limpar o formulário e começar uma nova obra?');
+  if (!confirmarLimpeza) return;
+
   document.getElementById('cliente').value = '';
   document.getElementById('endereco').value = '';
   document.getElementById('ambiente').value = '';
