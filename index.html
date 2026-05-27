@@ -1077,6 +1077,7 @@ Nova Obra / Limpar Formulário
         <input type="file" id="arquivoBackupJSON" accept="application/json,.json" />
 
         <button type="button" onclick="analisarBackupJSON()" class="botao-secundario">Analisar Backup</button>
+        <button type="button" onclick="restaurarBackupJSON()" class="botao-perigo" id="btnExecutarRestauracao" style="display:none;">Restaurar Agora</button>
         <button type="button" onclick="ocultarRestaurarBackup()" class="botao-secundario">Ocultar Restauração</button>
 
         <div id="resumoBackupJSON"></div>
@@ -1695,6 +1696,7 @@ let obrasMateriaisCache = [];
 let requisicoesMateriaisCache = [];
 let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
+let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
 
 function perfilAtual() {
@@ -3768,6 +3770,12 @@ window.ocultarRestaurarBackup = function() {
   if (painel) painel.style.display = 'none';
 };
 
+function prepararDocumentoBackup(item) {
+  const documento = { ...item };
+  delete documento.id;
+  return documento;
+}
+
 window.analisarBackupJSON = function() {
   if (window.perfilUsuarioLogado !== 'admin') {
     alert('Seu perfil nao tem permissao para analisar backup.');
@@ -3776,6 +3784,9 @@ window.analisarBackupJSON = function() {
 
   const input = document.getElementById('arquivoBackupJSON');
   const resumo = document.getElementById('resumoBackupJSON');
+  const btnExecutar = document.getElementById('btnExecutarRestauracao');
+  backupJSONAnalisado = null;
+  if (btnExecutar) btnExecutar.style.display = 'none';
 
   if (!input || !input.files || input.files.length === 0) {
     alert('Selecione um arquivo JSON de backup.');
@@ -3809,6 +3820,18 @@ window.analisarBackupJSON = function() {
         return;
       }
 
+      backupJSONAnalisado = {
+        sistema,
+        tipo,
+        geradoEm,
+        geradoPor,
+        obras,
+        usuarios,
+        materiais
+      };
+
+      if (btnExecutar) btnExecutar.style.display = 'block';
+
       resumo.innerHTML = `
         <div class="item-relatorio">
           <strong style="font-size:18px; color:#d4a017;">Resumo do Backup</strong><br><br>
@@ -3819,7 +3842,7 @@ window.analisarBackupJSON = function() {
           <strong>Obras encontradas:</strong> ${obras.length}<br>
           <strong>Usuários encontrados:</strong> ${usuarios.length}<br>
           <strong>Materiais encontrados:</strong> ${materiais.length}<br><br>
-          <strong>Status:</strong> Arquivo validado em modo seguro. Nenhum dado foi gravado no Firebase.
+          <strong>Status:</strong> Arquivo validado. Para gravar no Firebase, clique em Restaurar Agora e confirme a trava de segurança.
         </div>
       `;
     } catch (erro) {
@@ -3833,6 +3856,111 @@ window.analisarBackupJSON = function() {
   };
 
   reader.readAsText(arquivo);
+};
+
+window.restaurarBackupJSON = async function() {
+  if (window.perfilUsuarioLogado !== 'admin') {
+    alert('Seu perfil nao tem permissao para restaurar backup.');
+    return;
+  }
+
+  if (!backupJSONAnalisado) {
+    alert('Analise um arquivo de backup antes de restaurar.');
+    return;
+  }
+
+  const confirmacao = prompt('Digite RESTAURAR para confirmar. Esta acao vai criar ou atualizar documentos no Firebase, sem apagar documentos extras.');
+
+  if (confirmacao !== 'RESTAURAR') {
+    alert('Restauracao cancelada.');
+    return;
+  }
+
+  const resumo = document.getElementById('resumoBackupJSON');
+
+  try {
+    mostrarLoading('Restaurando backup...');
+
+    let obrasRestauradas = 0;
+    let usuariosRestaurados = 0;
+    let materiaisRestaurados = 0;
+    let ignorados = 0;
+
+    for (const obra of backupJSONAnalisado.obras) {
+      if (!obra.id) {
+        ignorados += 1;
+        continue;
+      }
+
+      await setDoc(doc(db, "obras", obra.id), prepararDocumentoBackup(obra), { merge: true });
+      obrasRestauradas += 1;
+    }
+
+    for (const usuario of backupJSONAnalisado.usuarios) {
+      const usuarioId = usuario.id || usuario.email;
+
+      if (!usuarioId) {
+        ignorados += 1;
+        continue;
+      }
+
+      const dadosUsuario = prepararDocumentoBackup(usuario);
+
+      if (emailEhAdminPrincipal(usuarioId) || emailEhAdminPrincipal(dadosUsuario.email)) {
+        dadosUsuario.email = EMAIL_ADMIN_PRINCIPAL;
+        dadosUsuario.nome = dadosUsuario.nome || 'Administrador Principal';
+        dadosUsuario.perfil = 'admin';
+        dadosUsuario.ativo = true;
+      }
+
+      await setDoc(doc(db, "usuarios", usuarioId), dadosUsuario, { merge: true });
+      usuariosRestaurados += 1;
+    }
+
+    for (const material of backupJSONAnalisado.materiais) {
+      if (!material.id) {
+        ignorados += 1;
+        continue;
+      }
+
+      await setDoc(doc(db, "requisicoesMateriais", material.id), prepararDocumentoBackup(material), { merge: true });
+      materiaisRestaurados += 1;
+    }
+
+    await addDoc(collection(db, "logsObras"), {
+      acao: 'restauracao_backup',
+      obraId: 'backup',
+      numeroObra: 'BACKUP',
+      cliente: 'Restauracao de backup JSON',
+      statusAnterior: '',
+      statusNovo: `obras:${obrasRestauradas} usuarios:${usuariosRestaurados} materiais:${materiaisRestaurados}`,
+      statusAlterado: true,
+      usuarioEmail: window.usuarioEmailLogado || '',
+      perfilUsuario: window.perfilUsuarioLogado || '',
+      dataLocal: new Date().toLocaleString('pt-BR'),
+      criadoEmServidor: serverTimestamp()
+    });
+
+    esconderLoading();
+
+    if (resumo) {
+      resumo.innerHTML += `
+        <div class="item-relatorio">
+          <strong style="font-size:18px; color:#1b7f34;">Restauração concluída</strong><br><br>
+          <strong>Obras restauradas:</strong> ${obrasRestauradas}<br>
+          <strong>Usuários restaurados:</strong> ${usuariosRestaurados}<br>
+          <strong>Materiais restaurados:</strong> ${materiaisRestaurados}<br>
+          <strong>Itens ignorados sem ID:</strong> ${ignorados}<br>
+        </div>
+      `;
+    }
+
+    alert('Backup restaurado com sucesso.');
+  } catch (erro) {
+    console.error('Erro ao restaurar backup:', erro);
+    esconderLoading();
+    alert('Erro ao restaurar backup. Verifique as permissoes do Firebase e o console.');
+  }
 };
 
 window.gerarPDFDaObra = async function(id) {
