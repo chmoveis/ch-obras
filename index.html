@@ -840,6 +840,25 @@ Mostrar Senha
 </button>
 
 <button
+type="button"
+id="btnLimparLogin"
+style="
+width:100%;
+padding:10px;
+margin-bottom:16px;
+border:1px solid #444;
+border-radius:12px;
+background:#1a1a1a;
+color:white;
+font-size:14px;
+font-weight:bold;
+cursor:pointer;
+"
+>
+Limpar Login
+</button>
+
+<button
 id="btnEntrarLogin"
 onclick="fazerLogin()"
 style="
@@ -2105,7 +2124,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101079';
+const VERSAO_APP_CH_OBRAS = '101080';
 
 function atualizarVersaoAppNaTela() {
   const versaoCabecalho = document.getElementById('versaoAppCabecalho');
@@ -2175,6 +2194,31 @@ function ativarBotaoMostrarSenhaLogin() {
 }
 
 ativarBotaoMostrarSenhaLogin();
+
+function limparCamposLogin() {
+  const campoEmail = document.getElementById('emailLogin');
+  const campoSenha = document.getElementById('senhaLogin');
+  const avisoCapsLock = document.getElementById('avisoCapsLockLogin');
+  const botaoSenha = document.getElementById('btnMostrarSenhaLogin');
+
+  if (campoEmail) campoEmail.value = '';
+  if (campoSenha) {
+    campoSenha.value = '';
+    campoSenha.type = 'password';
+  }
+  if (avisoCapsLock) avisoCapsLock.style.display = 'none';
+  if (botaoSenha) botaoSenha.innerText = 'Mostrar Senha';
+  if (campoEmail) campoEmail.focus();
+}
+
+function ativarBotaoLimparLogin() {
+  const botaoLimpar = document.getElementById('btnLimparLogin');
+  if (!botaoLimpar) return;
+
+  botaoLimpar.addEventListener('click', limparCamposLogin);
+}
+
+ativarBotaoLimparLogin();
 
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
