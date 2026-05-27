@@ -2152,7 +2152,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101084';
+const VERSAO_APP_CH_OBRAS = '101085';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
@@ -2490,7 +2490,7 @@ window.recuperarSenhaLogin = async function () {
 
   try {
     await sendPasswordResetEmail(auth, email);
-    mostrarMensagemLogin('sucesso', 'Link de recuperacao enviado para ' + email + '. Verifique sua caixa de entrada.');
+    mostrarMensagemLogin('sucesso', 'Solicitacao recebida. Se este e-mail estiver cadastrado no Firebase Auth, o link chegara na caixa de entrada.');
   } catch (erro) {
     console.error('Erro ao recuperar senha:', erro);
     mostrarMensagemLogin('erro', obterMensagemAmigavelRecuperacaoSenha(erro));
