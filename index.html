@@ -2061,7 +2061,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101071';
+const VERSAO_APP_CH_OBRAS = '101072';
 
 function atualizarVersaoAppNaTela() {
   const versaoCabecalho = document.getElementById('versaoAppCabecalho');
@@ -2077,6 +2077,22 @@ function atualizarVersaoAppNaTela() {
 }
 
 atualizarVersaoAppNaTela();
+
+function ativarLoginComEnter() {
+  ['emailLogin', 'senhaLogin'].forEach((id) => {
+    const campo = document.getElementById(id);
+    if (!campo) return;
+
+    campo.addEventListener('keydown', (evento) => {
+      if (evento.key === 'Enter') {
+        evento.preventDefault();
+        fazerLogin();
+      }
+    });
+  });
+}
+
+ativarLoginComEnter();
 
 function perfilAtual() {
   return window.perfilUsuarioLogado || 'visualizacao';
