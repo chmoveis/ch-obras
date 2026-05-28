@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=11">
+  <link rel="manifest" href="manifest.json?v=12">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -446,6 +446,36 @@ button:active {
   vertical-align: middle;
 }
 
+.item-material-row {
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid rgba(212,160,23,0.30);
+  border-left: 5px solid #d4a017;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.78);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.item-material-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) 1fr 1fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.item-material-grid label {
+  margin-top: 0;
+}
+
+.item-material-remover {
+  width: auto;
+  min-width: 88px;
+  padding: 10px 12px;
+  margin-top: 0;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
 @media (max-width: 980px) {
   body { padding-bottom: 0; }
 
@@ -499,6 +529,14 @@ button:active {
     min-height: 46px;
     font-size: 15px;
     box-shadow: 0 5px 14px rgba(0,0,0,0.20);
+  }
+
+  .item-material-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .item-material-remover {
+    width: 100%;
   }
 
   .barra-mobile { display: none !important; }
@@ -1618,20 +1656,11 @@ id="btnLimparFormulario"
         <label for="materialAmbiente">Ambiente</label>
         <input type="text" id="materialAmbiente" placeholder="Ambiente da obra" />
 
-        <label for="materialDescricao">Material solicitado</label>
-        <input type="text" id="materialDescricao" placeholder="Exemplo: MDF Branco TX 18mm" />
+        <h2>Itens solicitados</h2>
+        <p style="font-size:13px; color:#555; margin-top:-8px;">Adicione um ou mais materiais nesta mesma requisição.</p>
 
-        <label for="materialQuantidade">Quantidade</label>
-        <input type="number" id="materialQuantidade" min="0" step="0.01" placeholder="Exemplo: 2" />
-
-        <label for="materialUnidade">Unidade</label>
-        <select id="materialUnidade">
-          <option value="un">un</option>
-          <option value="chapa">chapa</option>
-          <option value="metro">metro</option>
-          <option value="caixa">caixa</option>
-          <option value="kg">kg</option>
-        </select>
+        <div id="listaItensMateriais"></div>
+        <button type="button" onclick="adicionarItemMaterial()" class="botao-secundario" id="btnAdicionarItemMaterial">+ Adicionar outro material</button>
 
         <label for="materialUrgencia">Urgência</label>
         <select id="materialUrgencia">
@@ -2477,7 +2506,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101094';
+const VERSAO_APP_CH_OBRAS = '101095';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
@@ -4255,6 +4284,128 @@ window.exportarUsuariosJSON = function() {
   URL.revokeObjectURL(url);
 };
 
+const UNIDADES_MATERIAIS_PADRAO = [
+  { value: 'un', label: 'un' },
+  { value: 'chapa', label: 'chapa' },
+  { value: 'metro', label: 'metro' },
+  { value: 'caixa', label: 'caixa' },
+  { value: 'kg', label: 'kg' }
+];
+
+function opcoesUnidadeMaterial(unidadeSelecionada) {
+  const unidadeBase = unidadeSelecionada || 'un';
+  return UNIDADES_MATERIAIS_PADRAO.map((item) => {
+    const selected = item.value === unidadeBase ? ' selected' : '';
+    return `<option value="${item.value}"${selected}>${item.label}</option>`;
+  }).join('');
+}
+
+function atualizarBotoesRemoverItensMateriais() {
+  const linhas = document.querySelectorAll('#listaItensMateriais .item-material-row');
+  const podeRemover = linhas.length > 1;
+
+  linhas.forEach((linha) => {
+    const botaoRemover = linha.querySelector('.item-material-remover');
+    if (!botaoRemover) return;
+    botaoRemover.style.display = podeRemover ? 'inline-flex' : 'none';
+  });
+}
+
+window.adicionarItemMaterial = function(dados = {}) {
+  const lista = document.getElementById('listaItensMateriais');
+  if (!lista) return;
+
+  const linha = document.createElement('div');
+  linha.className = 'item-material-row';
+  linha.innerHTML = `
+    <div class="item-material-grid">
+      <div>
+        <label>Material solicitado</label>
+        <input type="text" class="item-material-descricao" placeholder="Exemplo: MDF Branco TX 18mm" />
+      </div>
+      <div>
+        <label>Quantidade</label>
+        <input type="number" class="item-material-quantidade" min="0" step="0.01" placeholder="Exemplo: 2" />
+      </div>
+      <div>
+        <label>Unidade</label>
+        <select class="item-material-unidade">
+          ${opcoesUnidadeMaterial(dados.unidade || 'un')}
+        </select>
+      </div>
+      <div>
+        <button type="button" class="botao-perigo item-material-remover" onclick="removerItemMaterial(this)">Remover</button>
+      </div>
+    </div>
+  `;
+
+  const campoMaterial = linha.querySelector('.item-material-descricao');
+  const campoQuantidade = linha.querySelector('.item-material-quantidade');
+  const campoUnidade = linha.querySelector('.item-material-unidade');
+
+  if (campoMaterial) campoMaterial.value = dados.material || '';
+  if (campoQuantidade && (dados.quantidade || dados.quantidade === 0)) campoQuantidade.value = String(dados.quantidade);
+  if (campoUnidade && dados.unidade) campoUnidade.value = dados.unidade;
+
+  lista.appendChild(linha);
+  atualizarBotoesRemoverItensMateriais();
+};
+
+window.removerItemMaterial = function(botao) {
+  const linha = botao ? botao.closest('.item-material-row') : null;
+  if (linha) linha.remove();
+
+  const lista = document.getElementById('listaItensMateriais');
+  if (lista && lista.children.length === 0) {
+    window.adicionarItemMaterial();
+    return;
+  }
+
+  atualizarBotoesRemoverItensMateriais();
+};
+
+function coletarItensMateriaisDaTela() {
+  const linhas = Array.from(document.querySelectorAll('#listaItensMateriais .item-material-row'));
+  const itens = [];
+  const linhasInvalidas = [];
+
+  linhas.forEach((linha, indice) => {
+    const material = (linha.querySelector('.item-material-descricao')?.value || '').trim();
+    const quantidadeTexto = (linha.querySelector('.item-material-quantidade')?.value || '').trim();
+    const unidade = (linha.querySelector('.item-material-unidade')?.value || 'un').trim() || 'un';
+
+    if (!material && !quantidadeTexto) return;
+
+    const quantidadeNumero = Number(quantidadeTexto);
+    const quantidadeValida = Number.isFinite(quantidadeNumero) && quantidadeNumero > 0;
+
+    if (!material || !quantidadeValida) {
+      linhasInvalidas.push(indice + 1);
+      return;
+    }
+
+    itens.push({
+      material,
+      quantidade: quantidadeNumero,
+      unidade
+    });
+  });
+
+  if (linhasInvalidas.length > 0) {
+    alert('Preencha corretamente material e quantidade nos itens: ' + linhasInvalidas.join(', ') + '.');
+    return null;
+  }
+
+  return itens;
+}
+
+function limparItensMateriaisFormulario() {
+  const lista = document.getElementById('listaItensMateriais');
+  if (!lista) return;
+  lista.innerHTML = '';
+  window.adicionarItemMaterial();
+}
+
 window.mostrarMateriais = function() {
   if (!['admin', 'gerente', 'marceneiro', 'montagem'].includes(window.perfilUsuarioLogado)) {
     alert('Seu perfil nao tem permissao para acessar requisicoes de materiais.');
@@ -4263,6 +4414,9 @@ window.mostrarMateriais = function() {
 
   document.getElementById('dashboardResumo').style.display = 'block';
   document.getElementById('moduloMateriais').style.display = 'block';
+  if (!document.querySelector('#listaItensMateriais .item-material-row')) {
+    window.adicionarItemMaterial();
+  }
   carregarObrasParaMateriais();
   carregarRequisicoesMateriais();
 };
@@ -4331,59 +4485,74 @@ window.salvarRequisicaoMaterial = async function() {
   const cliente = document.getElementById('materialCliente').value.trim();
   const ambiente = document.getElementById('materialAmbiente').value.trim();
   const obraId = document.getElementById('materialObraSelect').value || '';
-  const material = document.getElementById('materialDescricao').value.trim();
-  const quantidade = document.getElementById('materialQuantidade').value;
-  const unidade = document.getElementById('materialUnidade').value;
   const urgencia = document.getElementById('materialUrgencia').value;
   const observacao = document.getElementById('materialObservacao').value.trim();
+  const itensMateriais = coletarItensMateriaisDaTela();
 
-  if (!numeroObra || !cliente || !material || !quantidade) {
-    alert('Preencha numero da obra, cliente, material e quantidade.');
+  if (!numeroObra || !cliente) {
+    alert('Preencha numero da obra e cliente.');
+    return;
+  }
+
+  if (!itensMateriais) {
+    return;
+  }
+
+  if (itensMateriais.length === 0) {
+    alert('Adicione pelo menos um material com quantidade valida.');
     return;
   }
 
   try {
     mostrarLoading('Salvando requisicao de material...');
 
-    const dadosMaterial = {
-      obraId,
-      numeroObra,
-      cliente,
-      ambiente,
-      material,
-      quantidade: Number(quantidade),
-      unidade,
-      urgencia,
-      observacao,
-      status: 'Solicitado',
-      usuarioEmail: window.usuarioEmailLogado || '',
-      perfilUsuario: window.perfilUsuarioLogado || '',
-      criadoLocalmenteEm: new Date().toLocaleString('pt-BR'),
-      criadoEmServidor: serverTimestamp()
-    };
+    const loteRequisicaoId = 'LOTE-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7).toUpperCase();
+    let totalSalvos = 0;
 
-    const requisicaoRef = await addDoc(collection(db, "requisicoesMateriais"), dadosMaterial);
+    for (const itemMaterial of itensMateriais) {
+      const dadosMaterial = {
+        obraId,
+        numeroObra,
+        cliente,
+        ambiente,
+        material: itemMaterial.material,
+        quantidade: itemMaterial.quantidade,
+        unidade: itemMaterial.unidade,
+        urgencia,
+        observacao,
+        loteRequisicaoId,
+        itensNoLote: itensMateriais.length,
+        status: 'Solicitado',
+        usuarioEmail: window.usuarioEmailLogado || '',
+        perfilUsuario: window.perfilUsuarioLogado || '',
+        criadoLocalmenteEm: new Date().toLocaleString('pt-BR'),
+        criadoEmServidor: serverTimestamp()
+      };
 
-    await addDoc(collection(db, "logsObras"), {
-      acao: 'requisicao_material',
-      obraId: requisicaoRef.id,
-      numeroObra,
-      cliente,
-      statusAnterior: '',
-      statusNovo: 'Solicitado',
-      statusAlterado: true,
-      usuarioEmail: window.usuarioEmailLogado || '',
-      perfilUsuario: window.perfilUsuarioLogado || '',
-      dataLocal: new Date().toLocaleString('pt-BR'),
-      criadoEmServidor: serverTimestamp()
-    });
+      const requisicaoRef = await addDoc(collection(db, "requisicoesMateriais"), dadosMaterial);
 
-    document.getElementById('materialDescricao').value = '';
-    document.getElementById('materialQuantidade').value = '';
+      await addDoc(collection(db, "logsObras"), {
+        acao: 'requisicao_material',
+        obraId: requisicaoRef.id,
+        numeroObra,
+        cliente,
+        statusAnterior: '',
+        statusNovo: 'Solicitado',
+        statusAlterado: true,
+        usuarioEmail: window.usuarioEmailLogado || '',
+        perfilUsuario: window.perfilUsuarioLogado || '',
+        dataLocal: new Date().toLocaleString('pt-BR'),
+        criadoEmServidor: serverTimestamp()
+      });
+
+      totalSalvos += 1;
+    }
+
+    limparItensMateriaisFormulario();
     document.getElementById('materialObservacao').value = '';
 
     esconderLoading();
-    alert('Requisicao de material salva com sucesso.');
+    alert('Requisicao de material salva com sucesso. Itens enviados: ' + totalSalvos + '.');
     carregarRequisicoesMateriais();
   } catch (erro) {
     console.error('Erro ao salvar requisicao de material:', erro);
