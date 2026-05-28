@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=6">
+  <link rel="manifest" href="manifest.json?v=7">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -44,7 +44,7 @@ body {
   gap: 12px;
   padding: 14px 10px;
   border-radius: 22px;
-  background: rgba(14,14,14,0.95);
+  background: rgba(255,255,255,0.95);
   border: 1px solid rgba(212,160,23,0.34);
   box-shadow: 0 12px 32px rgba(0,0,0,0.30);
   z-index: 99;
@@ -56,9 +56,9 @@ body {
   margin: 0 !important;
   padding: 0 !important;
   border-radius: 16px !important;
-  background: linear-gradient(160deg, #101010, #2d2d2d) !important;
-  border: 1px solid rgba(255,255,255,0.16) !important;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.24) !important;
+  background: linear-gradient(160deg, #f4cd59, #d4a017) !important;
+  border: 1px solid #b88907 !important;
+  box-shadow: 0 6px 14px rgba(118,87,6,0.24) !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,7 +72,7 @@ body {
 .menu-icon-btn svg {
   width: 24px;
   height: 24px;
-  stroke: #f5f5f5;
+  stroke: #161616;
   stroke-width: 2.05;
   fill: none;
   stroke-linecap: round;
@@ -81,8 +81,8 @@ body {
 
 .menu-icon-btn:hover {
   transform: translateY(-2px);
-  border-color: rgba(212,160,23,0.62) !important;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.33) !important;
+  border-color: #9f7608 !important;
+  box-shadow: 0 10px 20px rgba(118,87,6,0.30) !important;
 }
 
 .menu-icon-btn:focus-visible {
@@ -128,26 +128,28 @@ body {
   border-radius: 12px;
   font-size: 12px;
   box-shadow: none;
-  background: linear-gradient(135deg, #111111, #363636);
+  background: linear-gradient(135deg, #f4cd59, #d4a017);
+  color: #111111;
+  border: 1px solid #b88907;
 }
 
 .cabecalho {
   text-align: center;
   margin-bottom: 25px;
   padding: 24px 20px;
-  background: linear-gradient(135deg, #050505 0%, #161616 38%, #4a4a4a 72%, #d8d8d8 100%);
-  color: white;
+  background: linear-gradient(135deg, #ffffff 0%, #fffdfa 68%, #f8f1df 100%);
+  color: #b8850d;
   border-radius: 18px;
-  border: 1px solid #7a7a7a;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+  border: 1px solid rgba(212,160,23,0.45);
+  box-shadow: 0 8px 22px rgba(128,95,7,0.15);
 }
 
 .cabecalho h1 {
   margin: 0;
   font-size: 28px;
   letter-spacing: 0.5px;
-  color: #ffffff;
-  text-shadow: 0 2px 5px rgba(0,0,0,0.55);
+  color: #b8850d;
+  text-shadow: none;
 }
 
 .logo {
@@ -166,8 +168,8 @@ body {
 .cabecalho p {
   margin: 8px 0 0;
   font-size: 14px;
-  color: #f5f5f5;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  color: #8f6808;
+  text-shadow: none;
 }
 
 .versao-app {
@@ -175,9 +177,9 @@ body {
   margin-top: 10px;
   padding: 5px 10px;
   border-radius: 999px;
-  background: rgba(212,160,23,0.18);
-  color: #ffd76b;
-  border: 1px solid rgba(212,160,23,0.42);
+  background: #fff4d1;
+  color: #7b5806;
+  border: 1px solid rgba(212,160,23,0.58);
   font-size: 12px;
   font-weight: 700;
 }
@@ -280,10 +282,10 @@ textarea {
 button {
   width: 100%;
   padding: 16px;
-  border: none;
+  border: 1px solid #b88907;
   border-radius: 18px;
-  background: linear-gradient(135deg, #050505 0%, #1f1f1f 45%, #555555 100%);
-  color: white;
+  background: linear-gradient(135deg, #f4cd59 0%, #e0b332 48%, #d4a017 100%);
+  color: #111111;
   font-size: 17px;
   font-weight: bold;
   cursor: pointer;
@@ -291,13 +293,13 @@ button {
     transform 0.18s ease,
     box-shadow 0.25s ease,
     opacity 0.25s ease;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 22px rgba(118,87,6,0.25);
   margin-top: 14px;
 }
 
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.32);
+  box-shadow: 0 12px 28px rgba(118,87,6,0.32);
   opacity: 0.96;
 }
 
@@ -306,11 +308,11 @@ button:active {
 }
 
 .botao-secundario {
-  background: linear-gradient(135deg, #111111, #333333);
+  background: linear-gradient(135deg, #f6d676, #d9aa22);
 }
 
 .botao-secundario:hover {
-  background: linear-gradient(135deg, #222222, #555555);
+  background: linear-gradient(135deg, #f8de8a, #e1b42d);
 }
 
 .acoes-principais {
@@ -369,7 +371,9 @@ button:active {
   padding: 10px !important;
   border-radius: 12px !important;
   font-size: 13px !important;
-  background: linear-gradient(135deg, #3a3a3a, #111111) !important;
+  background: linear-gradient(135deg, #f6d676, #d9aa22) !important;
+  color: #111111 !important;
+  border: 1px solid #b88907 !important;
 }
 
 .acoes-principais-conteudo button {
@@ -440,9 +444,9 @@ button.botao-excluir,
   width: 100% !important;
   margin: 18px auto 0 auto !important;
   padding: 14px !important;
-  background: linear-gradient(135deg, #c62828, #8e0000) !important;
-  color: #ffffff !important;
-  border: 1px solid #ffb3b3 !important;
+  background: linear-gradient(135deg, #f4cd59, #d4a017) !important;
+  color: #111111 !important;
+  border: 1px solid #b88907 !important;
   border-radius: 12px !important;
   font-size: 16px !important;
   font-weight: bold !important;
@@ -453,7 +457,37 @@ button.botao-excluir,
 
 button.botao-excluir:hover,
 .botao-perigo:hover {
-  background: linear-gradient(135deg, #8e0000, #5c0000) !important;
+  background: linear-gradient(135deg, #f8de8a, #dfb535) !important;
+}
+
+#telaLogin {
+  background: rgba(255,255,255,0.96) !important;
+}
+
+#telaLogin > div {
+  background: #ffffff !important;
+  border: 1px solid rgba(212,160,23,0.45);
+  box-shadow: 0 0 28px rgba(128,95,7,0.18) !important;
+}
+
+#telaLogin h1,
+#versaoAppLogin {
+  color: #b8850d !important;
+}
+
+#telaLogin input {
+  border: 1px solid rgba(212,160,23,0.35) !important;
+  background: #fffdfa !important;
+}
+
+#telaLogin button {
+  background: linear-gradient(135deg, #f4cd59, #d4a017) !important;
+  color: #111111 !important;
+  border: 1px solid #b88907 !important;
+}
+
+#telaLogin button:hover {
+  background: linear-gradient(135deg, #f8de8a, #dfb535) !important;
 }
 
 .status {
@@ -2352,7 +2386,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101089';
+const VERSAO_APP_CH_OBRAS = '101090';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
