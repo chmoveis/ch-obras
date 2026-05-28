@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=15">
+  <link rel="manifest" href="manifest.json?v=16">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -140,12 +140,15 @@ body {
   max-width: none;
   margin: 0;
   min-height: calc(100vh - 44px);
-  background: rgba(255,255,255,0.90);
+  background: linear-gradient(145deg, rgba(255,255,255,0.96), rgba(248,248,248,0.94));
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.42);
+  border: 1px solid #d4a017;
   border-radius: 28px;
-  box-shadow: 0 12px 44px rgba(0,0,0,0.20);
+  box-shadow:
+    0 18px 44px rgba(0,0,0,0.22),
+    0 0 0 3px rgba(226,226,226,0.92),
+    inset 0 1px 0 rgba(255,255,255,0.9);
   padding: 30px 34px;
   box-sizing: border-box;
 }
@@ -244,6 +247,14 @@ h2 {
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 
+#formularioChecklist:not([open]) {
+  display: none;
+}
+
+#formularioChecklist > summary {
+  display: none;
+}
+
 .formulario-checklist summary {
   cursor: pointer;
   font-size: 20px;
@@ -337,7 +348,9 @@ button {
     transform 0.18s ease,
     box-shadow 0.25s ease,
     opacity 0.25s ease;
-  box-shadow: 0 8px 22px rgba(118,87,6,0.25);
+  box-shadow:
+    0 14px 24px rgba(118,87,6,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.68);
   margin-top: 14px;
 }
 
@@ -357,6 +370,15 @@ button:active {
 
 .botao-secundario:hover {
   background: linear-gradient(135deg, #f8de8a, #e1b42d);
+}
+
+#barraUsuario {
+  display: none;
+  margin-top: 22px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111111;
+  text-align: right;
 }
 
 .acoes-principais {
@@ -478,7 +500,7 @@ button:active {
 }
 
 @media (max-width: 980px) {
-  body { padding-bottom: 0; }
+  body { padding-bottom: 78px; }
 
   .layout-app {
     max-width: 760px;
@@ -540,7 +562,21 @@ button:active {
     width: 100%;
   }
 
-  .barra-mobile { display: none !important; }
+  .dashboard-pizza-grid {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .dashboard-legenda-grid {
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #barraUsuario {
+    text-align: left;
+  }
+
+  .barra-mobile { display: grid !important; }
 
 }
 
@@ -865,10 +901,12 @@ border-left:4px solid #d4a017;
   margin-top: 18px;
   padding: 20px;
   border-radius: 24px;
-  background: linear-gradient(145deg, #67ccf4 0%, #48b5e6 36%, #2f7ea8 100%);
-  color: #ffffff;
-  box-shadow: 0 16px 34px rgba(28, 75, 102, 0.30);
-  border: 1px solid rgba(255,255,255,0.34);
+  background: linear-gradient(155deg, #eff8ff 0%, #dbedf9 56%, #c2def0 100%);
+  color: #0f172a;
+  box-shadow:
+    0 16px 34px rgba(30, 58, 138, 0.16),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+  border: 1px solid rgba(19,96,139,0.22);
 }
 
 .dashboard-profissional::before,
@@ -884,7 +922,7 @@ border-left:4px solid #d4a017;
   height: 220px;
   right: -90px;
   top: -120px;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.34), rgba(255,255,255,0));
+  background: radial-gradient(circle at center, rgba(117, 215, 255, 0.46), rgba(255,255,255,0));
 }
 
 .dashboard-profissional::after {
@@ -892,7 +930,7 @@ border-left:4px solid #d4a017;
   height: 170px;
   left: -70px;
   bottom: -90px;
-  background: radial-gradient(circle at center, rgba(12,70,98,0.34), rgba(12,70,98,0));
+  background: radial-gradient(circle at center, rgba(108, 176, 230, 0.28), rgba(12,70,98,0));
 }
 
 .dashboard-profissional > * {
@@ -901,60 +939,142 @@ border-left:4px solid #d4a017;
 }
 
 .dashboard-profissional h2 {
-  color: #ffffff;
-  border-bottom: 2px solid rgba(198, 238, 255, 0.85);
+  color: #0f172a;
+  border-bottom: 2px solid rgba(19,96,139,0.26);
   margin-top: 0;
 }
 
 .dashboard-subtitulo {
-  color: #e6f7ff;
+  color: #0f172a;
   font-size: 13px;
   margin-top: -6px;
   margin-bottom: 14px;
-}
-
-.cards-resumo.dashboard-grid {
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-.dashboard-profissional .card-resumo {
-  border-radius: 16px;
-  border-left: none;
-  border-top: 4px solid #82daf7;
-  background: rgba(255,255,255,0.93);
-  box-shadow: 0 6px 18px rgba(20, 66, 92, 0.16);
-  color: #163647;
-}
-
-.dashboard-profissional .card-resumo h3 {
-  color: #24506a;
-  font-size: 16px;
-}
-
-.dashboard-profissional .card-resumo p {
-  color: #102a38;
-  font-size: 34px;
-  font-weight: 800;
 }
 
 .dashboard-materiais {
   margin-top: 20px;
 }
 
+.dashboard-pizza-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, 320px) 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.dashboard-pizza-chart {
+  position: relative;
+  width: clamp(210px, 28vw, 290px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  margin: 0 auto;
+  background: conic-gradient(
+    #22c55e 0deg 60deg,
+    #8b5cf6 60deg 120deg,
+    #ef4444 120deg 180deg,
+    #3b82f6 180deg 240deg,
+    #f59e0b 240deg 360deg
+  );
+  box-shadow:
+    0 12px 28px rgba(20,66,92,0.24),
+    inset 0 0 0 14px rgba(255,255,255,0.32);
+}
+
+.dashboard-pizza-chart::after {
+  content: '';
+  position: absolute;
+  inset: 23%;
+  border-radius: 50%;
+  background: rgba(241,250,255,0.96);
+  border: 1px solid rgba(19,96,139,0.18);
+}
+
+.dashboard-pizza-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  color: #0f172a;
+  text-align: center;
+}
+
+.dashboard-pizza-center small {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.dashboard-pizza-center strong {
+  margin-top: 2px;
+  font-size: 36px;
+  line-height: 1;
+}
+
+.dashboard-legenda-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.dashboard-legenda-item {
+  border-radius: 14px;
+  background: rgba(255,255,255,0.88);
+  border: 1px solid rgba(19,96,139,0.18);
+  box-shadow: 0 6px 14px rgba(20,66,92,0.10);
+  padding: 10px 12px;
+  color: #111111;
+}
+
+.dashboard-legenda-titulo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.dashboard-legenda-valor {
+  margin-top: 4px;
+  font-size: 26px;
+  font-weight: 800;
+  color: #111111;
+}
+
+.dashboard-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-finalizadas { background: #22c55e; }
+.dot-producao { background: #8b5cf6; }
+.dot-pendencias { background: #ef4444; }
+.dot-iniciar { background: #3b82f6; }
+.dot-cliente { background: #f59e0b; }
+
+.dot-solicitados { background: #38bdf8; }
+.dot-aprovados { background: #22c55e; }
+.dot-comprados { background: #8b5cf6; }
+.dot-entregues { background: #0ea5e9; }
+.dot-urgentes { background: #f97316; }
+
 .dashboard-barra {
   margin-top: 14px;
-  background: rgba(255,255,255,0.34);
+  background: rgba(15,23,42,0.14);
   border-radius: 999px;
   overflow: hidden;
   height: 14px;
-  border: 1px solid rgba(214,244,255,0.58);
+  border: 1px solid rgba(15,23,42,0.15);
 }
 
 .dashboard-barra-preenchida {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #ffef9a, #ffcf46);
+  background: linear-gradient(90deg, #38bdf8, #0ea5e9);
   border-radius: 999px;
   transition: width 0.35s ease;
 }
@@ -963,9 +1083,9 @@ border-left:4px solid #d4a017;
   margin-top: 14px;
   padding: 14px;
   border-radius: 16px;
-  background: rgba(17, 71, 99, 0.28);
-  color: #ffffff;
-  border: 1px solid rgba(206,240,255,0.32);
+  background: rgba(255,255,255,0.74);
+  color: #111111;
+  border: 1px solid rgba(19,96,139,0.22);
   font-size: 14px;
   line-height: 1.45;
 }
@@ -975,10 +1095,10 @@ border-left:4px solid #d4a017;
   margin-top: 8px;
   padding: 7px 12px;
   border-radius: 999px;
-  background: rgba(223,245,255,0.24);
-  color: #e8f9ff;
+  background: rgba(14,165,233,0.14);
+  color: #0c4a6e;
   font-weight: bold;
-  border: 1px solid rgba(214,246,255,0.52);
+  border: 1px solid rgba(14,165,233,0.38);
 }
 
 canvas {
@@ -1454,18 +1574,6 @@ Atualizar App / Limpar Cache
     <div id="avisoEdicao" style="display:none; background:#fff3cd; border:1px solid #d4a017; padding:12px; border-radius:10px; margin-top:20px; font-weight:bold; text-align:center;">
       Modo edição ativo
     </div>
-<div id="barraUsuario" style="
-display:none;
-background:#111;
-color:white;
-padding:12px;
-border-radius:14px;
-margin-top:20px;
-text-align:center;
-font-size:14px;
-">
-  <div id="usuarioLogadoTexto">Usuário logado</div>
-</div>
     <details class="acoes-principais" id="acoesPrincipais">
       <summary>Ações Principais</summary>
       <div id="statusRascunhoChecklist" class="rascunho-status"></div>
@@ -1511,15 +1619,38 @@ id="btnLimparFormulario"
       <div class="dashboard-profissional">
         <h2>Dashboard de Obras</h2>
         <p class="dashboard-subtitulo">Visão executiva das obras cadastradas no CH Obras</p>
-        <p id="ultimaAtualizacao" style="font-size:12px; color:#f3f3f3; margin-top:-4px;">Última atualização: --</p>
+        <p id="ultimaAtualizacao" style="font-size:12px; color:#111111; margin-top:-4px;">Última atualização: --</p>
 
-        <div class="cards-resumo dashboard-grid">
-          <div class="card-resumo"><h3>📋 Total de obras</h3><p id="totalObras">0</p></div>
-          <div class="card-resumo"><h3>🟢 Finalizadas</h3><p id="obrasConcluidas">0</p></div>
-          <div class="card-resumo"><h3>🟣 Em produção</h3><p id="obrasAndamento">0</p></div>
-          <div class="card-resumo"><h3>🔴 Pendências</h3><p id="obrasPendentes">0</p></div>
-          <div class="card-resumo"><h3>🔵 A iniciar</h3><p id="obrasIniciar">0</p></div>
-          <div class="card-resumo"><h3>🟣 Aguardando cliente</h3><p id="obrasCliente">0</p></div>
+        <div class="dashboard-pizza-grid">
+          <div class="dashboard-pizza-chart" id="pizzaObras">
+            <div class="dashboard-pizza-center">
+              <small>Total de Obras</small>
+              <strong id="totalObras">0</strong>
+            </div>
+          </div>
+
+          <div class="dashboard-legenda-grid">
+            <div class="dashboard-legenda-item">
+              <div class="dashboard-legenda-titulo"><span class="dashboard-dot dot-finalizadas"></span>Finalizadas</div>
+              <div class="dashboard-legenda-valor" id="obrasConcluidas">0</div>
+            </div>
+            <div class="dashboard-legenda-item">
+              <div class="dashboard-legenda-titulo"><span class="dashboard-dot dot-producao"></span>Em produção</div>
+              <div class="dashboard-legenda-valor" id="obrasAndamento">0</div>
+            </div>
+            <div class="dashboard-legenda-item">
+              <div class="dashboard-legenda-titulo"><span class="dashboard-dot dot-pendencias"></span>Pendências</div>
+              <div class="dashboard-legenda-valor" id="obrasPendentes">0</div>
+            </div>
+            <div class="dashboard-legenda-item">
+              <div class="dashboard-legenda-titulo"><span class="dashboard-dot dot-iniciar"></span>A iniciar</div>
+              <div class="dashboard-legenda-valor" id="obrasIniciar">0</div>
+            </div>
+            <div class="dashboard-legenda-item" style="grid-column: 1 / -1;">
+              <div class="dashboard-legenda-titulo"><span class="dashboard-dot dot-cliente"></span>Aguardando cliente</div>
+              <div class="dashboard-legenda-valor" id="obrasCliente">0</div>
+            </div>
+          </div>
         </div>
 
         <p id="taxaConclusao" style="text-align:center; font-weight:bold; margin-top:15px;">Taxa de conclusão: 0%</p>
@@ -1531,22 +1662,45 @@ id="btnLimparFormulario"
           <strong>Painel Administrativo</strong><br>
           Acompanhamento de obras, edição, exclusão por perfil, busca inteligente, filtro por status, fotos, QR Code, PDF e exportação.
           <br><span id="perfilPainel" class="perfil-badge">Perfil: aguardando login</span>
-          <p id="statusConexao" style="font-size:13px; color:#f5f5f5; margin-bottom:0;">Status: aguardando carregamento.</p>
+          <p id="statusConexao" style="font-size:13px; color:#111111; margin-bottom:0;">Status: aguardando carregamento.</p>
         </div>
       </div>
 
       <div class="dashboard-profissional dashboard-materiais">
         <h2>Dashboard de Materiais</h2>
         <p class="dashboard-subtitulo">Visão executiva das requisições de material</p>
-        <p id="ultimaAtualizacaoMateriais" style="font-size:12px; color:#f3f3f3; margin-top:-4px;">Última atualização: --</p>
+        <p id="ultimaAtualizacaoMateriais" style="font-size:12px; color:#111111; margin-top:-4px;">Última atualização: --</p>
 
-        <div class="cards-resumo dashboard-grid">
-          <div class="card-resumo"><h3>Total</h3><p id="materiaisTotal">0</p></div>
-          <div class="card-resumo"><h3>Solicitados</h3><p id="materiaisSolicitados">0</p></div>
-          <div class="card-resumo"><h3>Aprovados</h3><p id="materiaisAprovados">0</p></div>
-          <div class="card-resumo"><h3>Comprados</h3><p id="materiaisComprados">0</p></div>
-          <div class="card-resumo"><h3>Entregues</h3><p id="materiaisEntregues">0</p></div>
-          <div class="card-resumo"><h3>Urgentes</h3><p id="materiaisUrgentes">0</p></div>
+        <div class="dashboard-pizza-grid">
+          <div class="dashboard-pizza-chart" id="pizzaMateriais">
+            <div class="dashboard-pizza-center">
+              <small>Total de Materiais</small>
+              <strong id="materiaisTotal">0</strong>
+            </div>
+          </div>
+
+          <div class="dashboard-legenda-grid">
+            <div class="dashboard-legenda-item">
+              <div class="dashboard-legenda-titulo"><span class="dashboard-dot dot-solicitados"></span>Solicitados</div>
+              <div class="dashboard-legenda-valor" id="materiaisSolicitados">0</div>
+            </div>
+            <div class="dashboard-legenda-item">
+              <div class="dashboard-legenda-titulo"><span class="dashboard-dot dot-aprovados"></span>Aprovados</div>
+              <div class="dashboard-legenda-valor" id="materiaisAprovados">0</div>
+            </div>
+            <div class="dashboard-legenda-item">
+              <div class="dashboard-legenda-titulo"><span class="dashboard-dot dot-comprados"></span>Comprados</div>
+              <div class="dashboard-legenda-valor" id="materiaisComprados">0</div>
+            </div>
+            <div class="dashboard-legenda-item">
+              <div class="dashboard-legenda-titulo"><span class="dashboard-dot dot-entregues"></span>Entregues</div>
+              <div class="dashboard-legenda-valor" id="materiaisEntregues">0</div>
+            </div>
+            <div class="dashboard-legenda-item" style="grid-column: 1 / -1;">
+              <div class="dashboard-legenda-titulo"><span class="dashboard-dot dot-urgentes"></span>Urgentes</div>
+              <div class="dashboard-legenda-valor" id="materiaisUrgentes">0</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1775,6 +1929,10 @@ id="btnLimparFormulario"
 
         <div id="resumoBackupJSON"></div>
       </div>
+    </div>
+
+    <div id="barraUsuario">
+      <span id="usuarioLogadoTexto">Usuário logado</span>
     </div>
   </div>
 </div>
@@ -2563,7 +2721,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101098';
+const VERSAO_APP_CH_OBRAS = '101099';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
@@ -3627,6 +3785,30 @@ function renderizarHistorico(obras) {
   filtrarHistorico();
 }
 
+function atualizarGraficoPizza(idGrafico, valores, cores, corVazio = '#cbd5e1') {
+  const grafico = document.getElementById(idGrafico);
+  if (!grafico) return;
+
+  const listaValores = valores.map((item) => Math.max(0, Number(item) || 0));
+  const total = listaValores.reduce((acumulado, valor) => acumulado + valor, 0);
+
+  if (total <= 0) {
+    grafico.style.background = `conic-gradient(${corVazio} 0deg 360deg)`;
+    return;
+  }
+
+  let inicio = 0;
+  const partes = listaValores.map((valor, indice) => {
+    const abertura = (valor / total) * 360;
+    const fim = inicio + abertura;
+    const trecho = `${cores[indice] || '#94a3b8'} ${inicio.toFixed(2)}deg ${fim.toFixed(2)}deg`;
+    inicio = fim;
+    return trecho;
+  });
+
+  grafico.style.background = `conic-gradient(${partes.join(', ')})`;
+}
+
 
 function atualizarDashboard(obras) {
   const totalObras = obras.length;
@@ -3659,6 +3841,12 @@ function atualizarDashboard(obras) {
 
   const status = document.getElementById('statusConexao');
   if (status) status.innerText = 'Status: ' + totalObras + ' obras carregadas no painel.';
+
+  atualizarGraficoPizza(
+    'pizzaObras',
+    [obrasConcluidas, obrasAndamento, obrasPendentes, obrasIniciar, obrasCliente],
+    ['#22c55e', '#8b5cf6', '#ef4444', '#3b82f6', '#f59e0b']
+  );
 
   atualizarDashboardMateriais();
 }
@@ -3697,6 +3885,12 @@ async function atualizarDashboardMateriais() {
     if (ultimaAtualizacaoMateriais) {
       ultimaAtualizacaoMateriais.innerText = 'Última atualização: ' + new Date().toLocaleString('pt-BR');
     }
+
+    atualizarGraficoPizza(
+      'pizzaMateriais',
+      [solicitados, aprovados, comprados, entregues, urgentes],
+      ['#38bdf8', '#22c55e', '#8b5cf6', '#0ea5e9', '#f97316']
+    );
   } catch (erro) {
     console.error('Erro ao atualizar dashboard de materiais:', erro);
   }
