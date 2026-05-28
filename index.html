@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=17">
+  <link rel="manifest" href="manifest.json?v=18">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -153,11 +153,11 @@ body {
 
 .btn-toggle-atalhos {
   position: fixed;
-  right: 12px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
-  width: 44px;
-  height: 62px;
+  width: 48px;
+  height: 70px;
   border-radius: 16px;
   border: 1px solid #b88907;
   background: linear-gradient(160deg, #f8dc86, #d9a91f);
@@ -174,7 +174,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, right 0.25s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, right 0.25s ease, opacity 0.2s ease;
 }
 
 .btn-toggle-atalhos:hover {
@@ -191,6 +191,7 @@ body {
 .btn-toggle-atalhos span {
   display: inline-block;
   transform: translateY(-1px);
+  font-weight: 900;
 }
 
 .layout-app.atalhos-fechados + .btn-toggle-atalhos {
@@ -657,7 +658,10 @@ button:active {
   }
 
   .btn-toggle-atalhos {
-    display: none;
+    right: 10px;
+    width: 44px;
+    height: 62px;
+    border-radius: 14px;
   }
 
   .barra-mobile { display: grid !important; }
@@ -2195,7 +2199,7 @@ function atualizarVisibilidadeBotaoAtalhosLaterais() {
   const botao = document.getElementById('btnToggleAtalhos');
   if (!botao) return;
 
-  if (!window.usuarioEmailLogado || window.innerWidth <= 980) {
+  if (!window.usuarioEmailLogado) {
     botao.style.display = 'none';
     return;
   }
@@ -2247,6 +2251,7 @@ function bloquearCliqueDiretoAcoesPrincipais() {
 bloquearCliqueDiretoAcoesPrincipais();
 restaurarEstadoAtalhosLaterais();
 window.addEventListener('resize', atualizarVisibilidadeBotaoAtalhosLaterais);
+window.addEventListener('load', atualizarVisibilidadeBotaoAtalhosLaterais);
 
 window.normalizarStatusObra = window.normalizarStatusObra || function(status) {
   const textoOriginal = String(status || '').trim();
@@ -2861,7 +2866,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101100';
+const VERSAO_APP_CH_OBRAS = '101101';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
