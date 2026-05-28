@@ -1275,6 +1275,7 @@ Nova Obra / Limpar Formulário
         <label for="novoUsuarioPerfil">Perfil</label>
         <select id="novoUsuarioPerfil">
           <option value="visualizacao">Visualização</option>
+          <option value="gerente">Gerente</option>
           <option value="marceneiro">Marceneiro</option>
           <option value="montagem">Montagem</option>
           <option value="conferencia">Conferência</option>
@@ -1294,6 +1295,7 @@ Nova Obra / Limpar Formulário
         <select id="filtroPerfilUsuarioSistema" onchange="filtrarUsuariosSistema()">
           <option value="">Todos os perfis</option>
           <option value="admin">Admin</option>
+          <option value="gerente">Gerente</option>
           <option value="marceneiro">Marceneiro</option>
           <option value="montagem">Montagem</option>
           <option value="conferencia">Conferência</option>
@@ -2154,7 +2156,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101086';
+const VERSAO_APP_CH_OBRAS = '101087';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
@@ -2346,17 +2348,21 @@ function emailAtual() {
   return window.usuarioEmailLogado || '';
 }
 
+function usuarioEhAdminOuGerente() {
+  return ['admin', 'gerente'].includes(perfilAtual());
+}
+
 function usuarioPodeCriarObra() {
-  return ['admin', 'marceneiro'].includes(perfilAtual());
+  return ['admin', 'gerente', 'marceneiro'].includes(perfilAtual());
 }
 
 function usuarioPodeCriarRequisicaoMaterial() {
-  return ['admin', 'marceneiro', 'montagem'].includes(perfilAtual());
+  return ['admin', 'gerente', 'marceneiro', 'montagem'].includes(perfilAtual());
 }
 
 function usuarioPodeEditarObra(obra) {
   if (!obra) return false;
-  if (perfilAtual() === 'admin') return true;
+  if (usuarioEhAdminOuGerente()) return true;
   if (perfilAtual() === 'visualizacao') return false;
   if (perfilAtual() === 'montagem') {
     return ['Em montagem', 'Com pendência'].includes(normalizarStatusObra(obra.statusObra));
@@ -2384,19 +2390,19 @@ function aplicarPermissoesInterface() {
   const btnExportarMateriaisJSON = document.getElementById('btnExportarMateriaisJSON');
   const botaoSalvar = document.getElementById('botaoSalvar');
 
-  if (btnLimpar) btnLimpar.style.display = perfil === 'admin' ? 'block' : 'none';
-  if (btnExportar) btnExportar.style.display = 'none';
+  if (btnLimpar) btnLimpar.style.display = usuarioEhAdminOuGerente() ? 'block' : 'none';
+  if (btnExportar) btnExportar.style.display = usuarioEhAdminOuGerente() ? 'block' : 'none';
   if (btnExportarJSON) btnExportarJSON.style.display = 'none';
   if (btnBackupCompletoJSON) btnBackupCompletoJSON.style.display = 'none';
   if (btnRestaurarBackup) btnRestaurarBackup.style.display = 'none';
   if (btnConfiguracoesSistema) btnConfiguracoesSistema.style.display = perfil === 'admin' ? 'block' : 'none';
   if (btnAtualizarAppCache) btnAtualizarAppCache.style.display = perfil === 'admin' ? 'block' : 'none';
-  if (btnLogs) btnLogs.style.display = 'none';
-  if (btnProdutividade) btnProdutividade.style.display = 'none';
+  if (btnLogs) btnLogs.style.display = usuarioEhAdminOuGerente() ? 'block' : 'none';
+  if (btnProdutividade) btnProdutividade.style.display = usuarioEhAdminOuGerente() ? 'block' : 'none';
   if (btnUsuarios) btnUsuarios.style.display = 'none';
-  if (btnExportarMateriais) btnExportarMateriais.style.display = perfil === 'admin' ? 'block' : 'none';
-  if (btnExportarMateriaisJSON) btnExportarMateriaisJSON.style.display = perfil === 'admin' ? 'block' : 'none';
-  if (btnMateriais) btnMateriais.style.display = ['admin', 'marceneiro', 'montagem'].includes(perfil) ? 'block' : 'none';
+  if (btnExportarMateriais) btnExportarMateriais.style.display = usuarioEhAdminOuGerente() ? 'block' : 'none';
+  if (btnExportarMateriaisJSON) btnExportarMateriaisJSON.style.display = usuarioEhAdminOuGerente() ? 'block' : 'none';
+  if (btnMateriais) btnMateriais.style.display = ['admin', 'gerente', 'marceneiro', 'montagem'].includes(perfil) ? 'block' : 'none';
   if (botaoSalvar) {
     botaoSalvar.style.display = usuarioPodeCriarObra() || window.idObraEditando ? 'block' : 'none';
   }
@@ -2444,6 +2450,8 @@ window.usuarioEmailLogado = emailUsuario;
 
 if (emailEhAdminPrincipal(emailUsuario)) {
     window.perfilUsuarioLogado = 'admin';
+} else if (emailUsuario.includes('gerente')) {
+    window.perfilUsuarioLogado = 'gerente';
 } else if (emailUsuario.includes('marceneiro')) {
     window.perfilUsuarioLogado = 'marceneiro';
 } else if (emailUsuario.includes('montagem')) {
@@ -2669,8 +2677,8 @@ async function registrarLogUsuario(tipoAlteracao, emailUsuarioAlterado, detalhe)
 }
 
 window.registrarLogGerenteObra = async function(obraId) {
-  if (window.perfilUsuarioLogado !== 'admin') {
-    alert('Apenas admin pode registrar log do gerente.');
+  if (!['admin', 'gerente'].includes(window.perfilUsuarioLogado)) {
+    alert('Apenas admin ou gerente pode registrar log da obra.');
     return;
   }
 
@@ -2843,7 +2851,7 @@ window.filtrarObras = function() {
   try {
    let obrasOrdenadas;
 
-if (['admin', 'montagem', 'conferencia', 'visualizacao'].includes(window.perfilUsuarioLogado)) {
+if (['admin', 'gerente', 'montagem', 'conferencia', 'visualizacao'].includes(window.perfilUsuarioLogado)) {
 
   obrasOrdenadas = query(
     collection(db, "obras"),
@@ -3115,7 +3123,7 @@ function renderizarHistorico(obras) {
           <button class="botao-secundario" onclick="editarObra('${obra.id}')">Editar Obra</button>
         ` : ''}
         <button class="botao-secundario" onclick="gerarPDFDaObra('${obra.id}')">Gerar PDF desta Obra</button>
-        ${window.perfilUsuarioLogado === 'admin' ? `
+        ${['admin', 'gerente'].includes(window.perfilUsuarioLogado) ? `
           <button class="botao-secundario" onclick="registrarLogGerenteObra('${obra.id}')">Log do gerente da obra</button>
         ` : ''}
         ${window.perfilUsuarioLogado === 'admin' ? `
@@ -3292,7 +3300,7 @@ window.limparCacheAtualizarApp = async function() {
 };
 
 window.mostrarLogsOperacionais = async function() {
-  if (window.perfilUsuarioLogado !== 'admin') {
+  if (!['admin', 'gerente'].includes(window.perfilUsuarioLogado)) {
     alert('Seu perfil nao tem permissao para visualizar os logs operacionais.');
     return;
   }
@@ -3383,7 +3391,7 @@ window.limparFiltrosLogsOperacionais = function() {
 };
 
 window.exportarLogsCSV = function() {
-  if (window.perfilUsuarioLogado !== 'admin') {
+  if (!['admin', 'gerente'].includes(window.perfilUsuarioLogado)) {
     alert('Seu perfil nao tem permissao para exportar logs.');
     return;
   }
@@ -3447,7 +3455,7 @@ window.ocultarLogsOperacionais = function() {
 };
 
 window.mostrarProdutividade = async function() {
-  if (window.perfilUsuarioLogado !== 'admin') {
+  if (!['admin', 'gerente'].includes(window.perfilUsuarioLogado)) {
     alert('Seu perfil nao tem permissao para visualizar produtividade.');
     return;
   }
@@ -3546,7 +3554,7 @@ function calcularProdutividadePorUsuario(logs) {
 }
 
 window.exportarProdutividadeCSV = function() {
-  if (window.perfilUsuarioLogado !== 'admin') {
+  if (!['admin', 'gerente'].includes(window.perfilUsuarioLogado)) {
     alert('Seu perfil nao tem permissao para exportar produtividade.');
     return;
   }
@@ -3696,6 +3704,7 @@ function renderizarUsuariosSistema() {
         <label for="perfil-${usuario.id}">Perfil</label>
         <select id="perfil-${usuario.id}">
           <option value="visualizacao" ${perfil === 'visualizacao' ? 'selected' : ''}>Visualização</option>
+          <option value="gerente" ${perfil === 'gerente' ? 'selected' : ''}>Gerente</option>
           <option value="marceneiro" ${perfil === 'marceneiro' ? 'selected' : ''}>Marceneiro</option>
           <option value="montagem" ${perfil === 'montagem' ? 'selected' : ''}>Montagem</option>
           <option value="conferencia" ${perfil === 'conferencia' ? 'selected' : ''}>Conferência</option>
@@ -3926,7 +3935,7 @@ window.exportarUsuariosJSON = function() {
 };
 
 window.mostrarMateriais = function() {
-  if (!['admin', 'marceneiro', 'montagem'].includes(window.perfilUsuarioLogado)) {
+  if (!['admin', 'gerente', 'marceneiro', 'montagem'].includes(window.perfilUsuarioLogado)) {
     alert('Seu perfil nao tem permissao para acessar requisicoes de materiais.');
     return;
   }
@@ -3951,7 +3960,7 @@ window.carregarObrasParaMateriais = async function() {
   try {
     let obrasQuery;
 
-    if (['admin', 'montagem', 'conferencia', 'visualizacao'].includes(window.perfilUsuarioLogado)) {
+    if (['admin', 'gerente', 'montagem', 'conferencia', 'visualizacao'].includes(window.perfilUsuarioLogado)) {
       obrasQuery = query(collection(db, "obras"), orderBy("criadoEmServidor", "desc"), limit(100));
     } else {
       obrasQuery = query(
@@ -4110,7 +4119,7 @@ function renderizarMateriais(requisicoes) {
       <strong>Solicitado por:</strong> ${item.usuarioEmail || 'Não informado'}<br>
       <strong>Data:</strong> ${item.criadoLocalmenteEm || 'Não informada'}<br>
       <strong>Observação:</strong> ${item.observacao || 'Sem observação'}<br>
-      ${window.perfilUsuarioLogado === 'admin' ? `
+      ${['admin', 'gerente'].includes(window.perfilUsuarioLogado) ? `
         <button type="button" class="botao-secundario" onclick="alterarStatusMaterial('${item.id}', 'Aprovado')">Aprovar</button>
         <button type="button" class="botao-secundario" onclick="alterarStatusMaterial('${item.id}', 'Comprado')">Marcar Comprado</button>
         <button type="button" class="botao-secundario" onclick="alterarStatusMaterial('${item.id}', 'Entregue')">Marcar Entregue</button>
@@ -4147,7 +4156,7 @@ window.limparFiltrosMateriais = function() {
 };
 
 window.exportarMateriaisCSV = function() {
-  if (window.perfilUsuarioLogado !== 'admin') {
+  if (!['admin', 'gerente'].includes(window.perfilUsuarioLogado)) {
     alert('Seu perfil nao tem permissao para exportar materiais.');
     return;
   }
@@ -4208,7 +4217,7 @@ window.exportarMateriaisCSV = function() {
 };
 
 window.exportarMateriaisJSON = function() {
-  if (window.perfilUsuarioLogado !== 'admin') {
+  if (!['admin', 'gerente'].includes(window.perfilUsuarioLogado)) {
     alert('Seu perfil nao tem permissao para gerar backup de materiais.');
     return;
   }
@@ -4251,8 +4260,8 @@ function classeStatusMaterial(status) {
 }
 
 window.alterarStatusMaterial = async function(id, novoStatus) {
-  if (window.perfilUsuarioLogado !== 'admin') {
-    alert('Apenas admin pode alterar status de material.');
+  if (!['admin', 'gerente'].includes(window.perfilUsuarioLogado)) {
+    alert('Apenas admin ou gerente pode alterar status de material.');
     return;
   }
 
@@ -4422,7 +4431,7 @@ window.limparFiltrosHistorico = function() {
 };
 
 window.exportarCSV = function() {
-  if (window.perfilUsuarioLogado !== 'admin') {
+  if (!['admin', 'gerente'].includes(window.perfilUsuarioLogado)) {
     alert('Seu perfil nao tem permissao para exportar CSV.');
     return;
   }
