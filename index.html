@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=18">
+  <link rel="manifest" href="manifest.json?v=19">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -578,12 +578,15 @@ button:active {
     position: sticky;
     top: 8px;
     width: 100%;
+    max-height: 260px;
     padding: 10px 10px;
     gap: 8px;
     border-radius: 16px;
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
+    overflow: hidden;
+    transition: max-height 0.25s ease, padding 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
   }
 
   .layout-app.atalhos-fechados {
@@ -594,13 +597,14 @@ button:active {
     width: 100%;
     max-width: none;
     min-width: 0;
-    padding: 10px 10px;
-    border: 1px solid rgba(212,160,23,0.34);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.30);
-    opacity: 1;
-    overflow: visible;
-    pointer-events: auto;
-    transform: none;
+    max-height: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transform: translateY(-10px);
   }
 
   .menu-icon-btn {
@@ -2866,7 +2870,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101101';
+const VERSAO_APP_CH_OBRAS = '101102';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
