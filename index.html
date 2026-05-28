@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=9">
+  <link rel="manifest" href="manifest.json?v=10">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -382,6 +382,18 @@ button:active {
   padding: 14px;
   border-radius: 14px;
   font-size: 16px;
+}
+
+.area-visualizar {
+  display: none !important;
+}
+
+#acoesPrincipais:not([open]) {
+  display: none;
+}
+
+#acoesPrincipais > summary {
+  display: none;
 }
 
 .acao-icone {
@@ -2418,7 +2430,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101092';
+const VERSAO_APP_CH_OBRAS = '101093';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
