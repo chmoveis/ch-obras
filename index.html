@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=14">
+  <link rel="manifest" href="manifest.json?v=15">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -131,6 +131,7 @@ body {
 .menu-btn-history svg { stroke: #c2410c; }
 .menu-btn-materials svg { stroke: #7c3aed; }
 .menu-btn-actions svg { stroke: #0f172a; }
+.menu-btn-logout svg { stroke: #b91c1c; }
 .menu-btn-top svg { stroke: #be123c; }
 
 .app {
@@ -156,7 +157,7 @@ body {
   right: 0;
   bottom: 0;
   z-index: 100000;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 8px;
   padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
   background: rgba(15,15,15,0.96);
@@ -859,23 +860,54 @@ border-left:4px solid #d4a017;
 }
 
 .dashboard-profissional {
+  position: relative;
+  overflow: hidden;
   margin-top: 18px;
-  padding: 18px;
-  border-radius: 22px;
-  background: linear-gradient(135deg, rgba(17,17,17,0.96), rgba(58,58,58,0.92));
+  padding: 20px;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #67ccf4 0%, #48b5e6 36%, #2f7ea8 100%);
   color: #ffffff;
-  box-shadow: 0 10px 28px rgba(0,0,0,0.24);
-  border: 1px solid rgba(212,160,23,0.45);
+  box-shadow: 0 16px 34px rgba(28, 75, 102, 0.30);
+  border: 1px solid rgba(255,255,255,0.34);
+}
+
+.dashboard-profissional::before,
+.dashboard-profissional::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.dashboard-profissional::before {
+  width: 220px;
+  height: 220px;
+  right: -90px;
+  top: -120px;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.34), rgba(255,255,255,0));
+}
+
+.dashboard-profissional::after {
+  width: 170px;
+  height: 170px;
+  left: -70px;
+  bottom: -90px;
+  background: radial-gradient(circle at center, rgba(12,70,98,0.34), rgba(12,70,98,0));
+}
+
+.dashboard-profissional > * {
+  position: relative;
+  z-index: 1;
 }
 
 .dashboard-profissional h2 {
   color: #ffffff;
-  border-bottom: 2px solid #d4a017;
+  border-bottom: 2px solid rgba(198, 238, 255, 0.85);
   margin-top: 0;
 }
 
 .dashboard-subtitulo {
-  color: #f3f3f3;
+  color: #e6f7ff;
   font-size: 13px;
   margin-top: -6px;
   margin-bottom: 14px;
@@ -883,35 +915,46 @@ border-left:4px solid #d4a017;
 
 .cards-resumo.dashboard-grid {
   grid-template-columns: 1fr 1fr;
+  gap: 14px;
 }
 
 .dashboard-profissional .card-resumo {
-  background: rgba(255,255,255,0.96);
-  color: #111;
-  border-left: 6px solid #d4a017;
+  border-radius: 16px;
+  border-left: none;
+  border-top: 4px solid #82daf7;
+  background: rgba(255,255,255,0.93);
+  box-shadow: 0 6px 18px rgba(20, 66, 92, 0.16);
+  color: #163647;
+}
+
+.dashboard-profissional .card-resumo h3 {
+  color: #24506a;
+  font-size: 16px;
 }
 
 .dashboard-profissional .card-resumo p {
-  color: #111;
+  color: #102a38;
+  font-size: 34px;
+  font-weight: 800;
 }
 
 .dashboard-materiais {
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
 .dashboard-barra {
   margin-top: 14px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.34);
   border-radius: 999px;
   overflow: hidden;
   height: 14px;
-  border: 1px solid rgba(255,255,255,0.18);
+  border: 1px solid rgba(214,244,255,0.58);
 }
 
 .dashboard-barra-preenchida {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #d4a017, #f5cf5c);
+  background: linear-gradient(90deg, #ffef9a, #ffcf46);
   border-radius: 999px;
   transition: width 0.35s ease;
 }
@@ -920,8 +963,9 @@ border-left:4px solid #d4a017;
   margin-top: 14px;
   padding: 14px;
   border-radius: 16px;
-  background: rgba(255,255,255,0.10);
+  background: rgba(17, 71, 99, 0.28);
   color: #ffffff;
+  border: 1px solid rgba(206,240,255,0.32);
   font-size: 14px;
   line-height: 1.45;
 }
@@ -931,10 +975,10 @@ border-left:4px solid #d4a017;
   margin-top: 8px;
   padding: 7px 12px;
   border-radius: 999px;
-  background: rgba(212,160,23,0.18);
-  color: #ffd76b;
+  background: rgba(223,245,255,0.24);
+  color: #e8f9ff;
   font-weight: bold;
-  border: 1px solid rgba(212,160,23,0.45);
+  border: 1px solid rgba(214,246,255,0.52);
 }
 
 canvas {
@@ -1239,6 +1283,13 @@ Atualizar App / Limpar Cache
         <circle cx="11" cy="17" r="2"/>
       </svg>
     </button>
+    <button type="button" id="btnLogoutAtalho" class="menu-icon-btn menu-btn-logout" title="Sair do sistema" aria-label="Sair do sistema" onclick="logoutApp()">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+        <path d="M10 17l5-5-5-5"/>
+        <path d="M15 12H3"/>
+      </svg>
+    </button>
     <button type="button" class="menu-icon-btn menu-btn-top" title="Voltar ao topo" aria-label="Voltar ao topo" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 19V5"/>
@@ -1414,9 +1465,6 @@ text-align:center;
 font-size:14px;
 ">
   <div id="usuarioLogadoTexto">Usuário logado</div>
-  <button type="button" onclick="logoutApp()" class="botao-secundario">
-    Sair do sistema
-  </button>
 </div>
     <details class="acoes-principais" id="acoesPrincipais">
       <summary>Ações Principais</summary>
@@ -2515,7 +2563,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101097';
+const VERSAO_APP_CH_OBRAS = '101098';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
@@ -2747,6 +2795,7 @@ function aplicarPermissoesInterface() {
   const btnMateriais = document.getElementById('btnMateriais');
   const btnExportarMateriais = document.getElementById('btnExportarMateriaisCSV');
   const btnExportarMateriaisJSON = document.getElementById('btnExportarMateriaisJSON');
+  const btnLogoutAtalho = document.getElementById('btnLogoutAtalho');
   const botaoSalvar = document.getElementById('botaoSalvar');
 
   if (btnLimpar) btnLimpar.style.display = usuarioEhAdminOuGerente() ? 'block' : 'none';
@@ -2762,6 +2811,7 @@ function aplicarPermissoesInterface() {
   if (btnExportarMateriais) btnExportarMateriais.style.display = usuarioEhAdminOuGerente() ? 'block' : 'none';
   if (btnExportarMateriaisJSON) btnExportarMateriaisJSON.style.display = usuarioEhAdminOuGerente() ? 'block' : 'none';
   if (btnMateriais) btnMateriais.style.display = ['admin', 'gerente', 'marceneiro', 'montagem'].includes(perfil) ? 'block' : 'none';
+  if (btnLogoutAtalho) btnLogoutAtalho.style.display = 'flex';
   if (botaoSalvar) {
     botaoSalvar.style.display = usuarioPodeCriarObra() || window.idObraEditando ? 'block' : 'none';
   }
@@ -2872,6 +2922,7 @@ onAuthStateChanged(auth, async (user) => {
   const barraUsuario = document.getElementById('barraUsuario');
   const usuarioTexto = document.getElementById('usuarioLogadoTexto');
   const perfilPainel = document.getElementById('perfilPainel');
+  const btnLogoutAtalho = document.getElementById('btnLogoutAtalho');
   window.perfilUsuarioLogado = 'usuario';
   window.usuarioEmailLogado = '';
 
@@ -2880,6 +2931,7 @@ onAuthStateChanged(auth, async (user) => {
     limparMensagemLogin();
 
     if (barraUsuario) barraUsuario.style.display = 'none';
+    if (btnLogoutAtalho) btnLogoutAtalho.style.display = 'none';
     if (perfilPainel) perfilPainel.innerText = 'Perfil: aguardando login';
     if (status) status.innerText = 'Status: aguardando autenticação.';
 
@@ -2937,6 +2989,7 @@ onAuthStateChanged(auth, async (user) => {
   document.getElementById('telaLogin').style.display = 'none';
 
   if (barraUsuario) barraUsuario.style.display = 'block';
+  if (btnLogoutAtalho) btnLogoutAtalho.style.display = 'flex';
 
   if (usuarioTexto) {
     usuarioTexto.innerText = 'Usuário logado: ' + user.email + ' | Perfil: ' + perfilUsuario;
@@ -5510,6 +5563,7 @@ margin-bottom:20px;"></div>
   <button type="button" onclick="salvarChecklist()">Salvar</button>
   <button type="button" onclick="mostrarHistorico()">Histórico</button>
   <button type="button" onclick="alternarAcoesPrincipais()">Menu</button>
+  <button type="button" onclick="logoutApp()">Sair</button>
   <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">Topo</button>
 </div>
 </body>
