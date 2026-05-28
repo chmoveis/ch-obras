@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=4">
+  <link rel="manifest" href="manifest.json?v=5">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -23,9 +23,69 @@ body {
   overflow-x: hidden;
 }
 
-.app {
-  max-width: 520px; 
+.layout-app {
+  max-width: 680px;
   margin: 20px auto;
+  padding: 0 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.menu-lateral-slim {
+  position: sticky;
+  top: 18px;
+  width: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 8px;
+  border-radius: 18px;
+  background: rgba(16,16,16,0.95);
+  border: 1px solid rgba(212,160,23,0.30);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.28);
+  z-index: 99;
+}
+
+.menu-icon-btn {
+  width: 38px;
+  height: 38px;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #111111, #2f2f2f) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  box-shadow: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-icon-btn .menu-icon-glyph {
+  font-size: 18px;
+  line-height: 1;
+  color: #f5f5f5;
+}
+
+.menu-icon-btn i {
+  width: 18px;
+  height: 18px;
+  color: #f5f5f5;
+  stroke-width: 2.1px;
+}
+
+.menu-icon-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(212,160,23,0.55) !important;
+}
+
+.app {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
   min-height: 100vh;
   background: rgba(255,255,255,0.82);
   backdrop-filter: blur(12px);
@@ -118,6 +178,42 @@ h2 {
   padding-bottom: 8px;
   margin-top: 30px;
   font-size: 19px;
+}
+
+.formulario-checklist {
+  margin-top: 8px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(212,160,23,0.30);
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+
+.formulario-checklist summary {
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 800;
+  list-style: none;
+}
+
+.formulario-checklist summary::-webkit-details-marker {
+  display: none;
+}
+
+.formulario-checklist summary::after {
+  content: '+';
+  float: right;
+  color: #d4a017;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.formulario-checklist[open] summary::after {
+  content: '-';
+}
+
+.formulario-checklist-conteudo {
+  margin-top: 10px;
 }
 
 label {
@@ -275,14 +371,32 @@ button:active {
 }
 
 @media (max-width: 900px) {
-  body {
-    padding-bottom: 88px;
+  body { padding-bottom: 0; }
+
+  .layout-app {
+    margin: 0;
+    padding: 10px 8px;
+    gap: 8px;
+  }
+
+  .menu-lateral-slim {
+    top: 10px;
+    width: 48px;
+    padding: 10px 6px;
+    gap: 8px;
+    border-radius: 14px;
+  }
+
+  .menu-icon-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px !important;
   }
 
   .app {
-    margin: 0 auto;
-    border-radius: 0;
-    padding-bottom: 32px;
+    border-radius: 16px;
+    padding: 18px 14px 26px;
+    min-height: auto;
   }
 
   .acoes-principais {
@@ -296,9 +410,7 @@ button:active {
     box-shadow: 0 5px 14px rgba(0,0,0,0.20);
   }
 
-  .barra-mobile {
-    display: grid;
-  }
+  .barra-mobile { display: none !important; }
 
 }
 
@@ -924,6 +1036,28 @@ Atualizar App / Limpar Cache
 
 </div>
 </div>
+<div class="layout-app">
+  <aside class="menu-lateral-slim" aria-label="Menu lateral compacto">
+    <button type="button" class="menu-icon-btn" title="Abrir/fechar checklist" aria-label="Abrir ou fechar checklist" onclick="alternarFormularioChecklist()">
+      <span class="menu-icon-glyph" aria-hidden="true">&#9998;</span>
+    </button>
+    <button type="button" class="menu-icon-btn" title="Salvar checklist" aria-label="Salvar checklist" onclick="salvarChecklist()">
+      <span class="menu-icon-glyph" aria-hidden="true">&#128190;</span>
+    </button>
+    <button type="button" class="menu-icon-btn" title="Histórico de obras" aria-label="Histórico de obras" onclick="mostrarHistorico()">
+      <span class="menu-icon-glyph" aria-hidden="true">&#128340;</span>
+    </button>
+    <button type="button" class="menu-icon-btn" title="Materiais" aria-label="Requisição de materiais" onclick="mostrarMateriais()">
+      <span class="menu-icon-glyph" aria-hidden="true">&#128230;</span>
+    </button>
+    <button type="button" class="menu-icon-btn" title="Ações principais" aria-label="Abrir ações principais" onclick="alternarAcoesPrincipais()">
+      <span class="menu-icon-glyph" aria-hidden="true">&#9881;</span>
+    </button>
+    <button type="button" class="menu-icon-btn" title="Voltar ao topo" aria-label="Voltar ao topo" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+      <span class="menu-icon-glyph" aria-hidden="true">&#8679;</span>
+    </button>
+  </aside>
+
   <div class="app">
     <div class="cabecalho">
       <img src="logotipo novo atual.jpg" alt="CH Móveis" class="logo" />
@@ -932,6 +1066,9 @@ Atualizar App / Limpar Cache
       <span class="versao-app" id="versaoAppCabecalho">Versão carregando...</span>
     </div>
 
+    <details class="formulario-checklist" id="formularioChecklist">
+      <summary>Formulário do Checklist</summary>
+      <div class="formulario-checklist-conteudo">
     <h2>1. Dados da Obra</h2>
 
     <label for="cliente">Nome do cliente</label>
@@ -1071,6 +1208,8 @@ Atualizar App / Limpar Cache
       <button type="button" onclick="limparAssinatura()" class="botao-secundario">Limpar Assinatura</button>
       <p class="aviso-assinatura">O cliente deve assinar dentro do quadro acima.</p>
     </div>
+      </div>
+    </details>
 
     <div id="avisoEdicao" style="display:none; background:#fff3cd; border:1px solid #d4a017; padding:12px; border-radius:10px; margin-top:20px; font-weight:bold; text-align:center;">
       Modo edição ativo
@@ -1090,7 +1229,7 @@ font-size:14px;
     Sair do sistema
   </button>
 </div>
-    <details class="acoes-principais" id="acoesPrincipais" open>
+    <details class="acoes-principais" id="acoesPrincipais">
       <summary>Ações Principais</summary>
       <div id="statusRascunhoChecklist" class="rascunho-status"></div>
       <button type="button" id="btnDescartarRascunhoChecklist" class="botao-rascunho" onclick="descartarRascunhoChecklist()">Descartar Rascunho</button>
@@ -1404,6 +1543,7 @@ Nova Obra / Limpar Formulário
       </div>
     </div>
   </div>
+</div>
 
   <script>
 function pegarValor(id) {
@@ -1533,6 +1673,16 @@ function ativarRascunhoAutomatico() {
   window.addEventListener('beforeunload', salvarRascunhoChecklist);
   atualizarStatusRascunhoChecklist();
   setTimeout(restaurarRascunhoChecklist, 600);
+}
+
+function alternarFormularioChecklist() {
+  const bloco = document.getElementById('formularioChecklist');
+  if (!bloco) return;
+
+  bloco.open = !bloco.open;
+  if (bloco.open) {
+    bloco.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 function alternarAcoesPrincipais() {
@@ -2156,7 +2306,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101087';
+const VERSAO_APP_CH_OBRAS = '101088';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
