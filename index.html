@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=16">
+  <link rel="manifest" href="manifest.json?v=17">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -133,6 +133,69 @@ body {
 .menu-btn-actions svg { stroke: #0f172a; }
 .menu-btn-logout svg { stroke: #b91c1c; }
 .menu-btn-top svg { stroke: #be123c; }
+
+.layout-app.atalhos-fechados {
+  grid-template-columns: 0 minmax(0, 1fr);
+}
+
+.layout-app.atalhos-fechados .menu-lateral-slim {
+  width: 0;
+  min-width: 0;
+  max-width: 0;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateX(-22px);
+}
+
+.btn-toggle-atalhos {
+  position: fixed;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 62px;
+  border-radius: 16px;
+  border: 1px solid #b88907;
+  background: linear-gradient(160deg, #f8dc86, #d9a91f);
+  color: #111111;
+  font-size: 26px;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+  box-shadow:
+    0 12px 24px rgba(118,87,6,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.68);
+  cursor: pointer;
+  z-index: 100002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, right 0.25s ease;
+}
+
+.btn-toggle-atalhos:hover {
+  transform: translateY(-50%) translateX(-2px);
+  box-shadow:
+    0 14px 28px rgba(118,87,6,0.32),
+    inset 0 1px 0 rgba(255,255,255,0.74);
+}
+
+.btn-toggle-atalhos:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.btn-toggle-atalhos span {
+  display: inline-block;
+  transform: translateY(-1px);
+}
+
+.layout-app.atalhos-fechados + .btn-toggle-atalhos {
+  right: 10px;
+}
 
 .app {
   flex: 1;
@@ -522,6 +585,23 @@ button:active {
     flex-wrap: wrap;
   }
 
+  .layout-app.atalhos-fechados {
+    grid-template-columns: 1fr;
+  }
+
+  .layout-app.atalhos-fechados .menu-lateral-slim {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    padding: 10px 10px;
+    border: 1px solid rgba(212,160,23,0.34);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.30);
+    opacity: 1;
+    overflow: visible;
+    pointer-events: auto;
+    transform: none;
+  }
+
   .menu-icon-btn {
     width: 44px;
     height: 44px;
@@ -574,6 +654,10 @@ button:active {
 
   #barraUsuario {
     text-align: left;
+  }
+
+  .btn-toggle-atalhos {
+    display: none;
   }
 
   .barra-mobile { display: grid !important; }
@@ -1145,7 +1229,7 @@ canvas {
     background: white;
   }
 
-  button, input[type="file"], .area-visualizar {
+  button, input[type="file"], .area-visualizar, .btn-toggle-atalhos {
     display: none;
   }
 
@@ -1937,6 +2021,18 @@ id="btnLimparFormulario"
   </div>
 </div>
 
+<button
+type="button"
+id="btnToggleAtalhos"
+class="btn-toggle-atalhos"
+style="display:none;"
+aria-label="Mostrar ou esconder atalhos"
+title="Esconder atalhos"
+onclick="alternarAtalhosLaterais()"
+>
+  <span aria-hidden="true">⋮</span>
+</button>
+
   <script>
 function pegarValor(id) {
   return document.getElementById(id).value;
@@ -2085,6 +2181,48 @@ function alternarAcoesPrincipais() {
   bloco.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+const CHAVE_ATALHOS_OCULTOS = 'atalhosOcultosCHObras';
+
+function atualizarBotaoAtalhosLaterais(ocultos) {
+  const botao = document.getElementById('btnToggleAtalhos');
+  if (!botao) return;
+
+  botao.setAttribute('aria-expanded', ocultos ? 'false' : 'true');
+  botao.title = ocultos ? 'Mostrar atalhos' : 'Esconder atalhos';
+}
+
+function atualizarVisibilidadeBotaoAtalhosLaterais() {
+  const botao = document.getElementById('btnToggleAtalhos');
+  if (!botao) return;
+
+  if (!window.usuarioEmailLogado || window.innerWidth <= 980) {
+    botao.style.display = 'none';
+    return;
+  }
+
+  botao.style.display = 'flex';
+}
+
+window.alternarAtalhosLaterais = function() {
+  const layout = document.querySelector('.layout-app');
+  if (!layout) return;
+
+  const ocultos = !layout.classList.contains('atalhos-fechados');
+  layout.classList.toggle('atalhos-fechados', ocultos);
+  localStorage.setItem(CHAVE_ATALHOS_OCULTOS, ocultos ? '1' : '0');
+  atualizarBotaoAtalhosLaterais(ocultos);
+};
+
+function restaurarEstadoAtalhosLaterais() {
+  const layout = document.querySelector('.layout-app');
+  if (!layout) return;
+
+  const ocultos = localStorage.getItem(CHAVE_ATALHOS_OCULTOS) === '1';
+  layout.classList.toggle('atalhos-fechados', ocultos);
+  atualizarBotaoAtalhosLaterais(ocultos);
+  atualizarVisibilidadeBotaoAtalhosLaterais();
+}
+
 function bloquearCliqueDiretoAcoesPrincipais() {
   const bloco = document.getElementById('acoesPrincipais');
   if (!bloco) return;
@@ -2107,6 +2245,8 @@ function bloquearCliqueDiretoAcoesPrincipais() {
 }
 
 bloquearCliqueDiretoAcoesPrincipais();
+restaurarEstadoAtalhosLaterais();
+window.addEventListener('resize', atualizarVisibilidadeBotaoAtalhosLaterais);
 
 window.normalizarStatusObra = window.normalizarStatusObra || function(status) {
   const textoOriginal = String(status || '').trim();
@@ -2721,7 +2861,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101099';
+const VERSAO_APP_CH_OBRAS = '101100';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
@@ -3081,6 +3221,7 @@ onAuthStateChanged(auth, async (user) => {
   const usuarioTexto = document.getElementById('usuarioLogadoTexto');
   const perfilPainel = document.getElementById('perfilPainel');
   const btnLogoutAtalho = document.getElementById('btnLogoutAtalho');
+  const btnToggleAtalhos = document.getElementById('btnToggleAtalhos');
   window.perfilUsuarioLogado = 'usuario';
   window.usuarioEmailLogado = '';
 
@@ -3090,6 +3231,7 @@ onAuthStateChanged(auth, async (user) => {
 
     if (barraUsuario) barraUsuario.style.display = 'none';
     if (btnLogoutAtalho) btnLogoutAtalho.style.display = 'none';
+    if (btnToggleAtalhos) btnToggleAtalhos.style.display = 'none';
     if (perfilPainel) perfilPainel.innerText = 'Perfil: aguardando login';
     if (status) status.innerText = 'Status: aguardando autenticação.';
 
@@ -3148,6 +3290,7 @@ onAuthStateChanged(auth, async (user) => {
 
   if (barraUsuario) barraUsuario.style.display = 'block';
   if (btnLogoutAtalho) btnLogoutAtalho.style.display = 'flex';
+  if (btnToggleAtalhos) atualizarVisibilidadeBotaoAtalhosLaterais();
 
   if (usuarioTexto) {
     usuarioTexto.innerText = 'Usuário logado: ' + user.email + ' | Perfil: ' + perfilUsuario;
