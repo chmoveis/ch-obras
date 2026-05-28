@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=8">
+  <link rel="manifest" href="manifest.json?v=9">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -325,11 +325,12 @@ button:active {
 }
 
 .acoes-principais summary {
-  cursor: pointer;
+  cursor: default;
   font-weight: 800;
   font-size: 18px;
   color: #111;
   list-style: none;
+  user-select: none;
 }
 
 .acoes-principais summary::-webkit-details-marker {
@@ -337,15 +338,15 @@ button:active {
 }
 
 .acoes-principais summary::after {
-  content: '+';
+  content: '☰';
   float: right;
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1;
   color: #d4a017;
 }
 
 .acoes-principais[open] summary::after {
-  content: '-';
+  content: '☰';
 }
 
 .acoes-principais-conteudo {
@@ -381,6 +382,13 @@ button:active {
   padding: 14px;
   border-radius: 14px;
   font-size: 16px;
+}
+
+.acao-icone {
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 16px;
+  vertical-align: middle;
 }
 
 @media (max-width: 980px) {
@@ -1314,30 +1322,30 @@ font-size:14px;
       <div id="statusRascunhoChecklist" class="rascunho-status"></div>
       <button type="button" id="btnDescartarRascunhoChecklist" class="botao-rascunho" onclick="descartarRascunhoChecklist()">Descartar Rascunho</button>
       <div class="acoes-principais-conteudo">
-    <button id="botaoSalvar" onclick="salvarChecklist()">Salvar Obra</button>
-    <button type="button" onclick="alternarFormularioChecklist()" class="botao-secundario" id="btnToggleFormularioChecklist">Abrir/Fechar Formulario do Checklist</button>
+    <button id="botaoSalvar" onclick="salvarChecklist()"><span class="acao-icone">💾</span>Salvar Obra</button>
+    <button type="button" onclick="alternarFormularioChecklist()" class="botao-secundario" id="btnToggleFormularioChecklist"><span class="acao-icone">📝</span>Abrir/Fechar Formulario do Checklist</button>
     <button 
 type="button"
 onclick="limparFormulario()"
 class="botao-secundario"
 id="btnLimparFormulario"
 >
-Nova Obra (Limpar Formulario)
+<span class="acao-icone">🧹</span>Nova Obra (Limpar Formulario)
 </button>
-    <button onclick="gerarPDF()" class="botao-secundario">Gerar PDF da Obra</button>
-    <button onclick="mostrarHistorico()">Abrir Histórico de Obras</button>
-    <button type="button" onclick="ocultarHistorico()" class="botao-secundario">Fechar Histórico</button>
-    <button type="button" onclick="mostrarConfiguracoesSistema()" class="botao-secundario" id="btnConfiguracoesSistema">Abrir Configurações do Sistema</button>
-    <button type="button" onclick="limparCacheAtualizarApp()" class="botao-secundario" id="btnAtualizarAppCache">Atualizar Aplicativo e Limpar Cache</button>
-    <button type="button" onclick="mostrarLogsOperacionais()" class="botao-secundario" id="btnLogsOperacionais">Abrir Histórico Operacional</button>
-    <button type="button" onclick="mostrarProdutividade()" class="botao-secundario" id="btnProdutividade">Abrir Produtividade</button>
-    <button type="button" onclick="mostrarUsuarios()" class="botao-secundario" id="btnUsuarios">Abrir Gerenciamento de Usuários</button>
-    <button type="button" onclick="mostrarMateriais()" class="botao-secundario" id="btnMateriais">Abrir Requisição de Materiais</button>
-    <button type="button" onclick="exportarCSV()" class="botao-secundario" id="btnExportarCSV">Exportar Obras em CSV</button>
-    <button type="button" onclick="exportarBackupJSON()" class="botao-secundario" id="btnExportarJSON">Exportar Backup de Obras (JSON)</button>
-    <button type="button" onclick="exportarBackupCompletoJSON()" class="botao-secundario" id="btnBackupCompletoJSON">Exportar Backup Completo (JSON)</button>
-    <button type="button" onclick="mostrarRestaurarBackup()" class="botao-secundario" id="btnRestaurarBackup">Abrir Restauração de Backup (JSON)</button>
-    <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="botao-secundario">Voltar para o Topo</button>
+    <button onclick="gerarPDF()" class="botao-secundario"><span class="acao-icone">📄</span>Gerar PDF da Obra</button>
+    <button onclick="mostrarHistorico()"><span class="acao-icone">📚</span>Abrir Histórico de Obras</button>
+    <button type="button" onclick="ocultarHistorico()" class="botao-secundario"><span class="acao-icone">📕</span>Fechar Histórico</button>
+    <button type="button" onclick="mostrarConfiguracoesSistema()" class="botao-secundario" id="btnConfiguracoesSistema"><span class="acao-icone">⚙️</span>Abrir Configurações do Sistema</button>
+    <button type="button" onclick="limparCacheAtualizarApp()" class="botao-secundario" id="btnAtualizarAppCache"><span class="acao-icone">🔄</span>Atualizar Aplicativo e Limpar Cache</button>
+    <button type="button" onclick="mostrarLogsOperacionais()" class="botao-secundario" id="btnLogsOperacionais"><span class="acao-icone">🕒</span>Abrir Histórico Operacional</button>
+    <button type="button" onclick="mostrarProdutividade()" class="botao-secundario" id="btnProdutividade"><span class="acao-icone">📈</span>Abrir Produtividade</button>
+    <button type="button" onclick="mostrarUsuarios()" class="botao-secundario" id="btnUsuarios"><span class="acao-icone">👥</span>Abrir Gerenciamento de Usuários</button>
+    <button type="button" onclick="mostrarMateriais()" class="botao-secundario" id="btnMateriais"><span class="acao-icone">📦</span>Abrir Requisição de Materiais</button>
+    <button type="button" onclick="exportarCSV()" class="botao-secundario" id="btnExportarCSV"><span class="acao-icone">📊</span>Exportar Obras em CSV</button>
+    <button type="button" onclick="exportarBackupJSON()" class="botao-secundario" id="btnExportarJSON"><span class="acao-icone">🗂️</span>Exportar Backup de Obras (JSON)</button>
+    <button type="button" onclick="exportarBackupCompletoJSON()" class="botao-secundario" id="btnBackupCompletoJSON"><span class="acao-icone">🧰</span>Exportar Backup Completo (JSON)</button>
+    <button type="button" onclick="mostrarRestaurarBackup()" class="botao-secundario" id="btnRestaurarBackup"><span class="acao-icone">♻️</span>Abrir Restauração de Backup (JSON)</button>
+    <button type="button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="botao-secundario"><span class="acao-icone">⬆️</span>Voltar para o Topo</button>
       </div>
     </details>
 
@@ -1773,6 +1781,29 @@ function alternarAcoesPrincipais() {
   bloco.open = !bloco.open;
   bloco.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+function bloquearCliqueDiretoAcoesPrincipais() {
+  const bloco = document.getElementById('acoesPrincipais');
+  if (!bloco) return;
+
+  const resumo = bloco.querySelector('summary');
+  if (!resumo || resumo.dataset.bloqueioAtivo === '1') return;
+
+  resumo.dataset.bloqueioAtivo = '1';
+  resumo.title = 'Use o botão do menu principal para abrir/fechar.';
+
+  resumo.addEventListener('click', function(evento) {
+    evento.preventDefault();
+  });
+
+  resumo.addEventListener('keydown', function(evento) {
+    if (evento.key === 'Enter' || evento.key === ' ') {
+      evento.preventDefault();
+    }
+  });
+}
+
+bloquearCliqueDiretoAcoesPrincipais();
 
 window.normalizarStatusObra = window.normalizarStatusObra || function(status) {
   const textoOriginal = String(status || '').trim();
@@ -2387,7 +2418,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101091';
+const VERSAO_APP_CH_OBRAS = '101092';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
