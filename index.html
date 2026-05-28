@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=13">
+  <link rel="manifest" href="manifest.json?v=14">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -2515,7 +2515,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101096';
+const VERSAO_APP_CH_OBRAS = '101097';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
@@ -2951,6 +2951,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   aplicarPermissoesInterface();
+  await carregarDashboardInicial();
 
 });
 window.logoutApp = async function () {
@@ -2990,6 +2991,74 @@ window.enviarFotoParaStorage = async function(inputId, nomePasta) {
   const urls = await window.enviarFotosParaStorage([inputId], nomePasta);
   return urls[0] || '';
 };
+
+const PAINEIS_SECUNDARIOS_INICIAIS = [
+  'historico',
+  'painelConfiguracoesSistema',
+  'historicoOperacional',
+  'painelProdutividade',
+  'painelUsuarios',
+  'moduloMateriais',
+  'painelRestaurarBackup'
+];
+
+function ocultarPaineisSecundariosIniciais() {
+  PAINEIS_SECUNDARIOS_INICIAIS.forEach((idPainel) => {
+    const painel = document.getElementById(idPainel);
+    if (painel) painel.style.display = 'none';
+  });
+}
+
+async function carregarDashboardInicial() {
+  const dashboardResumo = document.getElementById('dashboardResumo');
+  if (dashboardResumo) dashboardResumo.style.display = 'block';
+
+  ocultarPaineisSecundariosIniciais();
+
+  const resultado = document.getElementById('resultado');
+  if (resultado) resultado.style.display = 'none';
+
+  const formularioChecklist = document.getElementById('formularioChecklist');
+  if (formularioChecklist) formularioChecklist.open = false;
+
+  const acoesPrincipais = document.getElementById('acoesPrincipais');
+  if (acoesPrincipais) acoesPrincipais.open = false;
+
+  try {
+    let obrasOrdenadas;
+
+    if (['admin', 'gerente', 'montagem', 'conferencia', 'visualizacao'].includes(window.perfilUsuarioLogado)) {
+      obrasOrdenadas = query(
+        collection(db, "obras"),
+        orderBy("criadoEmServidor", "desc")
+      );
+    } else {
+      obrasOrdenadas = query(
+        collection(db, "obras"),
+        where("emailUsuario", "==", window.usuarioEmailLogado),
+        orderBy("criadoEmServidor", "desc")
+      );
+    }
+
+    const querySnapshot = await getDocs(obrasOrdenadas);
+    obrasCache = [];
+
+    querySnapshot.forEach((docItem) => {
+      obrasCache.push({ id: docItem.id, ...docItem.data() });
+    });
+
+    localStorage.setItem('obrasCacheCHObras', JSON.stringify(obrasCache));
+    atualizarDashboard(obrasCache);
+  } catch (erro) {
+    console.error('Erro ao carregar dashboard inicial:', erro);
+    const cache = JSON.parse(localStorage.getItem('obrasCacheCHObras')) || [];
+    obrasCache = cache;
+    atualizarDashboard(cache);
+
+    const status = document.getElementById('statusConexao');
+    if (status) status.innerText = 'Status: usando cache local/offline.';
+  }
+}
 
 async function registrarLogOperacional(acao, obraId, dadosObra, obraAnterior = null) {
   try {
