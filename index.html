@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=24">
+  <link rel="manifest" href="manifest.json?v=25">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -2398,7 +2398,11 @@ ctx.strokeStyle = '#000000';
 
 function posicao(evento) {
   const rect = canvas.getBoundingClientRect();
-  const toque = evento.touches ? evento.touches[0] : evento;
+  const toque = (evento.touches && evento.touches[0])
+    ? evento.touches[0]
+    : (evento.changedTouches && evento.changedTouches[0])
+      ? evento.changedTouches[0]
+      : evento;
   return {
     x: (toque.clientX - rect.left) * (canvas.width / rect.width),
     y: (toque.clientY - rect.top) * (canvas.height / rect.height)
@@ -2406,19 +2410,26 @@ function posicao(evento) {
 }
 
 function iniciarAssinatura(evento) {
-  evento.preventDefault();
+  if (evento.cancelable) evento.preventDefault();
   desenhando = true;
   assinaturaFeita = true;
   assinaturaAlterada = true;
   const p = posicao(evento);
   ctx.beginPath();
   ctx.moveTo(p.x, p.y);
-  
+
+  if (evento.pointerId !== undefined && canvas.setPointerCapture) {
+    try {
+      canvas.setPointerCapture(evento.pointerId);
+    } catch (erro) {
+      console.log('Nao foi possivel capturar ponteiro da assinatura:', erro);
+    }
+  }
 }
 
 function desenharAssinatura(evento) {
   if (!desenhando) return;
-  evento.preventDefault();
+  if (evento.cancelable) evento.preventDefault();
   const p = posicao(evento);
   ctx.lineTo(p.x, p.y);
   ctx.stroke();
@@ -2426,7 +2437,14 @@ function desenharAssinatura(evento) {
   assinaturaAlterada = true;
 }
 
-function pararAssinatura() {
+function pararAssinatura(evento) {
+  if (evento && evento.pointerId !== undefined && canvas.releasePointerCapture) {
+    try {
+      canvas.releasePointerCapture(evento.pointerId);
+    } catch (erro) {
+      console.log('Nao foi possivel liberar ponteiro da assinatura:', erro);
+    }
+  }
   desenhando = false;
 }
 
@@ -2436,13 +2454,26 @@ function limparAssinatura() {
   assinaturaAlterada = true;
 }
 
-canvas.addEventListener('mousedown', iniciarAssinatura);
-canvas.addEventListener('mousemove', desenharAssinatura);
-canvas.addEventListener('mouseup', pararAssinatura);
-canvas.addEventListener('mouseleave', pararAssinatura);
-canvas.addEventListener('touchstart', iniciarAssinatura);
-canvas.addEventListener('touchmove', desenharAssinatura);
-canvas.addEventListener('touchend', pararAssinatura);
+canvas.style.touchAction = 'none';
+canvas.style.userSelect = 'none';
+canvas.style.webkitUserSelect = 'none';
+
+if ('PointerEvent' in window) {
+  canvas.addEventListener('pointerdown', iniciarAssinatura, { passive: false });
+  canvas.addEventListener('pointermove', desenharAssinatura, { passive: false });
+  canvas.addEventListener('pointerup', pararAssinatura);
+  canvas.addEventListener('pointercancel', pararAssinatura);
+  canvas.addEventListener('pointerleave', pararAssinatura);
+} else {
+  canvas.addEventListener('mousedown', iniciarAssinatura);
+  canvas.addEventListener('mousemove', desenharAssinatura);
+  canvas.addEventListener('mouseup', pararAssinatura);
+  canvas.addEventListener('mouseleave', pararAssinatura);
+  canvas.addEventListener('touchstart', iniciarAssinatura, { passive: false });
+  canvas.addEventListener('touchmove', desenharAssinatura, { passive: false });
+  canvas.addEventListener('touchend', pararAssinatura);
+  canvas.addEventListener('touchcancel', pararAssinatura);
+}
 
 function nomesArquivos(id) {
   const input = document.getElementById(id);
@@ -2969,7 +3000,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101107';
+const VERSAO_APP_CH_OBRAS = '101108';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
