@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=25">
+  <link rel="manifest" href="manifest.json?v=26">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -2244,6 +2244,11 @@ function alternarFormularioChecklist() {
   bloco.open = !bloco.open;
   sincronizarDashboardComChecklist();
   if (bloco.open) {
+    if (typeof window.prepararCanvasAssinatura === 'function') {
+      requestAnimationFrame(function() {
+        window.prepararCanvasAssinatura();
+      });
+    }
     bloco.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
@@ -2387,34 +2392,76 @@ function esconderLoading() {
 }
 
 const canvas = document.getElementById('assinatura');
-const ctx = canvas.getContext('2d');
+const ctx = canvas ? canvas.getContext('2d') : null;
 let desenhando = false;
 let assinaturaFeita = false;
 let assinaturaAlterada = false;
+let origemEventoAssinatura = '';
 
-ctx.lineWidth = 3;
-ctx.lineCap = 'round';
-ctx.strokeStyle = '#000000';
+function configurarPincelAssinatura() {
+  if (!ctx) return;
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.strokeStyle = '#000000';
+}
+
+function prepararCanvasAssinatura() {
+  if (!canvas) return;
+  canvas.style.touchAction = 'none';
+  canvas.style.userSelect = 'none';
+  canvas.style.webkitUserSelect = 'none';
+  canvas.style.webkitTouchCallout = 'none';
+  canvas.style.pointerEvents = 'auto';
+  configurarPincelAssinatura();
+}
+
+window.prepararCanvasAssinatura = prepararCanvasAssinatura;
+
+function tipoEventoAssinatura(evento) {
+  if (!evento || !evento.type) return 'desconhecido';
+  if (evento.type.indexOf('pointer') === 0) return 'pointer';
+  if (evento.type.indexOf('touch') === 0) return 'touch';
+  return 'mouse';
+}
 
 function posicao(evento) {
+  if (!canvas) return { x: 0, y: 0 };
+
   const rect = canvas.getBoundingClientRect();
   const toque = (evento.touches && evento.touches[0])
     ? evento.touches[0]
     : (evento.changedTouches && evento.changedTouches[0])
       ? evento.changedTouches[0]
       : evento;
+
+  const largura = rect.width > 0 ? rect.width : canvas.width;
+  const altura = rect.height > 0 ? rect.height : canvas.height;
+  const xBruto = toque.clientX - rect.left;
+  const yBruto = toque.clientY - rect.top;
+  const xLimitado = Math.max(0, Math.min(largura, xBruto));
+  const yLimitado = Math.max(0, Math.min(altura, yBruto));
+
   return {
-    x: (toque.clientX - rect.left) * (canvas.width / rect.width),
-    y: (toque.clientY - rect.top) * (canvas.height / rect.height)
+    x: xLimitado * (canvas.width / largura),
+    y: yLimitado * (canvas.height / altura)
   };
 }
 
 function iniciarAssinatura(evento) {
+  if (!canvas || !ctx) return;
+
+  const rect = canvas.getBoundingClientRect();
+  if (rect.width < 2 || rect.height < 2) return;
+
   if (evento.cancelable) evento.preventDefault();
+
+  origemEventoAssinatura = tipoEventoAssinatura(evento);
   desenhando = true;
   assinaturaFeita = true;
   assinaturaAlterada = true;
   const p = posicao(evento);
+  configurarPincelAssinatura();
   ctx.beginPath();
   ctx.moveTo(p.x, p.y);
 
@@ -2428,7 +2475,11 @@ function iniciarAssinatura(evento) {
 }
 
 function desenharAssinatura(evento) {
-  if (!desenhando) return;
+  if (!canvas || !ctx || !desenhando) return;
+
+  const tipoAtual = tipoEventoAssinatura(evento);
+  if (origemEventoAssinatura && tipoAtual !== origemEventoAssinatura) return;
+
   if (evento.cancelable) evento.preventDefault();
   const p = posicao(evento);
   ctx.lineTo(p.x, p.y);
@@ -2438,6 +2489,8 @@ function desenharAssinatura(evento) {
 }
 
 function pararAssinatura(evento) {
+  if (!canvas || !ctx) return;
+
   if (evento && evento.pointerId !== undefined && canvas.releasePointerCapture) {
     try {
       canvas.releasePointerCapture(evento.pointerId);
@@ -2445,34 +2498,47 @@ function pararAssinatura(evento) {
       console.log('Nao foi possivel liberar ponteiro da assinatura:', erro);
     }
   }
+
+  if (desenhando) {
+    ctx.closePath();
+  }
+
   desenhando = false;
+  origemEventoAssinatura = '';
 }
 
-function limparAssinatura() {
+window.limparAssinatura = function() {
+  if (!canvas || !ctx) return;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   assinaturaFeita = false;
   assinaturaAlterada = true;
-}
+};
 
-canvas.style.touchAction = 'none';
-canvas.style.userSelect = 'none';
-canvas.style.webkitUserSelect = 'none';
+if (canvas && ctx) {
+  prepararCanvasAssinatura();
 
-if ('PointerEvent' in window) {
-  canvas.addEventListener('pointerdown', iniciarAssinatura, { passive: false });
-  canvas.addEventListener('pointermove', desenharAssinatura, { passive: false });
-  canvas.addEventListener('pointerup', pararAssinatura);
-  canvas.addEventListener('pointercancel', pararAssinatura);
-  canvas.addEventListener('pointerleave', pararAssinatura);
-} else {
-  canvas.addEventListener('mousedown', iniciarAssinatura);
-  canvas.addEventListener('mousemove', desenharAssinatura);
+  if ('PointerEvent' in window) {
+    canvas.addEventListener('pointerdown', iniciarAssinatura, { passive: false });
+    canvas.addEventListener('pointermove', desenharAssinatura, { passive: false });
+    canvas.addEventListener('pointerup', pararAssinatura);
+    canvas.addEventListener('pointercancel', pararAssinatura);
+    canvas.addEventListener('pointerleave', pararAssinatura);
+  }
+
+  canvas.addEventListener('mousedown', iniciarAssinatura, { passive: false });
+  canvas.addEventListener('mousemove', desenharAssinatura, { passive: false });
   canvas.addEventListener('mouseup', pararAssinatura);
   canvas.addEventListener('mouseleave', pararAssinatura);
   canvas.addEventListener('touchstart', iniciarAssinatura, { passive: false });
   canvas.addEventListener('touchmove', desenharAssinatura, { passive: false });
   canvas.addEventListener('touchend', pararAssinatura);
   canvas.addEventListener('touchcancel', pararAssinatura);
+  canvas.addEventListener('contextmenu', function(evento) {
+    evento.preventDefault();
+  });
+  window.addEventListener('resize', prepararCanvasAssinatura);
+} else {
+  console.warn('Canvas de assinatura nao encontrado.');
 }
 
 function nomesArquivos(id) {
@@ -3000,7 +3066,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101108';
+const VERSAO_APP_CH_OBRAS = '101109';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
