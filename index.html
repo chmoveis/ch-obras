@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=21">
+  <link rel="manifest" href="manifest.json?v=22">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -567,20 +567,21 @@ button:active {
   body { padding-bottom: 16px; }
 
   .layout-app {
-    max-width: 760px;
+    max-width: 100%;
+    width: 100%;
     margin: 0 auto;
-    padding: 10px 10px 10px 88px;
+    padding: 10px;
     gap: 10px;
     grid-template-columns: 1fr;
   }
 
   .menu-lateral-slim {
     position: fixed;
-    left: 10px;
+    left: 8px;
     top: calc(86px + env(safe-area-inset-top));
-    width: 66px;
-    max-width: 66px;
-    min-width: 66px;
+    width: 58px;
+    max-width: 58px;
+    min-width: 58px;
     max-height: none;
     padding: 8px 6px;
     gap: 8px;
@@ -599,9 +600,9 @@ button:active {
   }
 
   .layout-app.atalhos-fechados .menu-lateral-slim {
-    width: 66px;
-    max-width: 66px;
-    min-width: 66px;
+    width: 58px;
+    max-width: 58px;
+    min-width: 58px;
     max-height: none;
     padding: 8px 6px;
     border: 1px solid rgba(212,160,23,0.34);
@@ -609,12 +610,12 @@ button:active {
     opacity: 0;
     overflow: visible;
     pointer-events: none;
-    transform: translateX(-88px);
+    transform: translateX(-82px);
   }
 
   .menu-icon-btn {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     border-radius: 12px !important;
   }
 
@@ -623,14 +624,29 @@ button:active {
   }
 
   .menu-icon-btn svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
 
   .app {
     border-radius: 18px;
-    padding: 20px 16px 28px;
+    width: 100%;
+    max-width: 100%;
+    padding: 18px 12px 24px;
     min-height: auto;
+  }
+
+  .cabecalho {
+    padding: 20px 12px;
+    border-radius: 16px;
+  }
+
+  .cabecalho h1 {
+    font-size: 28px;
+  }
+
+  .cabecalho p {
+    font-size: 14px;
   }
 
   .acoes-principais {
@@ -655,15 +671,21 @@ button:active {
   .dashboard-pizza-grid {
     grid-template-columns: 1fr;
     justify-items: center;
+    gap: 12px;
   }
 
   .dashboard-legenda-grid {
     width: 100%;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .dashboard-pizza-chart {
+    width: clamp(190px, 62vw, 250px);
   }
 
   #barraUsuario {
-    text-align: left;
+    text-align: center;
   }
 
   .btn-toggle-atalhos {
@@ -2883,7 +2905,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101104';
+const VERSAO_APP_CH_OBRAS = '101105';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
