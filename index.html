@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=28">
+  <link rel="manifest" href="manifest.json?v=29">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -2237,12 +2237,33 @@ function ativarRascunhoAutomatico() {
   setTimeout(restaurarRascunhoChecklist, 600);
 }
 
+function sincronizarDashboardComChecklist() {
+  const checklist = document.getElementById('formularioChecklist');
+  const dashboardResumo = document.getElementById('dashboardResumo');
+  if (!checklist || !dashboardResumo) return;
+
+  const cardsDashboard = dashboardResumo.querySelectorAll(':scope > .dashboard-profissional');
+  const deveExibir = !checklist.open;
+  cardsDashboard.forEach(function(card) {
+    card.style.display = deveExibir ? 'block' : 'none';
+  });
+}
+
+function synchronizarDashboardComChecklist() {
+  sincronizarDashboardComChecklist();
+}
+
+window.sincronizarDashboardComChecklist = sincronizarDashboardComChecklist;
+window.synchronizarDashboardComChecklist = sincronizarDashboardComChecklist;
+
 function alternarFormularioChecklist() {
   const bloco = document.getElementById('formularioChecklist');
   if (!bloco) return;
 
   bloco.open = !bloco.open;
-  sincronizarDashboardComChecklist();
+  if (typeof window.sincronizarDashboardComChecklist === 'function') {
+    window.sincronizarDashboardComChecklist();
+  }
   if (bloco.open) {
     if (typeof window.prepararCanvasAssinatura === 'function') {
       requestAnimationFrame(function() {
@@ -3136,7 +3157,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101111';
+const VERSAO_APP_CH_OBRAS = '101112';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
