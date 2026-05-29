@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=22">
+  <link rel="manifest" href="manifest.json?v=23">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -328,6 +328,10 @@ h2 {
 
 .formulario-checklist summary::-webkit-details-marker {
   display: none;
+}
+
+#formularioChecklist[open] ~ #dashboardResumo > .dashboard-profissional {
+  display: none !important;
 }
 
 .formulario-checklist summary::after {
@@ -2210,6 +2214,7 @@ function alternarFormularioChecklist() {
   if (!bloco) return;
 
   bloco.open = !bloco.open;
+  sincronizarDashboardComChecklist();
   if (bloco.open) {
     bloco.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -2289,6 +2294,10 @@ function bloquearCliqueDiretoAcoesPrincipais() {
 
 bloquearCliqueDiretoAcoesPrincipais();
 restaurarEstadoAtalhosLaterais();
+const blocoChecklistDashboard = document.getElementById('formularioChecklist');
+if (blocoChecklistDashboard) {
+  blocoChecklistDashboard.addEventListener('toggle', sincronizarDashboardComChecklist);
+}
 window.addEventListener('resize', atualizarVisibilidadeBotaoAtalhosLaterais);
 window.addEventListener('load', atualizarVisibilidadeBotaoAtalhosLaterais);
 
@@ -2905,7 +2914,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101105';
+const VERSAO_APP_CH_OBRAS = '101106';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
@@ -3427,6 +3436,28 @@ function esconderDashboardInicial() {
   });
 }
 
+function existePainelSecundarioAberto() {
+  return PAINEIS_SECUNDARIOS_INICIAIS.some((idPainel) => {
+    const painel = document.getElementById(idPainel);
+    if (!painel) return false;
+    return getComputedStyle(painel).display !== 'none';
+  });
+}
+
+function sincronizarDashboardComChecklist() {
+  const checklist = document.getElementById('formularioChecklist');
+  if (!checklist) return;
+
+  if (checklist.open) {
+    esconderDashboardInicial();
+    return;
+  }
+
+  if (!existePainelSecundarioAberto()) {
+    mostrarDashboardInicial();
+  }
+}
+
 async function carregarDashboardInicial() {
   mostrarDashboardInicial();
 
@@ -3437,6 +3468,7 @@ async function carregarDashboardInicial() {
 
   const formularioChecklist = document.getElementById('formularioChecklist');
   if (formularioChecklist) formularioChecklist.open = false;
+  sincronizarDashboardComChecklist();
 
   const acoesPrincipais = document.getElementById('acoesPrincipais');
   if (acoesPrincipais) acoesPrincipais.open = false;
