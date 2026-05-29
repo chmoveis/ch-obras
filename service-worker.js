@@ -1,6 +1,6 @@
 self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open('ch-obras-cache-v84').then(function(cache) {
+    caches.open('ch-cortes-cache-v1').then(function(cache) {
       const arquivosEssenciais = [
         'index.html',
         'manifest.json',
@@ -8,8 +8,8 @@ self.addEventListener('install', function(event) {
       ];
 
       const arquivosOpcionais = [
-        'logotipo novo atual.jpg',
-        'icone-ch-obras.png'
+        'logotipo-ch-cortes.jpg',
+        'icone-ch-cortes.png'
       ];
 
       return cache.addAll(arquivosEssenciais).then(function() {
@@ -31,7 +31,7 @@ self.addEventListener('activate', function(event) {
       return Promise.all(
         nomesCaches
           .filter(function(nomeCache) {
-            return nomeCache.startsWith('ch-obras-cache-') && nomeCache !== 'ch-obras-cache-v84';
+            return nomeCache.startsWith('ch-cortes-cache-') && nomeCache !== 'ch-cortes-cache-v1';
           })
           .map(function(nomeCache) {
             return caches.delete(nomeCache);

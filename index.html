@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=29">
+  <title>CH Cortes - Gestão de Cortes</title>
+  <link rel="manifest" href="manifest.json?v=1">
   <meta name="theme-color" content="#0f0f0f" />
-  <link rel="apple-touch-icon" href="icone-ch-obras.png" />
+  <link rel="apple-touch-icon" href="icone-ch-cortes.png" />
 
   <style>
 body {
@@ -1346,7 +1346,7 @@ color:#d4a017;
 text-align:center;
 margin-bottom:8px;
 ">
-CH Obras
+CH Cortes
 </h1>
 
 <div id="versaoAppLogin" style="
@@ -1572,9 +1572,9 @@ Atualizar App / Limpar Cache
 
   <div class="app">
     <div class="cabecalho">
-      <img src="logotipo novo atual.jpg" alt="CH Móveis" class="logo" />
-      <h1>CH Obras</h1>
-      <p>Checklist de Instalação - CH Móveis Sob Medida</p>
+      <img src="logotipo-ch-cortes.jpg" alt="CH Móveis" class="logo" />
+      <h1>CH Cortes</h1>
+      <p>Gestão de cortes e produção - CH Móveis Sob Medida</p>
       <span class="versao-app" id="versaoAppCabecalho">Versão carregando...</span>
     </div>
 
@@ -1765,7 +1765,7 @@ id="btnLimparFormulario"
     </details>
 
     <div class="area-visualizar">
-      <button onclick="window.open('https://chmoveis.github.io/ch-obras/', '_blank')">Visualizar App</button>
+      <button onclick="window.open('https://chmoveis.github.io/ch-cortes/', '_blank')">Visualizar App</button>
     </div>
 
     <div class="resultado" id="resultado">
@@ -1775,8 +1775,8 @@ id="btnLimparFormulario"
   
     <div class="resultado" id="dashboardResumo">
       <div class="dashboard-profissional">
-        <h2>Dashboard de Obras</h2>
-        <p class="dashboard-subtitulo">Visão executiva das obras cadastradas no CH Obras</p>
+        <h2>Dashboard de Cortes</h2>
+        <p class="dashboard-subtitulo">Visão executiva dos cortes cadastrados no CH Cortes</p>
         <p id="ultimaAtualizacao" style="font-size:12px; color:#111111; margin-top:-4px;">Última atualização: --</p>
 
         <div class="dashboard-pizza-grid">
@@ -2736,7 +2736,7 @@ async function gerarPDF() {
 
   pdf.setTextColor(255, 255, 255);
   pdf.setFontSize(20);
-  pdf.text('CH Obras', 105, 20, { align: 'center' });
+  pdf.text('CH Cortes', 105, 20, { align: 'center' });
 
   pdf.setFontSize(10);
   pdf.text('Relatório Técnico de Instalação', 105, 28, { align: 'center' });
@@ -2917,7 +2917,7 @@ async function gerarPDF() {
 
   pdf.setProperties({
     title: 'Relatório ' + numeroObra,
-    subject: 'Relatório de instalação CH Obras',
+    subject: 'Relatório de cortes CH Cortes',
     author: 'CH Móveis Sob Medida'
   });
 
@@ -2933,14 +2933,14 @@ async function gerarPDF() {
     pdf.setFontSize(8);
     pdf.setTextColor(100, 100, 100);
 
-    pdf.text('CH Obras - Documento gerado automaticamente', 15, 289);
+    pdf.text('CH Cortes - Documento gerado automaticamente', 15, 289);
 
     pdf.text('Obra: ' + numeroObra, 105, 289, { align: 'center' });
 
     pdf.text('Página ' + i + ' de ' + totalPaginas, 195, 289, { align: 'right' });
   }
 
-  pdf.save(`relatorio-ch-obras-${cliente}.pdf`);
+  pdf.save(`relatorio-ch-cortes-${cliente}.pdf`);
 }
 
 async function salvarChecklist() {
@@ -3093,7 +3093,7 @@ nomeAssinante,
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then(function() {
-          console.log('CH Obras instalado com suporte offline.');
+          console.log('CH Cortes instalado com suporte offline.');
         })
         .catch(function(erro) {
           console.log('Erro ao registrar Service Worker:', erro);
@@ -3157,7 +3157,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101112';
+const VERSAO_APP_CH_OBRAS = '200001';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
@@ -4604,7 +4604,7 @@ window.exportarLogsCSV = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'historico-operacional-ch-obras.csv';
+  link.download = 'historico-operacional-ch-cortes.csv';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -4763,7 +4763,7 @@ window.exportarProdutividadeCSV = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'produtividade-ch-obras.csv';
+  link.download = 'produtividade-ch-cortes.csv';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -5054,7 +5054,7 @@ window.exportarUsuariosCSV = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'usuarios-ch-obras.csv';
+  link.download = 'usuarios-ch-cortes.csv';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -5072,7 +5072,7 @@ window.exportarUsuariosJSON = function() {
   }
 
   const backup = {
-    sistema: 'CH Obras',
+    sistema: 'CH Cortes',
     tipo: 'backup_usuarios',
     geradoEm: new Date().toLocaleString('pt-BR'),
     geradoPor: window.usuarioEmailLogado || '',
@@ -5089,7 +5089,7 @@ window.exportarUsuariosJSON = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'backup-usuarios-ch-obras.json';
+  link.download = 'backup-usuarios-ch-cortes.json';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -5511,7 +5511,7 @@ window.exportarMateriaisCSV = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'requisicoes-materiais-ch-obras.csv';
+  link.download = 'requisicoes-materiais-ch-cortes.csv';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -5529,7 +5529,7 @@ window.exportarMateriaisJSON = function() {
   }
 
   const backup = {
-    sistema: 'CH Obras',
+    sistema: 'CH Cortes',
     tipo: 'backup_materiais',
     geradoEm: new Date().toLocaleString('pt-BR'),
     geradoPor: window.usuarioEmailLogado || '',
@@ -5546,7 +5546,7 @@ window.exportarMateriaisJSON = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'backup-materiais-ch-obras.json';
+  link.download = 'backup-materiais-ch-cortes.json';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -5826,7 +5826,7 @@ window.exportarCSV = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'relatorio-ch-obras.csv';
+  link.download = 'relatorio-ch-cortes.csv';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -5844,7 +5844,7 @@ window.exportarBackupJSON = function() {
   }
 
   const backup = {
-    sistema: 'CH Obras',
+    sistema: 'CH Cortes',
     tipo: 'backup_obras',
     geradoEm: new Date().toLocaleString('pt-BR'),
     geradoPor: window.usuarioEmailLogado || '',
@@ -5861,7 +5861,7 @@ window.exportarBackupJSON = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'backup-ch-obras.json';
+  link.download = 'backup-ch-cortes.json';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -5897,7 +5897,7 @@ window.exportarBackupCompletoJSON = async function() {
     });
 
     const backup = {
-      sistema: 'CH Obras',
+      sistema: 'CH Cortes',
       tipo: 'backup_completo',
       geradoEm: new Date().toLocaleString('pt-BR'),
       geradoPor: window.usuarioEmailLogado || '',
@@ -5920,7 +5920,7 @@ window.exportarBackupCompletoJSON = async function() {
     const link = document.createElement('a');
 
     link.href = url;
-    link.download = 'backup-completo-ch-obras.json';
+    link.download = 'backup-completo-ch-cortes.json';
     link.click();
 
     URL.revokeObjectURL(url);
@@ -5986,14 +5986,14 @@ window.analisarBackupJSON = function() {
       const geradoEm = dados.geradoEm || 'nao informado';
       const geradoPor = dados.geradoPor || 'nao informado';
 
-      const pareceBackupCH = sistema === 'CH Obras'
+      const pareceBackupCH = sistema === 'CH Cortes'
         || tipo.includes('backup')
         || obras.length > 0
         || usuarios.length > 0
         || materiais.length > 0;
 
       if (!pareceBackupCH) {
-        resumo.innerHTML = '<div class="item-relatorio"><strong>Arquivo lido, mas não parece ser um backup do CH Obras.</strong></div>';
+        resumo.innerHTML = '<div class="item-relatorio"><strong>Arquivo lido, mas não parece ser um backup do CH Cortes.</strong></div>';
         return;
       }
 
