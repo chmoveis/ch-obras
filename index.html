@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=23">
+  <link rel="manifest" href="manifest.json?v=24">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -340,6 +340,28 @@ h2 {
   color: #d4a017;
   font-size: 22px;
   line-height: 1;
+}
+
+.acoes-finais-checklist {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.acoes-finais-checklist button {
+  margin-top: 0;
+  padding: 10px 8px;
+  min-height: 40px;
+  font-size: 13px;
+  border-radius: 12px;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.18);
+}
+
+.btn-mini-excluir {
+  background: linear-gradient(135deg, #f6c4c4, #e57373) !important;
+  color: #3f0d0d !important;
+  border: 1px solid #cc6f6f !important;
 }
 
 .formulario-checklist[open] summary::after {
@@ -1698,6 +1720,12 @@ Atualizar App / Limpar Cache
       <button type="button" onclick="limparAssinatura()" class="botao-secundario">Limpar Assinatura</button>
       <p class="aviso-assinatura">O cliente deve assinar dentro do quadro acima.</p>
     </div>
+
+    <div class="acoes-finais-checklist">
+      <button type="button" onclick="salvarChecklist()">Salvar Checklist</button>
+      <button type="button" class="botao-secundario" onclick="editarChecklistNoFormulario()">Editar</button>
+      <button type="button" class="botao-secundario btn-mini-excluir" onclick="excluirChecklistNoFormulario()">Excluir</button>
+    </div>
       </div>
     </details>
 
@@ -2219,6 +2247,33 @@ function alternarFormularioChecklist() {
     bloco.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
+
+window.editarChecklistNoFormulario = function() {
+  if (window.idObraEditando) {
+    const aviso = document.getElementById('avisoEdicao');
+    const botaoSalvar = document.getElementById('botaoSalvar');
+    if (aviso) aviso.style.display = 'block';
+    if (botaoSalvar) botaoSalvar.innerText = 'Atualizar Obra';
+    alert('Modo edição já ativo para esta obra. Faça as alterações e toque em Salvar Checklist.');
+    return;
+  }
+
+  alert('Para editar uma obra existente, abra o Histórico e toque em Editar Obra.');
+  if (typeof window.mostrarHistorico === 'function') {
+    window.mostrarHistorico();
+  }
+};
+
+window.excluirChecklistNoFormulario = function() {
+  if (!window.idObraEditando) {
+    alert('Nenhuma obra carregada para exclusão. Abra o Histórico e escolha uma obra para editar.');
+    return;
+  }
+
+  if (typeof window.excluirObra === 'function') {
+    window.excluirObra(window.idObraEditando);
+  }
+};
 
 function alternarAcoesPrincipais() {
   const bloco = document.getElementById('acoesPrincipais');
@@ -2914,7 +2969,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101106';
+const VERSAO_APP_CH_OBRAS = '101107';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
