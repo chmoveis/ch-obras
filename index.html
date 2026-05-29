@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=26">
+  <link rel="manifest" href="manifest.json?v=27">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -2406,6 +2406,43 @@ function configurarPincelAssinatura() {
   ctx.strokeStyle = '#000000';
 }
 
+function ajustarResolucaoCanvasAssinatura() {
+  if (!canvas || !ctx) return;
+
+  const rect = canvas.getBoundingClientRect();
+  const larguraCss = Math.max(1, Math.round(rect.width || canvas.clientWidth || 480));
+  const alturaCss = Math.max(1, Math.round(rect.height || canvas.clientHeight || 180));
+  const ratio = Math.max(window.devicePixelRatio || 1, 1);
+  const novaLargura = Math.max(1, Math.round(larguraCss * ratio));
+  const novaAltura = Math.max(1, Math.round(alturaCss * ratio));
+
+  if (canvas.width === novaLargura && canvas.height === novaAltura) return;
+
+  const snapshot = assinaturaFeita ? canvas.toDataURL('image/png') : '';
+
+  canvas.width = novaLargura;
+  canvas.height = novaAltura;
+
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(ratio, ratio);
+  configurarPincelAssinatura();
+
+  if (!snapshot) {
+    ctx.clearRect(0, 0, larguraCss, alturaCss);
+    return;
+  }
+
+  const imagem = new Image();
+  imagem.onload = function() {
+    ctx.clearRect(0, 0, larguraCss, alturaCss);
+    ctx.drawImage(imagem, 0, 0, larguraCss, alturaCss);
+  };
+  imagem.onerror = function() {
+    ctx.clearRect(0, 0, larguraCss, alturaCss);
+  };
+  imagem.src = snapshot;
+}
+
 function prepararCanvasAssinatura() {
   if (!canvas) return;
   canvas.style.touchAction = 'none';
@@ -2413,7 +2450,9 @@ function prepararCanvasAssinatura() {
   canvas.style.webkitUserSelect = 'none';
   canvas.style.webkitTouchCallout = 'none';
   canvas.style.pointerEvents = 'auto';
+  canvas.style.cursor = 'crosshair';
   configurarPincelAssinatura();
+  ajustarResolucaoCanvasAssinatura();
 }
 
 window.prepararCanvasAssinatura = prepararCanvasAssinatura;
@@ -2507,6 +2546,10 @@ function pararAssinatura(evento) {
   origemEventoAssinatura = '';
 }
 
+window.iniciarAssinatura = iniciarAssinatura;
+window.desenharAssinatura = desenharAssinatura;
+window.pararAssinatura = pararAssinatura;
+
 window.limparAssinatura = function() {
   if (!canvas || !ctx) return;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -2537,6 +2580,14 @@ if (canvas && ctx) {
     evento.preventDefault();
   });
   window.addEventListener('resize', prepararCanvasAssinatura);
+  window.addEventListener('orientationchange', function() {
+    setTimeout(prepararCanvasAssinatura, 120);
+  });
+  document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+      setTimeout(prepararCanvasAssinatura, 80);
+    }
+  });
 } else {
   console.warn('Canvas de assinatura nao encontrado.');
 }
@@ -3066,7 +3117,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101109';
+const VERSAO_APP_CH_OBRAS = '101110';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
