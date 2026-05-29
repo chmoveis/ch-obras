@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CH Cortes - Gestão de Cortes</title>
-  <link rel="manifest" href="manifest.json?v=1">
+  <title>CH Obras - Checklist de Instalação</title>
+  <link rel="manifest" href="manifest.json?v=30">
   <meta name="theme-color" content="#0f0f0f" />
-  <link rel="apple-touch-icon" href="icone-ch-cortes.png" />
+  <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
   <style>
 body {
@@ -130,6 +130,7 @@ body {
 .menu-btn-save svg { stroke: #0f766e; }
 .menu-btn-history svg { stroke: #c2410c; }
 .menu-btn-materials svg { stroke: #7c3aed; }
+.menu-btn-cortes svg { stroke: #0f766e; }
 .menu-btn-actions svg { stroke: #0f172a; }
 .menu-btn-logout svg { stroke: #b91c1c; }
 .menu-btn-top svg { stroke: #be123c; }
@@ -1346,7 +1347,7 @@ color:#d4a017;
 text-align:center;
 margin-bottom:8px;
 ">
-CH Cortes
+CH Obras
 </h1>
 
 <div id="versaoAppLogin" style="
@@ -1545,6 +1546,14 @@ Atualizar App / Limpar Cache
         <path d="M3 8.5V16l9 4 9-4V8.5"/>
       </svg>
     </button>
+    <button type="button" id="btnCortesAtalho" class="menu-icon-btn menu-btn-cortes" title="CH Cortes" aria-label="Módulo CH Cortes" onclick="mostrarCHCortes()">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="6" cy="6" r="2.2"/>
+        <circle cx="6" cy="18" r="2.2"/>
+        <path d="M20 5 8.3 14.2"/>
+        <path d="M20 19 8.3 9.8"/>
+      </svg>
+    </button>
     <button type="button" class="menu-icon-btn menu-btn-actions" title="Ações principais" aria-label="Abrir ações principais" onclick="alternarAcoesPrincipais()">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <line x1="4" y1="7" x2="20" y2="7"/>
@@ -1572,9 +1581,9 @@ Atualizar App / Limpar Cache
 
   <div class="app">
     <div class="cabecalho">
-      <img src="logotipo-ch-cortes.jpg" alt="CH Móveis" class="logo" />
-      <h1>CH Cortes</h1>
-      <p>Gestão de cortes e produção - CH Móveis Sob Medida</p>
+      <img src="logotipo novo atual.jpg" alt="CH Móveis" class="logo" />
+      <h1>CH Obras</h1>
+      <p>Checklist de Instalação - CH Móveis Sob Medida</p>
       <span class="versao-app" id="versaoAppCabecalho">Versão carregando...</span>
     </div>
 
@@ -1756,6 +1765,7 @@ id="btnLimparFormulario"
     <button type="button" onclick="mostrarProdutividade()" class="botao-secundario" id="btnProdutividade"><span class="acao-icone">📈</span>Abrir Produtividade</button>
     <button type="button" onclick="mostrarUsuarios()" class="botao-secundario" id="btnUsuarios"><span class="acao-icone">👥</span>Abrir Gerenciamento de Usuários</button>
     <button type="button" onclick="mostrarMateriais()" class="botao-secundario" id="btnMateriais"><span class="acao-icone">📦</span>Abrir Requisição de Materiais</button>
+    <button type="button" onclick="mostrarCHCortes()" class="botao-secundario" id="btnCortes"><span class="acao-icone">✂️</span>Abrir Módulo CH Cortes</button>
     <button type="button" onclick="exportarCSV()" class="botao-secundario" id="btnExportarCSV"><span class="acao-icone">📊</span>Exportar Obras em CSV</button>
     <button type="button" onclick="exportarBackupJSON()" class="botao-secundario" id="btnExportarJSON"><span class="acao-icone">🗂️</span>Exportar Backup de Obras (JSON)</button>
     <button type="button" onclick="exportarBackupCompletoJSON()" class="botao-secundario" id="btnBackupCompletoJSON"><span class="acao-icone">🧰</span>Exportar Backup Completo (JSON)</button>
@@ -1765,7 +1775,7 @@ id="btnLimparFormulario"
     </details>
 
     <div class="area-visualizar">
-      <button onclick="window.open('https://chmoveis.github.io/ch-cortes/', '_blank')">Visualizar App</button>
+      <button onclick="window.open('https://chmoveis.github.io/ch-obras/', '_blank')">Visualizar App</button>
     </div>
 
     <div class="resultado" id="resultado">
@@ -1775,8 +1785,8 @@ id="btnLimparFormulario"
   
     <div class="resultado" id="dashboardResumo">
       <div class="dashboard-profissional">
-        <h2>Dashboard de Cortes</h2>
-        <p class="dashboard-subtitulo">Visão executiva dos cortes cadastrados no CH Cortes</p>
+        <h2>Dashboard de Obras</h2>
+        <p class="dashboard-subtitulo">Visão executiva das obras cadastradas no CH Obras</p>
         <p id="ultimaAtualizacao" style="font-size:12px; color:#111111; margin-top:-4px;">Última atualização: --</p>
 
         <div class="dashboard-pizza-grid">
@@ -1932,6 +1942,7 @@ id="btnLimparFormulario"
           <option value="atualizacao">Atualização</option>
           <option value="gerente_obra">Log gerente da obra</option>
           <option value="requisicao_material">Requisição de material</option>
+          <option value="corte">CH Cortes</option>
           <option value="usuario">Usuário</option>
         </select>
 
@@ -2072,6 +2083,76 @@ id="btnLimparFormulario"
         <button type="button" onclick="limparFiltrosMateriais()" class="botao-secundario">Limpar Filtros de Materiais</button>
 
         <div id="listaMateriais"></div>
+      </div>
+
+      <div class="resultado" id="moduloCHCortes">
+        <h2>CH Cortes</h2>
+        <p style="font-size:13px; color:#555;">Cadastro e acompanhamento de cortes dentro do CH Obras.</p>
+
+        <label for="corteObraSelect">Escolher obra</label>
+        <select id="corteObraSelect" onchange="preencherCHCortePorObra()">
+          <option value="">Selecione uma obra cadastrada</option>
+        </select>
+
+        <label for="corteNumeroObra">Número da obra</label>
+        <input type="text" id="corteNumeroObra" placeholder="Exemplo: OBRA-2026-0050" />
+
+        <label for="corteCliente">Cliente</label>
+        <input type="text" id="corteCliente" placeholder="Nome do cliente" />
+
+        <label for="corteAmbiente">Ambiente</label>
+        <input type="text" id="corteAmbiente" placeholder="Ambiente do corte" />
+
+        <label for="cortePeca">Peça</label>
+        <input type="text" id="cortePeca" placeholder="Exemplo: Lateral armário" />
+
+        <label for="corteMaterial">Material</label>
+        <input type="text" id="corteMaterial" placeholder="Exemplo: MDF Branco TX 18mm" />
+
+        <label for="corteComprimento">Comprimento (mm)</label>
+        <input type="number" id="corteComprimento" min="1" step="1" placeholder="Exemplo: 1800" />
+
+        <label for="corteLargura">Largura (mm)</label>
+        <input type="number" id="corteLargura" min="1" step="1" placeholder="Exemplo: 450" />
+
+        <label for="corteQuantidade">Quantidade</label>
+        <input type="number" id="corteQuantidade" min="1" step="1" placeholder="Exemplo: 2" />
+
+        <label for="corteStatus">Status do corte</label>
+        <select id="corteStatus">
+          <option value="Solicitado">Solicitado</option>
+          <option value="Em corte">Em corte</option>
+          <option value="Cortado">Cortado</option>
+          <option value="Separado">Separado</option>
+          <option value="Entregue">Entregue</option>
+          <option value="Cancelado">Cancelado</option>
+        </select>
+
+        <label for="corteObservacao">Observação</label>
+        <textarea id="corteObservacao" placeholder="Detalhes do corte"></textarea>
+
+        <button type="button" onclick="salvarCHCorte()">Salvar Corte</button>
+        <button type="button" onclick="carregarCHCortes()" class="botao-secundario">Atualizar Lista</button>
+        <button type="button" onclick="exportarCHCortesCSV()" class="botao-secundario">Exportar CH Cortes CSV</button>
+        <button type="button" onclick="ocultarCHCortes()" class="botao-secundario">Ocultar CH Cortes</button>
+
+        <h2>Filtros de CH Cortes</h2>
+        <input type="text" id="buscaCHCortes" placeholder="Buscar por obra, cliente, peça ou material" oninput="filtrarCHCortes()" />
+
+        <label for="filtroStatusCHCortes">Status</label>
+        <select id="filtroStatusCHCortes" onchange="filtrarCHCortes()">
+          <option value="">Todos</option>
+          <option value="Solicitado">Solicitado</option>
+          <option value="Em corte">Em corte</option>
+          <option value="Cortado">Cortado</option>
+          <option value="Separado">Separado</option>
+          <option value="Entregue">Entregue</option>
+          <option value="Cancelado">Cancelado</option>
+        </select>
+
+        <button type="button" onclick="limparFiltrosCHCortes()" class="botao-secundario">Limpar Filtros de CH Cortes</button>
+
+        <div id="listaCHCortes"></div>
       </div>
 
       <div class="resultado" id="painelRestaurarBackup">
@@ -2736,7 +2817,7 @@ async function gerarPDF() {
 
   pdf.setTextColor(255, 255, 255);
   pdf.setFontSize(20);
-  pdf.text('CH Cortes', 105, 20, { align: 'center' });
+  pdf.text('CH Obras', 105, 20, { align: 'center' });
 
   pdf.setFontSize(10);
   pdf.text('Relatório Técnico de Instalação', 105, 28, { align: 'center' });
@@ -2917,7 +2998,7 @@ async function gerarPDF() {
 
   pdf.setProperties({
     title: 'Relatório ' + numeroObra,
-    subject: 'Relatório de cortes CH Cortes',
+    subject: 'Relatório de instalação CH Obras',
     author: 'CH Móveis Sob Medida'
   });
 
@@ -2933,14 +3014,14 @@ async function gerarPDF() {
     pdf.setFontSize(8);
     pdf.setTextColor(100, 100, 100);
 
-    pdf.text('CH Cortes - Documento gerado automaticamente', 15, 289);
+    pdf.text('CH Obras - Documento gerado automaticamente', 15, 289);
 
     pdf.text('Obra: ' + numeroObra, 105, 289, { align: 'center' });
 
     pdf.text('Página ' + i + ' de ' + totalPaginas, 195, 289, { align: 'right' });
   }
 
-  pdf.save(`relatorio-ch-cortes-${cliente}.pdf`);
+  pdf.save(`relatorio-ch-obras-${cliente}.pdf`);
 }
 
 async function salvarChecklist() {
@@ -3093,7 +3174,7 @@ nomeAssinante,
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then(function() {
-          console.log('CH Cortes instalado com suporte offline.');
+          console.log('CH Obras instalado com suporte offline.');
         })
         .catch(function(erro) {
           console.log('Erro ao registrar Service Worker:', erro);
@@ -3153,11 +3234,13 @@ const auth = getAuth(appFirebase);
 let obrasCache = [];
 let obrasMateriaisCache = [];
 let requisicoesMateriaisCache = [];
+let cortesCache = [];
+let obrasCortesCache = [];
 let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '200001';
+const VERSAO_APP_CH_OBRAS = '101113';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
@@ -3387,6 +3470,8 @@ function aplicarPermissoesInterface() {
   const btnProdutividade = document.getElementById('btnProdutividade');
   const btnUsuarios = document.getElementById('btnUsuarios');
   const btnMateriais = document.getElementById('btnMateriais');
+  const btnCortes = document.getElementById('btnCortes');
+  const btnCortesAtalho = document.getElementById('btnCortesAtalho');
   const btnExportarMateriais = document.getElementById('btnExportarMateriaisCSV');
   const btnExportarMateriaisJSON = document.getElementById('btnExportarMateriaisJSON');
   const btnLogoutAtalho = document.getElementById('btnLogoutAtalho');
@@ -3405,6 +3490,8 @@ function aplicarPermissoesInterface() {
   if (btnExportarMateriais) btnExportarMateriais.style.display = usuarioEhAdminOuGerente() ? 'block' : 'none';
   if (btnExportarMateriaisJSON) btnExportarMateriaisJSON.style.display = usuarioEhAdminOuGerente() ? 'block' : 'none';
   if (btnMateriais) btnMateriais.style.display = ['admin', 'gerente', 'marceneiro', 'montagem'].includes(perfil) ? 'block' : 'none';
+  if (btnCortes) btnCortes.style.display = ['admin', 'gerente', 'marceneiro', 'montagem'].includes(perfil) ? 'block' : 'none';
+  if (btnCortesAtalho) btnCortesAtalho.style.display = ['admin', 'gerente', 'marceneiro', 'montagem'].includes(perfil) ? 'flex' : 'none';
   if (btnLogoutAtalho) btnLogoutAtalho.style.display = 'flex';
   if (botaoSalvar) {
     botaoSalvar.style.display = usuarioPodeCriarObra() || window.idObraEditando ? 'block' : 'none';
@@ -3649,6 +3736,7 @@ const PAINEIS_SECUNDARIOS_INICIAIS = [
   'painelProdutividade',
   'painelUsuarios',
   'moduloMateriais',
+  'moduloCHCortes',
   'painelRestaurarBackup'
 ];
 
@@ -4604,7 +4692,7 @@ window.exportarLogsCSV = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'historico-operacional-ch-cortes.csv';
+  link.download = 'historico-operacional-ch-obras.csv';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -4673,6 +4761,7 @@ function renderizarProdutividade(logs) {
       <strong>Obras atualizadas:</strong> ${usuario.obrasAtualizadas}<br>
       <strong>Mudancas de status:</strong> ${usuario.mudancasStatus}<br>
       <strong>Requisicoes de materiais:</strong> ${usuario.requisicoesMateriais}<br>
+      <strong>Registros CH Cortes:</strong> ${usuario.cortesRegistrados}<br>
       <strong>Ultima acao:</strong> ${usuario.ultimaAcao}<br>
     </div>
   `).join('');
@@ -4691,6 +4780,7 @@ function calcularProdutividadePorUsuario(logs) {
         obrasAtualizadas: 0,
         mudancasStatus: 0,
         requisicoesMateriais: 0,
+        cortesRegistrados: 0,
         totalAcoes: 0,
         ultimaAcao: log.dataLocal || 'nao informada'
       };
@@ -4708,6 +4798,10 @@ function calcularProdutividadePorUsuario(logs) {
 
     if (log.acao === 'requisicao_material') {
       resumo[email].requisicoesMateriais += 1;
+    }
+
+    if (log.acao === 'corte') {
+      resumo[email].cortesRegistrados += 1;
     }
   });
 
@@ -4734,6 +4828,7 @@ window.exportarProdutividadeCSV = function() {
     'ObrasAtualizadas',
     'MudancasStatus',
     'RequisicoesMateriais',
+    'RegistrosCHCortes',
     'UltimaAcao'
   ];
 
@@ -4744,6 +4839,7 @@ window.exportarProdutividadeCSV = function() {
     usuario.obrasAtualizadas,
     usuario.mudancasStatus,
     usuario.requisicoesMateriais,
+    usuario.cortesRegistrados,
     usuario.ultimaAcao
   ]);
 
@@ -4763,7 +4859,7 @@ window.exportarProdutividadeCSV = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'produtividade-ch-cortes.csv';
+  link.download = 'produtividade-ch-obras.csv';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -5054,7 +5150,7 @@ window.exportarUsuariosCSV = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'usuarios-ch-cortes.csv';
+  link.download = 'usuarios-ch-obras.csv';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -5072,7 +5168,7 @@ window.exportarUsuariosJSON = function() {
   }
 
   const backup = {
-    sistema: 'CH Cortes',
+    sistema: 'CH Obras',
     tipo: 'backup_usuarios',
     geradoEm: new Date().toLocaleString('pt-BR'),
     geradoPor: window.usuarioEmailLogado || '',
@@ -5089,7 +5185,7 @@ window.exportarUsuariosJSON = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'backup-usuarios-ch-cortes.json';
+  link.download = 'backup-usuarios-ch-obras.json';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -5511,7 +5607,7 @@ window.exportarMateriaisCSV = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'requisicoes-materiais-ch-cortes.csv';
+  link.download = 'requisicoes-materiais-ch-obras.csv';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -5529,7 +5625,7 @@ window.exportarMateriaisJSON = function() {
   }
 
   const backup = {
-    sistema: 'CH Cortes',
+    sistema: 'CH Obras',
     tipo: 'backup_materiais',
     geradoEm: new Date().toLocaleString('pt-BR'),
     geradoPor: window.usuarioEmailLogado || '',
@@ -5546,9 +5642,315 @@ window.exportarMateriaisJSON = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'backup-materiais-ch-cortes.json';
+  link.download = 'backup-materiais-ch-obras.json';
   link.click();
 
+  URL.revokeObjectURL(url);
+};
+
+window.mostrarCHCortes = function() {
+  if (!['admin', 'gerente', 'marceneiro', 'montagem'].includes(window.perfilUsuarioLogado)) {
+    alert('Seu perfil nao tem permissao para acessar o CH Cortes.');
+    return;
+  }
+
+  esconderDashboardInicial();
+  document.getElementById('moduloCHCortes').style.display = 'block';
+  carregarObrasParaCHCortes();
+  carregarCHCortes();
+};
+
+window.ocultarCHCortes = function() {
+  const modulo = document.getElementById('moduloCHCortes');
+  if (modulo) modulo.style.display = 'none';
+};
+
+window.carregarObrasParaCHCortes = async function() {
+  const selectObras = document.getElementById('corteObraSelect');
+  if (!selectObras) return;
+
+  selectObras.innerHTML = '<option value="">Carregando obras...</option>';
+
+  try {
+    let obrasQuery;
+
+    if (['admin', 'gerente', 'montagem', 'conferencia', 'visualizacao'].includes(window.perfilUsuarioLogado)) {
+      obrasQuery = query(collection(db, "obras"), orderBy("criadoEmServidor", "desc"), limit(100));
+    } else {
+      obrasQuery = query(
+        collection(db, "obras"),
+        where("emailUsuario", "==", window.usuarioEmailLogado),
+        orderBy("criadoEmServidor", "desc"),
+        limit(100)
+      );
+    }
+
+    const querySnapshot = await getDocs(obrasQuery);
+    obrasCortesCache = [];
+
+    querySnapshot.forEach((docItem) => {
+      obrasCortesCache.push({ id: docItem.id, ...docItem.data() });
+    });
+
+    selectObras.innerHTML = '<option value="">Selecione uma obra cadastrada</option>' +
+      obrasCortesCache.map((obra) => {
+        const texto = `${obra.numeroObra || 'SEM NUMERO'} - ${obra.cliente || 'Cliente nao informado'} - ${obra.ambiente || 'Ambiente nao informado'}`;
+        return `<option value="${obra.id}">${texto}</option>`;
+      }).join('');
+  } catch (erro) {
+    console.error('Erro ao carregar obras para CH Cortes:', erro);
+    selectObras.innerHTML = '<option value="">Erro ao carregar obras</option>';
+  }
+};
+
+window.preencherCHCortePorObra = function() {
+  const obraId = document.getElementById('corteObraSelect').value;
+  const obra = obrasCortesCache.find((item) => item.id === obraId);
+  if (!obra) return;
+
+  document.getElementById('corteNumeroObra').value = obra.numeroObra || '';
+  document.getElementById('corteCliente').value = obra.cliente || '';
+  document.getElementById('corteAmbiente').value = obra.ambiente || '';
+};
+
+window.salvarCHCorte = async function() {
+  if (!['admin', 'gerente', 'marceneiro', 'montagem'].includes(window.perfilUsuarioLogado)) {
+    alert('Seu perfil nao tem permissao para registrar cortes.');
+    return;
+  }
+
+  const dadosCorte = {
+    obraId: document.getElementById('corteObraSelect').value || '',
+    numeroObra: document.getElementById('corteNumeroObra').value.trim(),
+    cliente: document.getElementById('corteCliente').value.trim(),
+    ambiente: document.getElementById('corteAmbiente').value.trim(),
+    peca: document.getElementById('cortePeca').value.trim(),
+    material: document.getElementById('corteMaterial').value.trim(),
+    comprimento: Number(document.getElementById('corteComprimento').value || 0),
+    largura: Number(document.getElementById('corteLargura').value || 0),
+    quantidade: Number(document.getElementById('corteQuantidade').value || 0),
+    status: document.getElementById('corteStatus').value || 'Solicitado',
+    observacao: document.getElementById('corteObservacao').value.trim(),
+    usuarioEmail: window.usuarioEmailLogado || '',
+    perfilUsuario: window.perfilUsuarioLogado || '',
+    criadoLocalmenteEm: new Date().toLocaleString('pt-BR'),
+    criadoEmServidor: serverTimestamp()
+  };
+
+  if (!dadosCorte.numeroObra || !dadosCorte.cliente || !dadosCorte.peca || !dadosCorte.material) {
+    alert('Preencha obra, cliente, peça e material.');
+    return;
+  }
+
+  if (dadosCorte.comprimento <= 0 || dadosCorte.largura <= 0 || dadosCorte.quantidade <= 0) {
+    alert('Preencha comprimento, largura e quantidade com valores maiores que zero.');
+    return;
+  }
+
+  try {
+    mostrarLoading('Salvando corte...');
+
+    const corteRef = await addDoc(collection(db, "cortes"), dadosCorte);
+
+    await addDoc(collection(db, "logsObras"), {
+      acao: 'corte',
+      obraId: corteRef.id,
+      numeroObra: dadosCorte.numeroObra,
+      cliente: dadosCorte.cliente,
+      statusAnterior: '',
+      statusNovo: dadosCorte.status,
+      statusAlterado: true,
+      detalhe: `${dadosCorte.peca} | ${dadosCorte.material}`,
+      usuarioEmail: window.usuarioEmailLogado || '',
+      perfilUsuario: window.perfilUsuarioLogado || '',
+      dataLocal: new Date().toLocaleString('pt-BR'),
+      criadoEmServidor: serverTimestamp()
+    });
+
+    esconderLoading();
+    alert('Corte salvo com sucesso.');
+
+    document.getElementById('cortePeca').value = '';
+    document.getElementById('corteMaterial').value = '';
+    document.getElementById('corteComprimento').value = '';
+    document.getElementById('corteLargura').value = '';
+    document.getElementById('corteQuantidade').value = '';
+    document.getElementById('corteStatus').value = 'Solicitado';
+    document.getElementById('corteObservacao').value = '';
+
+    carregarCHCortes();
+  } catch (erro) {
+    console.error('Erro ao salvar corte:', erro);
+    esconderLoading();
+    alert('Erro ao salvar corte.');
+  }
+};
+
+window.carregarCHCortes = async function() {
+  const lista = document.getElementById('listaCHCortes');
+  if (!lista) return;
+
+  lista.innerHTML = '<p>Carregando cortes...</p>';
+
+  try {
+    const cortesQuery = query(
+      collection(db, "cortes"),
+      orderBy("criadoEmServidor", "desc"),
+      limit(120)
+    );
+
+    const querySnapshot = await getDocs(cortesQuery);
+    cortesCache = [];
+
+    querySnapshot.forEach((docItem) => {
+      cortesCache.push({ id: docItem.id, ...docItem.data() });
+    });
+
+    renderizarCHCortes(cortesCache);
+  } catch (erro) {
+    console.error('Erro ao carregar CH Cortes:', erro);
+    lista.innerHTML = '<p>Erro ao carregar cortes.</p>';
+  }
+};
+
+function classeStatusCHCorte(status) {
+  if (status === 'Entregue') return 'status status-finalizada';
+  if (status === 'Cortado') return 'status status-producao';
+  if (status === 'Em corte') return 'status status-medicao';
+  if (status === 'Separado') return 'status status-conferencia';
+  if (status === 'Cancelado') return 'status status-cancelada';
+  return 'status status-cliente';
+}
+
+function renderizarCHCortes(listaCortes) {
+  const lista = document.getElementById('listaCHCortes');
+  if (!lista) return;
+
+  if (!listaCortes || listaCortes.length === 0) {
+    lista.innerHTML = '<p>Nenhum corte cadastrado.</p>';
+    return;
+  }
+
+  lista.innerHTML = listaCortes.map((corte) => `
+    <div class="item-relatorio">
+      <strong style="font-size:16px; color:#d4a017;">${corte.numeroObra || 'Obra sem numero'}</strong><br><br>
+      <strong>Cliente:</strong> ${corte.cliente || 'Não informado'}<br>
+      <strong>Ambiente:</strong> ${corte.ambiente || 'Não informado'}<br>
+      <strong>Peça:</strong> ${corte.peca || 'Não informada'}<br>
+      <strong>Material:</strong> ${corte.material || 'Não informado'}<br>
+      <strong>Dimensão:</strong> ${corte.comprimento || 0} x ${corte.largura || 0} mm<br>
+      <strong>Quantidade:</strong> ${corte.quantidade || 0}<br>
+      <strong>Status:</strong> <span class="${classeStatusCHCorte(corte.status)}">${corte.status || 'Solicitado'}</span><br>
+      <strong>Observação:</strong> ${corte.observacao || 'Sem observação'}<br>
+      <strong>Registrado por:</strong> ${corte.usuarioEmail || 'Não informado'}<br>
+      <strong>Data:</strong> ${corte.criadoLocalmenteEm || 'Não informada'}<br>
+      ${['admin', 'gerente'].includes(window.perfilUsuarioLogado) ? `
+        <button type="button" class="botao-secundario" onclick="atualizarStatusCHCorte('${corte.id}', 'Em corte')">Em corte</button>
+        <button type="button" class="botao-secundario" onclick="atualizarStatusCHCorte('${corte.id}', 'Cortado')">Cortado</button>
+        <button type="button" class="botao-secundario" onclick="atualizarStatusCHCorte('${corte.id}', 'Separado')">Separado</button>
+        <button type="button" class="botao-secundario" onclick="atualizarStatusCHCorte('${corte.id}', 'Entregue')">Entregue</button>
+        <button type="button" class="botao-perigo" onclick="atualizarStatusCHCorte('${corte.id}', 'Cancelado')">Cancelar</button>
+      ` : ''}
+    </div>
+  `).join('');
+}
+
+window.filtrarCHCortes = function() {
+  const texto = document.getElementById('buscaCHCortes').value.toLowerCase().trim();
+  const statusFiltro = document.getElementById('filtroStatusCHCortes').value;
+  const termos = texto.split(' ').filter(Boolean);
+
+  const filtrados = cortesCache.filter((item) => {
+    const busca = `${item.numeroObra || ''} ${item.cliente || ''} ${item.ambiente || ''} ${item.peca || ''} ${item.material || ''}`.toLowerCase();
+    const status = item.status || 'Solicitado';
+    const passaTexto = termos.length === 0 || termos.every((termo) => busca.includes(termo));
+    const passaStatus = !statusFiltro || status === statusFiltro;
+    return passaTexto && passaStatus;
+  });
+
+  renderizarCHCortes(filtrados);
+};
+
+window.limparFiltrosCHCortes = function() {
+  document.getElementById('buscaCHCortes').value = '';
+  document.getElementById('filtroStatusCHCortes').selectedIndex = 0;
+  renderizarCHCortes(cortesCache);
+};
+
+window.atualizarStatusCHCorte = async function(id, novoStatus) {
+  if (!['admin', 'gerente'].includes(window.perfilUsuarioLogado)) {
+    alert('Apenas admin ou gerente pode alterar status de cortes.');
+    return;
+  }
+
+  try {
+    mostrarLoading('Atualizando corte...');
+    await updateDoc(doc(db, "cortes", id), {
+      status: novoStatus,
+      atualizadoPor: window.usuarioEmailLogado || '',
+      atualizadoEmLocal: new Date().toLocaleString('pt-BR'),
+      atualizadoEmServidor: serverTimestamp()
+    });
+    esconderLoading();
+    carregarCHCortes();
+  } catch (erro) {
+    console.error('Erro ao atualizar status do corte:', erro);
+    esconderLoading();
+    alert('Erro ao atualizar status do corte.');
+  }
+};
+
+window.exportarCHCortesCSV = function() {
+  if (!['admin', 'gerente'].includes(window.perfilUsuarioLogado)) {
+    alert('Seu perfil nao tem permissao para exportar CH Cortes.');
+    return;
+  }
+
+  if (!cortesCache || cortesCache.length === 0) {
+    alert('Carregue os cortes antes de exportar.');
+    return;
+  }
+
+  const cabecalho = [
+    'NumeroObra',
+    'Cliente',
+    'Ambiente',
+    'Peca',
+    'Material',
+    'ComprimentoMM',
+    'LarguraMM',
+    'Quantidade',
+    'Status',
+    'Observacao',
+    'Usuario',
+    'Data'
+  ];
+
+  const linhas = cortesCache.map((item) => [
+    item.numeroObra || '',
+    item.cliente || '',
+    item.ambiente || '',
+    item.peca || '',
+    item.material || '',
+    item.comprimento || '',
+    item.largura || '',
+    item.quantidade || '',
+    item.status || '',
+    item.observacao || '',
+    item.usuarioEmail || '',
+    item.criadoLocalmenteEm || ''
+  ]);
+
+  const csv = [cabecalho].concat(linhas).map((linha) => {
+    return linha.map((campo) => '"' + String(campo).replace(/"/g, '""') + '"').join(';');
+  }).join('\n');
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'ch-cortes.csv';
+  link.click();
   URL.revokeObjectURL(url);
 };
 
@@ -5826,7 +6228,7 @@ window.exportarCSV = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'relatorio-ch-cortes.csv';
+  link.download = 'relatorio-ch-obras.csv';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -5844,7 +6246,7 @@ window.exportarBackupJSON = function() {
   }
 
   const backup = {
-    sistema: 'CH Cortes',
+    sistema: 'CH Obras',
     tipo: 'backup_obras',
     geradoEm: new Date().toLocaleString('pt-BR'),
     geradoPor: window.usuarioEmailLogado || '',
@@ -5861,7 +6263,7 @@ window.exportarBackupJSON = function() {
   const link = document.createElement('a');
 
   link.href = url;
-  link.download = 'backup-ch-cortes.json';
+  link.download = 'backup-ch-obras.json';
   link.click();
 
   URL.revokeObjectURL(url);
@@ -5897,7 +6299,7 @@ window.exportarBackupCompletoJSON = async function() {
     });
 
     const backup = {
-      sistema: 'CH Cortes',
+      sistema: 'CH Obras',
       tipo: 'backup_completo',
       geradoEm: new Date().toLocaleString('pt-BR'),
       geradoPor: window.usuarioEmailLogado || '',
@@ -5920,7 +6322,7 @@ window.exportarBackupCompletoJSON = async function() {
     const link = document.createElement('a');
 
     link.href = url;
-    link.download = 'backup-completo-ch-cortes.json';
+    link.download = 'backup-completo-ch-obras.json';
     link.click();
 
     URL.revokeObjectURL(url);
@@ -5986,14 +6388,14 @@ window.analisarBackupJSON = function() {
       const geradoEm = dados.geradoEm || 'nao informado';
       const geradoPor = dados.geradoPor || 'nao informado';
 
-      const pareceBackupCH = sistema === 'CH Cortes'
+      const pareceBackupCH = sistema === 'CH Obras'
         || tipo.includes('backup')
         || obras.length > 0
         || usuarios.length > 0
         || materiais.length > 0;
 
       if (!pareceBackupCH) {
-        resumo.innerHTML = '<div class="item-relatorio"><strong>Arquivo lido, mas não parece ser um backup do CH Cortes.</strong></div>';
+        resumo.innerHTML = '<div class="item-relatorio"><strong>Arquivo lido, mas não parece ser um backup do CH Obras.</strong></div>';
         return;
       }
 
