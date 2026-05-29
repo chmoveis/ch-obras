@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CH Obras - Checklist de Instalação</title>
-  <link rel="manifest" href="manifest.json?v=27">
+  <link rel="manifest" href="manifest.json?v=28">
   <meta name="theme-color" content="#0f0f0f" />
   <link rel="apple-touch-icon" href="icone-ch-obras.png" />
 
@@ -2443,6 +2443,15 @@ function ajustarResolucaoCanvasAssinatura() {
   imagem.src = snapshot;
 }
 
+function dimensoesCssCanvasAssinatura() {
+  if (!canvas) return { largura: 480, altura: 180 };
+  const rect = canvas.getBoundingClientRect();
+  return {
+    largura: Math.max(1, Math.round(rect.width || canvas.clientWidth || 480)),
+    altura: Math.max(1, Math.round(rect.height || canvas.clientHeight || 180))
+  };
+}
+
 function prepararCanvasAssinatura() {
   if (!canvas) return;
   canvas.style.touchAction = 'none';
@@ -2474,16 +2483,16 @@ function posicao(evento) {
       ? evento.changedTouches[0]
       : evento;
 
-  const largura = rect.width > 0 ? rect.width : canvas.width;
-  const altura = rect.height > 0 ? rect.height : canvas.height;
+  const largura = rect.width > 0 ? rect.width : (canvas.clientWidth || canvas.width);
+  const altura = rect.height > 0 ? rect.height : (canvas.clientHeight || canvas.height);
   const xBruto = toque.clientX - rect.left;
   const yBruto = toque.clientY - rect.top;
   const xLimitado = Math.max(0, Math.min(largura, xBruto));
   const yLimitado = Math.max(0, Math.min(altura, yBruto));
 
   return {
-    x: xLimitado * (canvas.width / largura),
-    y: yLimitado * (canvas.height / altura)
+    x: xLimitado,
+    y: yLimitado
   };
 }
 
@@ -2552,10 +2561,20 @@ window.pararAssinatura = pararAssinatura;
 
 window.limparAssinatura = function() {
   if (!canvas || !ctx) return;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const dimensoes = dimensoesCssCanvasAssinatura();
+  ctx.clearRect(0, 0, dimensoes.largura, dimensoes.altura);
   assinaturaFeita = false;
   assinaturaAlterada = true;
 };
+
+function desenharImagemNaAssinatura(imagem) {
+  if (!canvas || !ctx || !imagem) return;
+  const dimensoes = dimensoesCssCanvasAssinatura();
+  ctx.clearRect(0, 0, dimensoes.largura, dimensoes.altura);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, dimensoes.largura, dimensoes.altura);
+  ctx.drawImage(imagem, 0, 0, dimensoes.largura, dimensoes.altura);
+}
 
 if (canvas && ctx) {
   prepararCanvasAssinatura();
@@ -3117,7 +3136,7 @@ let logsOperacionaisCache = [];
 let usuariosSistemaCache = [];
 let backupJSONAnalisado = null;
 const EMAIL_ADMIN_PRINCIPAL = 'financeirochmoveis@gmail.com';
-const VERSAO_APP_CH_OBRAS = '101110';
+const VERSAO_APP_CH_OBRAS = '101111';
 const CHAVE_ULTIMO_EMAIL_LOGIN = 'ultimoEmailLoginCHObras';
 
 function atualizarVersaoAppNaTela() {
@@ -5577,7 +5596,8 @@ window.limparFormulario = function() {
   document.getElementById('observacoes').value = '';
   document.getElementById('nomeClienteAssinatura').value = '';
   document.getElementById('cpfCliente').value = '';
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const dimensoesCanvasLimpar = dimensoesCssCanvasAssinatura();
+  ctx.clearRect(0, 0, dimensoesCanvasLimpar.largura, dimensoesCanvasLimpar.altura);
   assinaturaFeita = false;
   assinaturaAlterada = false;
 
@@ -5646,17 +5666,15 @@ window.editarObra = async function(id) {
         const imagem = new Image();
 
         imagem.onload = function() {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = '#ffffff';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(imagem, 0, 0, canvas.width, canvas.height);
+          desenharImagemNaAssinatura(imagem);
           assinaturaFeita = true;
           assinaturaAlterada = false;
           resolve();
         };
 
         imagem.onerror = function() {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          const dimensoesCanvasEdicaoErro = dimensoesCssCanvasAssinatura();
+          ctx.clearRect(0, 0, dimensoesCanvasEdicaoErro.largura, dimensoesCanvasEdicaoErro.altura);
           assinaturaFeita = false;
           assinaturaAlterada = false;
           resolve();
@@ -5665,7 +5683,8 @@ window.editarObra = async function(id) {
         imagem.src = obra.assinaturaCliente;
       });
     } else {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const dimensoesCanvasSemAssinatura = dimensoesCssCanvasAssinatura();
+      ctx.clearRect(0, 0, dimensoesCanvasSemAssinatura.largura, dimensoesCanvasSemAssinatura.altura);
       assinaturaFeita = false;
       assinaturaAlterada = false;
     }
@@ -6131,12 +6150,7 @@ window.gerarPDFDaObra = async function(id) {
       const imagem = new Image();
 
       imagem.onload = function() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.drawImage(imagem, 0, 0, canvas.width, canvas.height);
+        desenharImagemNaAssinatura(imagem);
 
         assinaturaFeita = true;
         resolve();
@@ -6150,7 +6164,8 @@ window.gerarPDFDaObra = async function(id) {
       imagem.src = obra.assinaturaCliente;
     });
   } else {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const dimensoesCanvasSemAssinaturaPDF = dimensoesCssCanvasAssinatura();
+    ctx.clearRect(0, 0, dimensoesCanvasSemAssinaturaPDF.largura, dimensoesCanvasSemAssinaturaPDF.altura);
     assinaturaFeita = false;
   }
 
